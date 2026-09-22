@@ -13,11 +13,12 @@ type Props = {
   media: CmsMediaMap;
 };
 
-function PartnerLogo({ id, src }: { id: "fft" | "cu"; src: string }) {
+function PartnerLogo({ id, name, src }: { id: string; name: string; src: string }) {
+  if (!src) return <span className="text-center text-lg font-black text-[#111936]">{name}</span>;
   return (
     <Image
       src={src}
-      alt={id === "fft" ? "FFT Produktionssysteme official logo" : "Composites United official logo"}
+      alt={`${name} logo`}
       width={id === "fft" ? 952 : 959}
       height={id === "fft" ? 376 : 729}
       className={id === "fft" ? "h-14 w-auto" : "h-[5.25rem] w-auto object-contain"}
@@ -147,15 +148,13 @@ export default function TechnologyPartnersPage({ content, locale, media }: Props
           <div className="grid gap-5 lg:grid-cols-2">
             {content.technologyPartners.partners.map((partner, index) => {
               const logoId = partner.id;
-              const label = logoId.toUpperCase();
-              const href = `/${locale}/technology-partners/${logoId === "cu" ? "composites-united" : "fft"}`;
-              const background = String(
-                logoId === "fft" ? media.fftCardImage : media.cuLogo,
-              );
+              const href = partner.href || (logoId === "cu" ? `/${locale}/technology-partners/composites-united` : `/${locale}/technology-partners/${logoId}`);
+              const logo = partner.logo || (logoId === "fft" ? String(media.fftLogo) : logoId === "cu" ? String(media.cuLogo) : "");
+              const background = partner.image || (logoId === "fft" ? String(media.fftCardImage) : logoId === "cu" ? String(media.cuLogo) : "");
 
               return (
                 <motion.div
-                  key={partner.name}
+                  key={partner.id}
                   className="h-full"
                   initial="hidden"
                   whileInView="show"
@@ -167,25 +166,25 @@ export default function TechnologyPartnersPage({ content, locale, media }: Props
                     href={href}
                     className="group relative block h-full min-h-[500px] overflow-hidden border border-white/10 bg-[#111936] p-5 transition duration-500 hover:-translate-y-1 hover:border-[#43becc]/55 sm:p-7 md:p-9"
                   >
-                    {logoId === "fft" ? (
+                    {background && logoId !== "cu" ? (
                       <Image
                         src={background}
-                        alt={`${label} partnership background`}
+                        alt={`${partner.name} partnership background`}
                         fill
                         sizes="(min-width: 1024px) 50vw, 100vw"
                         className="object-contain object-center transition duration-700 group-hover:scale-[1.02]"
                       />
-                    ) : (
+                    ) : logoId === "cu" ? (
                       <div className="absolute inset-0 bg-[#111936] [background-image:linear-gradient(#43becc12_1px,transparent_1px),linear-gradient(90deg,#43becc12_1px,transparent_1px)] [background-size:48px_48px]">
                         <Image
-                          src={String(media.cuLogo)}
+                          src={background}
                           alt=""
                           fill
                           sizes="(min-width: 1024px) 50vw, 100vw"
                           className="object-contain object-center p-16 opacity-30 sm:p-20"
                         />
                       </div>
-                    )}
+                    ) : null}
                     <div className={`absolute inset-0 ${logoId === "cu" ? "bg-[linear-gradient(180deg,rgba(8,13,32,0.18),rgba(8,13,32,0.96))]" : "bg-[linear-gradient(180deg,rgba(8,13,32,0.24),rgba(8,13,32,0.9))]"}`} />
                     <div className="relative z-10 grid h-full grid-rows-[auto_auto_1fr_auto] sm:grid-rows-[7rem_4.5rem_1fr_auto]">
                       <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between sm:gap-6">
@@ -193,7 +192,7 @@ export default function TechnologyPartnersPage({ content, locale, media }: Props
                           {partner.name}
                         </h3>
                         <div className="relative z-20 flex h-24 w-36 shrink-0 items-center justify-center border border-white/20 bg-white px-4 py-3 shadow-[0_12px_34px_rgba(0,0,0,0.22)]">
-                          <PartnerLogo id={logoId} src={String(logoId === "fft" ? media.fftLogo : media.cuLogo)} />
+                          <PartnerLogo id={logoId} name={partner.name} src={logo} />
                         </div>
                       </div>
 

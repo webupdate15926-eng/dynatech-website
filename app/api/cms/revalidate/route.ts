@@ -19,6 +19,9 @@ export async function POST(request: NextRequest) {
     revalidatePath(`/${locale}`, "layout");
   } else if (pageKey && Object.hasOwn(cmsPagePaths, pageKey)) {
     revalidatePath(`/${locale}${cmsPagePaths[pageKey]}`);
+    if (pageKey === "technology-partners") {
+      revalidatePath(`/${locale}/technology-partners/[slug]`, "page");
+    }
   } else {
     return NextResponse.json({ error: "Unknown page." }, { status: 400 });
   }

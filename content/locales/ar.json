@@ -501,6 +501,7 @@
       ]
     },
     "form": {
+      "recipientEmail": "info@dynatech-eg.com",
       "title": "بيانات التواصل",
       "fields": {
         "fullName": "الاسم الكامل",

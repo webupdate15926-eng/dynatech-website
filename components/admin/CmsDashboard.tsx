@@ -16,9 +16,10 @@ import type { Locale } from "@/i18n/config";
 import { isSafeSupabaseBrowserKey } from "@/lib/cms/browser-key";
 import { cmsPagePaths } from "@/lib/cms/config";
 import { mergeCmsValues, setAtPath } from "@/lib/cms/document-utils";
-import type { CmsPageDefinition, JsonValue } from "@/lib/cms/types";
+import { normalizeCmsDocument } from "@/lib/cms/normalize-document";
+import type { CmsMediaMap, CmsPageDefinition, JsonValue } from "@/lib/cms/types";
 
-type EditableDocument = { content: JsonValue; media: Record<string, JsonValue> };
+type EditableDocument = { content: JsonValue; media: CmsMediaMap };
 type DefaultResponse = { configured: boolean; pages: CmsPageDefinition[]; document: EditableDocument };
 type ViewMode = "content" | "media" | "library" | "users";
 type MediaRow = { id: string; public_id: string; resource_type: "image" | "video" | "raw"; secure_url: string; width: number | null; height: number | null; duration: number | null; created_at: string };
@@ -26,11 +27,11 @@ type MediaRow = { id: string; public_id: string; resource_type: "image" | "video
 const pageHints: Record<string, [string, string]> = {
   global: ["Navigation, footer and shared contact details", "القائمة والفوتر وبيانات التواصل المشتركة"],
   home: ["Main opening page and footer details", "الواجهة الرئيسية وبيانات الفوتر"],
-  about: ["Company, CEO message and timeline", "الشركة ورسالة الرئيس التنفيذي والخط الزمني"],
+  "about-us": ["Company, CEO message and timeline", "الشركة ورسالة الرئيس التنفيذي والخط الزمني"],
   "technology-partners": ["Partnership overview and partner cards", "نظرة عامة وبطاقات شركاء التكنولوجيا"],
-  fft: ["FFT profile, videos and gallery", "صفحة FFT والفيديوهات والمعرض"],
-  cu: ["Composites United profile and media", "صفحة Composites United والوسائط"],
-  "auto-hub": ["Project introduction, team and figures", "مقدمة المشروع والفريق والأرقام"],
+  "partner-fft": ["FFT profile and video library", "صفحة FFT ومكتبة الفيديوهات"],
+  "partner-cu": ["Composites United profile and video library", "صفحة Composites United ومكتبة الفيديوهات"],
+  "the-auto-hub": ["Project introduction, team, figures and gallery", "مقدمة المشروع والفريق والأرقام والمعرض"],
   "tech-info": ["Technology information and videos", "المعلومات التكنولوجية والفيديوهات"],
   careers: ["Careers page and Why Join Us", "صفحة الوظائف ولماذا تنضم إلينا"],
   contact: ["Contact copy, address and form", "نصوص التواصل والعنوان والنموذج"],
@@ -123,7 +124,7 @@ export default function CmsDashboard({ locale }: { locale: Locale }) {
       const queryError = draftResult.error ?? publishedResult.error ?? mediaResult.error;
       if (queryError) throw new Error(queryError.message);
       const savedDocument = (draftResult.data?.document ?? publishedResult.data?.document) as JsonValue | undefined;
-      const nextDocument = mergeCmsValues(fallback.document, savedDocument);
+      const nextDocument = normalizeCmsDocument(pageKey, mergeCmsValues(fallback.document, savedDocument));
       setDocument(nextDocument); setSavedSnapshot(JSON.stringify(nextDocument)); setMediaLibrary((mediaResult.data ?? []) as MediaRow[]);
     } catch (error) {
       setDocument(null); setNotice(error instanceof Error ? error.message : "Could not load CMS content.");

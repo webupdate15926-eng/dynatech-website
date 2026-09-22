@@ -22,6 +22,17 @@ type Props = {
 
 const inputClass = "w-full rounded border border-white/15 bg-[#10151e] px-3 py-2.5 text-sm leading-7 text-white outline-none focus:border-[#43becc] focus:ring-1 focus:ring-[#43becc]";
 
+function newArrayItem(path: EditorPath, previous: JsonValue | undefined, locale: Locale): JsonValue {
+  const key = path.join(".");
+  if (key === "content.technologyPartners.partners") return { id: `custom-${crypto.randomUUID().slice(0, 8)}`, name: "", heading: "", paragraphs: [""], ctaLabel: locale === "ar" ? "اعرف المزيد" : "Know More", ctaHref: "", href: "", logo: "", image: "" };
+  if (key === "content.team") return { category: "", name: "", image: "", imagePosition: "center", biography: "" };
+  if (key === "content.figures") return { label: "", value: "", description: "" };
+  if (key === "content.videoSection.items") return { title: "", description: "", src: "" };
+  if (key === "content.copy.gallery") return { label: "", type: "video", featured: false, src: "" };
+  if (previous && typeof previous === "object") return structuredClone(previous);
+  return "";
+}
+
 export function ContentEditor(props: Props) {
   const { value, path, locale, pageKey, onChange, onUpload, onPickMedia, uploadingPath, mediaOnly = false } = props;
   const id = useId();
@@ -32,10 +43,9 @@ export function ContentEditor(props: Props) {
   const child = (item: JsonValue, nextPath: EditorPath) => <ContentEditor {...props} value={item} path={nextPath} />;
 
   if (Array.isArray(value)) {
-    const fixed = path.join(".") === "content.navigation" || path.join(".") === "content.technologyPartners.partners";
+    const fixed = path.join(".") === "content.navigation" || (mediaOnly && path[0] === "content");
     const add = () => {
-      const source = value.at(-1) ?? "";
-      onChange(path, [...value, typeof source === "object" && source !== null ? structuredClone(source) : ""]);
+      onChange(path, [...value, newArrayItem(path, value.at(-1), locale)]);
     };
     return <div className="space-y-4">
       {value.map((item, index) => <section key={index} className="border-b border-white/10 pb-5 last:border-b-0">
@@ -60,6 +70,7 @@ export function ContentEditor(props: Props) {
       .filter(([key, item]) => {
         const nextPath = [...path, key];
         if (isHiddenField(nextPath, pageKey)) return false;
+        if (pageKey === "technology-partners" && key === "ctaHref" && ["fft", "cu"].includes(String(value.id))) return false;
         return mediaOnly ? containsMedia(item, nextPath) : !isMediaPath(nextPath);
       })
       .map(([key, item]) => {
@@ -79,7 +90,7 @@ export function ContentEditor(props: Props) {
   const text = value === null ? "" : String(value);
   if (!media) return text.length > 90
     ? <textarea aria-label={label} value={text} rows={Math.min(9, Math.max(3, Math.ceil(text.length / 100)))} onChange={(e) => onChange(path, e.target.value)} className={inputClass} />
-    : <input aria-label={label} value={text} onChange={(e) => onChange(path, e.target.value)} className={inputClass} />;
+    : <input aria-label={label} type={path.at(-1) === "recipientEmail" ? "email" : "text"} dir={path.at(-1) === "recipientEmail" ? "ltr" : undefined} value={text} onChange={(e) => onChange(path, e.target.value)} className={inputClass} />;
 
   const video = /\.(mp4|webm|mov)(\?|$)/i.test(text) || /video/i.test(String(path.at(-1)));
   const busy = uploadingPath === path.join(".");

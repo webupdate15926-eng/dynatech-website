@@ -503,6 +503,7 @@
     },
     "form": {
       "title": "Form Fields",
+      "recipientEmail": "info@dynatech-eg.com",
       "fields": {
         "fullName": "Full Name",
         "company": "Company / Organization",

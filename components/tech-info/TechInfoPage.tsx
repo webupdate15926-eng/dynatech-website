@@ -29,14 +29,7 @@ function SectionKicker({ children }: { children: React.ReactNode }) {
 
 export default function TechInfoPage({ content, locale, media }: Props) {
   const isAr = locale === "ar";
-  const managedVideos = content.videoSection.items.map((video, index) => ({
-    ...video,
-    src: String(
-      index === 0
-        ? media.ieaVideo
-        : media.catlVideo,
-    ),
-  }));
+  const managedVideos = content.videoSection.items.filter((item) => item.src);
 
   return (
     <main
@@ -102,7 +95,7 @@ export default function TechInfoPage({ content, locale, media }: Props) {
           <div className="grid gap-5 lg:grid-cols-2">
             {managedVideos.map((item, index) => (
               <motion.article
-                key={item.src}
+                key={`${item.title}-${index}`}
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, amount: 0.2 }}

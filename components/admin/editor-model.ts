@@ -11,8 +11,8 @@ const labels: Record<string, [string, string]> = {
   headlineLine1: ["Main heading — first line", "العنوان الرئيسي — السطر الأول"], headlineLine2: ["Main heading — second line", "العنوان الرئيسي — السطر الثاني"], strategicPartnersLabel: ["Partners heading", "عنوان الشركاء"], knowMoreLabel: ["Video button text", "نص زر الفيديو"], headOfficeTitle: ["Head office heading", "عنوان المقر الرئيسي"], headOfficeLines: ["Head office address", "عنوان المقر الرئيسي"], autoHubTitle: ["Auto Hub heading", "عنوان مشروع مركز السيارات"], autoHubLines: ["Auto Hub address", "عنوان مشروع مركز السيارات"], contactLabel: ["Contact text", "نص التواصل"],
   role: ["Job title", "المسمى الوظيفي"], category: ["Project role", "الدور في المشروع"], biography: ["Short biography", "السيرة الذاتية المختصرة"], linkedinUrl: ["LinkedIn profile", "رابط لينكدإن"], signatureName: ["Signature name", "اسم صاحب الرسالة"], signatureRole: ["Signature job title", "المسمى الوظيفي في التوقيع"], signatureCompany: ["Signature company", "اسم الشركة في التوقيع"], year: ["Year", "السنة"], desc: ["Milestone description", "وصف الحدث"], detail: ["Address", "العنوان"], status: ["Status", "الحالة"],
   heroLines: ["Opening heading", "العنوان الافتتاحي"], introductionTitle: ["Introduction heading", "عنوان مقدمة المشروع"], introduction: ["Project introduction", "مقدمة المشروع"], teamTitle: ["Team heading", "عنوان فريق الإدارة"], team: ["Project management team", "فريق إدارة المشروع"], figuresTitle: ["Key figures heading", "عنوان أرقام المشروع"], figures: ["Key figures", "أرقام المشروع"], galleryTitle: ["Gallery heading", "عنوان المعرض"], label: ["Displayed title", "الاسم الظاهر"], value: ["Displayed value", "القيمة الظاهرة"], countTo: ["Counter target", "الرقم النهائي للعداد"], prefix: ["Text before number", "النص قبل الرقم"], suffix: ["Unit after number", "الوحدة بعد الرقم"],
-  technologyPartners: ["Partner cards", "بطاقات الشركاء"], partners: ["Partners", "الشركاء"], partner: ["Partnership details", "تفاصيل الشراكة"], ecosystemColumn: ["Technology capabilities", "القدرات التكنولوجية"], copy: ["Page headings", "عناوين الصفحة"], mediaSection: ["Gallery headings", "عناوين معرض الوسائط"], gallery: ["Gallery", "المعرض"], ctaLabel: ["Button text", "نص الزر"], ctaHref: ["Button destination", "رابط الزر"], href: ["Destination link", "الرابط"], roleTitle: ["DYNATECH role heading", "عنوان دور دايناتك"], roleText: ["DYNATECH role", "دور دايناتك"], scopeTitle: ["Agreement heading", "عنوان الاتفاقية"], scope: ["Agreement scope", "نطاق الاتفاقية"],
-  videoSection: ["Video library", "مكتبة الفيديوهات"], why: ["Why join us", "لماذا تنضم إلينا"], conversation: ["Partnership invitation", "دعوة التعاون"], form: ["Contact form", "نموذج التواصل"], fields: ["Form labels", "أسماء الحقول"], categories: ["Inquiry categories", "أنواع الاستفسارات"], submitLabel: ["Send button text", "نص زر الإرسال"],
+  technologyPartners: ["Partner cards", "بطاقات الشركاء"], partners: ["Partners", "الشركاء"], partner: ["Partnership details", "تفاصيل الشراكة"], ecosystemColumn: ["Technology capabilities", "القدرات التكنولوجية"], copy: ["Page headings", "عناوين الصفحة"], mediaSection: ["Gallery headings", "عناوين معرض الوسائط"], gallery: ["Gallery", "المعرض"], ctaLabel: ["Button text", "نص الزر"], ctaHref: ["Partner website", "موقع الشريك"], href: ["Card destination", "رابط بطاقة الشريك"], roleTitle: ["DYNATECH role heading", "عنوان دور دايناتك"], roleText: ["DYNATECH role", "دور دايناتك"], scopeTitle: ["Agreement heading", "عنوان الاتفاقية"], scope: ["Agreement scope", "نطاق الاتفاقية"],
+  videoSection: ["Video library", "مكتبة الفيديوهات"], why: ["Why join us", "لماذا تنضم إلينا"], conversation: ["Partnership invitation", "دعوة التعاون"], form: ["Contact form", "نموذج التواصل"], recipientEmail: ["Form recipient email", "البريد المستلم لرسائل النموذج"], fields: ["Form labels", "أسماء الحقول"], categories: ["Inquiry categories", "أنواع الاستفسارات"], submitLabel: ["Send button text", "نص زر الإرسال"],
   navigation: ["Navigation links", "روابط القائمة"], contact: ["Contact details", "بيانات التواصل"], labels: ["Footer headings", "عناوين الفوتر"], display: ["Displayed phone", "رقم الهاتف الظاهر"], footerSlogan: ["Footer slogan", "شعار الفوتر"], copyright: ["Copyright text", "حقوق النشر"],
   backgroundVideo: ["Page background video", "فيديو خلفية الصفحة"], backgroundImage: ["Page background image", "صورة خلفية الصفحة"], brandLogo: ["DYNATECH logo", "شعار دايناتك"], logo: ["Official logo", "الشعار الرسمي"], fftLogo: ["FFT official logo", "شعار FFT الرسمي"], cuLogo: ["CU official logo", "شعار CU الرسمي"], fftVideo: ["FFT video", "فيديو FFT"], cuVideo: ["CU video", "فيديو CU"], fftSigningImage: ["FFT agreement photo", "صورة اتفاقية FFT"], cuSigningImage: ["CU agreement photo", "صورة اتفاقية CU"], fftCardImage: ["FFT card background", "خلفية بطاقة FFT"], heroImage: ["Opening building photo", "صورة المبنى الافتتاحية"], introductionImage: ["Introduction photo", "صورة المقدمة"], imageSrc: ["Photo", "الصورة"], image: ["Photo", "الصورة"], src: ["Media file", "ملف الوسائط"], ieaVideo: ["IEA report video", "فيديو تقرير IEA"], catlVideo: ["CATL interview", "مقابلة CATL"],
 };
@@ -42,6 +42,9 @@ export function containsMedia(value: JsonValue, path: EditorPath): boolean {
 export function isHiddenField(path: EditorPath, pageKey: string) {
   const key = String(path.at(-1));
   if (["id", "path", "type", "imagePosition"].includes(key)) return true;
+  if (pageKey === "the-auto-hub" && path[0] === "content" && path[1] === "figures" && ["countTo", "prefix", "suffix"].includes(key)) return true;
+  if (["partner-fft", "partner-cu"].includes(pageKey) && path.join(".") === "media.gallery") return true;
+  if (pageKey === "tech-info" && path[0] === "media" && ["ieaVideo", "catlVideo"].includes(key)) return true;
 
   if (pageKey === "home" && path[0] === "content" && path[1] === "hero" && path.length === 3) {
     return ![
@@ -58,7 +61,6 @@ export function isHiddenField(path: EditorPath, pageKey: string) {
 
   if (pageKey === "technology-partners") {
     if (path.join(".") === `content.technologyPartners.${key}` && ["kicker", "title"].includes(key)) return true;
-    if (path[1] === "technologyPartners" && key === "ctaHref") return true;
   }
 
   if (["partner-fft", "partner-cu"].includes(pageKey) && path[0] === "content" && path[1] === "partner" && path.length === 3) {
@@ -91,12 +93,14 @@ export function groupSectionFields(value: JsonValue, locale: Locale, pageKey: st
     leadership: ["CEO section", "قسم الرئيس التنفيذي"],
     signature: ["Signature", "التوقيع"],
     details: ["Locations & contact", "المواقع وبيانات التواصل"],
+    recipient: ["Form delivery address", "بريد استقبال النموذج"],
     actions: ["Buttons & links", "الأزرار والروابط"],
     other: ["More content", "محتوى إضافي"],
   };
 
   const categoryFor = (key: string, item: JsonValue) => {
     const lower = key.toLowerCase();
+    if (key === "recipientEmail") return "recipient";
     if (lower.startsWith("ceo") || lower.includes("founder")) return "leadership";
     if (lower.startsWith("signature")) return "signature";
     if (lower.includes("partner")) return "partners";
@@ -117,7 +121,7 @@ export function groupSectionFields(value: JsonValue, locale: Locale, pageKey: st
     buckets.set(category, bucket);
   }
 
-  const order = ["identity", "copy", "partners", "leadership", "signature", "details", "actions", "other"];
+  const order = ["identity", "copy", "partners", "leadership", "signature", "recipient", "details", "actions", "other"];
   return [...buckets.entries()]
     .sort(([a], [b]) => {
       const aIndex = order.indexOf(a);

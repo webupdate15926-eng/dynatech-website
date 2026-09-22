@@ -47,12 +47,15 @@ export type TechnologyPartnersContent = {
     kicker: string;
     title: string;
     partners: {
-      id: "fft" | "cu";
+      id: string;
       name: string;
       heading: string;
       paragraphs: string[];
       ctaLabel: string;
       ctaHref: string;
+      href?: string;
+      logo?: string;
+      image?: string;
     }[];
   };
 };
@@ -102,7 +105,7 @@ export type PartnerPageCopy = {
     imageBadge: string;
     featuredLabel: string;
   };
-  gallery: { label: string; type: "image" | "video"; featured?: boolean }[];
+  gallery: { label: string; type: "image" | "video"; featured?: boolean; src?: string }[];
 };
 
 export type TechnologyPartnerPageContent = {
@@ -144,7 +147,7 @@ export type TechInfoContent = {
   videoSection: {
     kicker: string;
     title: string;
-    items: { title: string; description: string }[];
+    items: { title: string; description: string; src?: string }[];
   };
 };
 
@@ -161,6 +164,7 @@ export type ContactContent = {
   conversation: { title: string; paragraphs: string[] };
   form: {
     title: string;
+    recipientEmail: string;
     fields: {
       fullName: string;
       company: string;

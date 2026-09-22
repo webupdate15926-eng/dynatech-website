@@ -55,10 +55,7 @@ export default function TechnologyPartnerPage({ partner, ecosystemColumn, locale
   const accent = accentFor(partner.id);
   const hero = copy.hero;
   const mediaCopy = copy.mediaSection;
-  const managedGallery = copy.gallery.map((item, index) => ({
-    ...item,
-    src: Array.isArray(media.gallery) ? String(media.gallery[index] ?? "") : undefined,
-  }));
+  const managedGallery = copy.gallery.filter((item) => item.src);
   const reduceMotion = useReducedMotion();
   const reveal = reduceMotion
     ? { hidden: { opacity: 1, y: 0 }, show: { opacity: 1, y: 0 } }
@@ -241,7 +238,7 @@ export default function TechnologyPartnerPage({ partner, ecosystemColumn, locale
         <div className="grid gap-5 lg:grid-cols-2">
           {managedGallery.map((item, index) => (
             <motion.div
-              key={item.label}
+              key={`${item.label}-${index}`}
               initial="hidden"
               whileInView="show"
               viewport={{ once: true, amount: 0.22 }}

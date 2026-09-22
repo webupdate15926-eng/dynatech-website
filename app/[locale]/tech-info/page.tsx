@@ -6,7 +6,7 @@ import { getPageDocument } from "@/lib/cms/page-document";
 export default async function Page({
   params,
 }: {
-  params: { locale: Locale } | Promise<{ locale: Locale }>;
+  params: Promise<{ locale: Locale }>;
 }) {
   const { locale } = await Promise.resolve(params);
   const document = await getPageDocument<TechInfoContent>("tech-info", locale);

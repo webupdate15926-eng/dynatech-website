@@ -14,26 +14,28 @@ function AnimatedFigure({ figure, index }: { figure: ProjectFigure; index: numbe
   const isInView = useInView(ref, { once: true, margin: "-70px" });
   const reduceMotion = useReducedMotion();
   const [count, setCount] = useState(0);
+  const numericValue = figure.countTo === undefined ? null : /^(.*?)(\d[\d,]*)([^\d]*)$/.exec(figure.value);
+  const target = numericValue ? Number(numericValue[2].replaceAll(",", "")) : null;
 
   useEffect(() => {
-    if (!isInView || figure.countTo === undefined || reduceMotion) return;
+    if (!isInView || target === null || reduceMotion) return;
 
     const duration = 1200;
     const start = performance.now();
     let frame = 0;
     const tick = (now: number) => {
       const progress = Math.min((now - start) / duration, 1);
-      setCount(Math.round(figure.countTo! * (1 - Math.pow(1 - progress, 3))));
+      setCount(Math.round(target * (1 - Math.pow(1 - progress, 3))));
       if (progress < 1) frame = requestAnimationFrame(tick);
     };
 
     frame = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frame);
-  }, [figure.countTo, isInView, reduceMotion]);
+  }, [target, isInView, reduceMotion]);
 
-  const displayValue = figure.countTo === undefined
-    ? figure.value
-    : `${figure.prefix ?? ""}${(reduceMotion ? figure.countTo : count).toLocaleString("en-US")}${figure.suffix ?? ""}`;
+  const displayValue = numericValue && !reduceMotion
+    ? `${numericValue[1]}${count.toLocaleString("en-US")}${numericValue[3]}`
+    : figure.value;
 
   return (
     <motion.article
@@ -59,7 +61,7 @@ function AnimatedFigure({ figure, index }: { figure: ProjectFigure; index: numbe
 export default function AutoHubPage({ content, locale, media }: Props) {
   const isAr = locale === "ar";
   const autoHubGallery = useMemo(
-    () => Array.isArray(media.gallery) ? media.gallery.map(String) : [],
+    () => Array.isArray(media.gallery) ? media.gallery.map(String).filter(Boolean) : [],
     [media.gallery],
   );
   const {
@@ -191,7 +193,7 @@ export default function AutoHubPage({ content, locale, media }: Props) {
                   aria-expanded={activeTeamIndex === index}
                   className="group relative block aspect-[3/4] w-full overflow-hidden border border-white/10 bg-[#080d20] text-start transition duration-500 hover:-translate-y-1 hover:border-[#43becc]/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#43becc]"
                 >
-                  <Image src={member.image} alt={member.name} fill sizes="(min-width:1280px) 25vw, (min-width:640px) 50vw, 100vw" className="object-cover transition duration-700 group-hover:scale-[1.035]" style={{ objectPosition: member.imagePosition }} />
+                  {member.image && <Image src={member.image} alt={member.name} fill sizes="(min-width:1280px) 25vw, (min-width:640px) 50vw, 100vw" className="object-cover transition duration-700 group-hover:scale-[1.035]" style={{ objectPosition: member.imagePosition }} />}
                   <div className="absolute inset-0 bg-gradient-to-t from-[#080d20] via-[#080d20]/10 to-transparent" />
                   <div className={`absolute inset-0 flex flex-col justify-end overflow-y-auto bg-[#080d20]/96 p-4 transition duration-500 md:p-5 ${activeTeamIndex === index ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100"}`}>
                     <span className="w-fit bg-[#0087cb] px-2.5 py-1.5 text-[9px] font-black uppercase text-black">{member.category}</span>

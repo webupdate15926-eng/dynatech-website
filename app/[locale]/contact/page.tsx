@@ -28,7 +28,7 @@ function SectionKicker({
 export default async function Page({
   params,
 }: {
-  params: { locale: Locale } | Promise<{ locale: Locale }>;
+  params: Promise<{ locale: Locale }>;
 }) {
   const { locale } = await Promise.resolve(params);
   const [document, globalDocument] = await Promise.all([
@@ -120,7 +120,7 @@ export default async function Page({
         </aside>
 
         <form
-          action={`mailto:${contactDetails.email}`}
+          action={`mailto:${content.form.recipientEmail || contactDetails.email}`}
           method="post"
           encType="text/plain"
           className="grid gap-4 border border-white/10 bg-[#121b43]/80 p-5 shadow-[0_30px_90px_rgba(0,0,0,0.35)] md:p-8"
