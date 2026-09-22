@@ -48,7 +48,7 @@ function AnimatedFigure({ figure, index }: { figure: ProjectFigure; index: numbe
         <div className="absolute inset-0 rounded-full bg-[conic-gradient(from_155deg,#0087cb,#43becc44,#8e257a,#0087cb)] opacity-80 transition duration-700 group-hover:rotate-90" />
         <div className="absolute inset-[3px] rounded-full bg-[#111936]" />
         <div className="absolute inset-5 rounded-full border border-dashed border-white/15" />
-        <p className="relative z-10 max-w-[138px] text-[clamp(1.15rem,2vw,1.8rem)] font-black leading-tight text-white">{displayValue}</p>
+        <p className="relative z-10 max-w-[138px] text-center text-[clamp(1.15rem,2vw,1.8rem)] font-black leading-tight text-white">{displayValue}</p>
       </div>
       <h3 className="mt-5 min-h-10 text-sm font-black uppercase leading-tight text-[#43becc]">{figure.label}:</h3>
       <p className="mt-2 max-w-[270px] text-sm leading-relaxed text-zinc-400">{figure.description}</p>

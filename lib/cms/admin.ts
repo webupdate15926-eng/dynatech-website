@@ -15,9 +15,9 @@ export async function verifyCmsAdmin(token: string | undefined) {
 
   const { data: admin } = await supabase
     .from("cms_admins")
-    .select("user_id")
+    .select("*")
     .eq("user_id", userData.user.id)
     .maybeSingle();
 
-  return admin ? userData.user : null;
+  return admin && admin.is_active !== false ? userData.user : null;
 }

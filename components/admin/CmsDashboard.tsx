@@ -2,7 +2,7 @@
 
 import { createBrowserClient } from "@supabase/ssr";
 import type { Session } from "@supabase/supabase-js";
-import { Check, ChevronLeft, ChevronRight, CircleAlert, CloudUpload, Copy, Eye, FileText, Images, Languages, LayoutDashboard, LoaderCircle, LogOut, Menu, Save, Settings, Type, X } from "lucide-react";
+import { Check, ChevronLeft, ChevronRight, CircleAlert, CloudUpload, Copy, Eye, FileText, Images, Languages, LayoutDashboard, LoaderCircle, LogOut, Menu, Save, Settings, Type, Users, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
@@ -11,6 +11,7 @@ import "./admin.css";
 import { ContentEditor } from "@/components/admin/ContentEditor";
 import { fieldLabel, groupSectionFields, type EditorPath } from "@/components/admin/editor-model";
 import { LoginForm } from "@/components/admin/LoginForm";
+import { UserManagement } from "@/components/admin/UserManagement";
 import type { Locale } from "@/i18n/config";
 import { isSafeSupabaseBrowserKey } from "@/lib/cms/browser-key";
 import { cmsPagePaths } from "@/lib/cms/config";
@@ -19,7 +20,7 @@ import type { CmsPageDefinition, JsonValue } from "@/lib/cms/types";
 
 type EditableDocument = { content: JsonValue; media: Record<string, JsonValue> };
 type DefaultResponse = { configured: boolean; pages: CmsPageDefinition[]; document: EditableDocument };
-type ViewMode = "content" | "media" | "library";
+type ViewMode = "content" | "media" | "library" | "users";
 type MediaRow = { id: string; public_id: string; resource_type: "image" | "video" | "raw"; secure_url: string; width: number | null; height: number | null; duration: number | null; created_at: string };
 
 const pageHints: Record<string, [string, string]> = {
@@ -51,6 +52,8 @@ export default function CmsDashboard({ locale }: { locale: Locale }) {
   const isAr = locale === "ar";
   const [session, setSession] = useState<Session | null>(null);
   const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
+  const [accountRole, setAccountRole] = useState<"owner" | "editor">("editor");
+  const [needsUserMigration, setNeedsUserMigration] = useState(false);
   const [pages, setPages] = useState<CmsPageDefinition[]>([]);
   const [pageKey, setPageKey] = useState("home");
   const [editingLocale, setEditingLocale] = useState<Locale>(locale);
@@ -81,7 +84,7 @@ export default function CmsDashboard({ locale }: { locale: Locale }) {
   const selectedSection = sections.find(([key]) => key === activeSection) ?? sections[0];
   const fieldGroups = selectedSection ? groupSectionFields(selectedSection[1], locale, pageKey, ["content", selectedSection[0]]) : [];
   const selectedFieldGroup = fieldGroups.find((group) => group.id === activeFieldGroup) ?? fieldGroups[0];
-  const ui = { content: isAr ? "النصوص" : "Text content", media: isAr ? "الصور والفيديو" : "Images & video", library: isAr ? "مكتبة الوسائط" : "Media library" };
+  const ui = { content: isAr ? "النصوص" : "Text content", media: isAr ? "الصور والفيديو" : "Images & video", library: isAr ? "مكتبة الوسائط" : "Media library", users: isAr ? "الحسابات" : "Accounts" };
 
   useEffect(() => {
     if (!supabase) { setConfigured(false); setLoading(false); return; }
@@ -94,10 +97,12 @@ export default function CmsDashboard({ locale }: { locale: Locale }) {
     if (!supabase || !session) { setIsAdmin(null); return; }
     let active = true;
     setConnectionError("");
-    supabase.from("cms_admins").select("user_id").eq("user_id", session.user.id).maybeSingle().then(({ data, error }) => {
+    supabase.from("cms_admins").select("*").eq("user_id", session.user.id).maybeSingle().then(({ data, error }) => {
       if (!active) return;
       if (error) setConnectionError(error.code === "PGRST205" ? "CMS tables are missing. Run the migration in Supabase SQL Editor." : error.message);
-      setIsAdmin(Boolean(data));
+      setIsAdmin(Boolean(data && data.is_active !== false));
+      if (data?.role === "owner") setAccountRole("owner");
+      setNeedsUserMigration(Boolean(data && !data.role));
     });
     return () => { active = false; };
   }, [session, supabase]);
@@ -209,15 +214,15 @@ export default function CmsDashboard({ locale }: { locale: Locale }) {
 
       <section className="min-w-0 px-4 py-6 md:px-7 md:py-8 xl:px-10"><div className="mx-auto max-w-6xl">
         <div className="mb-7 flex flex-wrap items-start justify-between gap-4 border-b border-white/10 pb-6"><div><div className="mb-2 flex items-center gap-2 text-xs font-bold text-[#43becc]"><LayoutDashboard size={15} />{isAr ? "تعديل صفحة" : "Editing page"}</div><h2 className="text-2xl font-black md:text-3xl">{isAr ? currentPage?.labelAr : currentPage?.label}</h2><p className="mt-2 text-sm text-white/48">{pageHints[pageKey]?.[isAr ? 1 : 0] ?? ""}</p></div><div className="flex items-center gap-2 rounded-md border border-white/10 bg-[#10151e] p-1"><Languages size={16} className="mx-2 text-white/45" />{(["en", "ar"] as Locale[]).map((item) => <button key={item} onClick={() => chooseLocale(item)} className={`h-9 rounded px-4 text-xs font-black ${editingLocale === item ? "bg-white text-black" : "text-white/50 hover:text-white"}`}>{item === "ar" ? "العربية" : "English"}</button>)}</div></div>
-        <div className="mb-6 flex gap-1 overflow-x-auto border-b border-white/10">{(["content", "media", "library"] as ViewMode[]).map((item) => <button key={item} onClick={() => setView(item)} className={`flex min-h-12 shrink-0 items-center gap-2 border-b-2 px-4 text-sm font-bold ${view === item ? "border-[#43becc] text-white" : "border-transparent text-white/45 hover:text-white"}`}>{item === "content" ? <Type size={17} /> : item === "media" ? <CloudUpload size={17} /> : <Images size={17} />}{ui[item]}{item === "library" && <span className="rounded-full bg-white/8 px-2 py-0.5 text-[10px]">{mediaLibrary.length}</span>}</button>)}</div>
+        <div className="mb-6 flex gap-1 overflow-x-auto border-b border-white/10">{(["content", "media", "library", "users"] as ViewMode[]).map((item) => <button key={item} onClick={() => { if (canLeave()) setView(item); }} className={`flex min-h-12 shrink-0 items-center gap-2 border-b-2 px-4 text-sm font-bold ${view === item ? "border-[#43becc] text-white" : "border-transparent text-white/45 hover:text-white"}`}>{item === "content" ? <Type size={17} /> : item === "media" ? <CloudUpload size={17} /> : item === "library" ? <Images size={17} /> : <Users size={17} />}{ui[item]}{item === "library" && <span className="rounded-full bg-white/8 px-2 py-0.5 text-[10px]">{mediaLibrary.length}</span>}</button>)}</div>
 
-        {loading || !document ? <div className="flex min-h-96 items-center justify-center"><LoaderCircle className="animate-spin text-[#43becc]" /></div> : <>
+        {view === "users" ? <UserManagement session={session} locale={locale} role={accountRole} needsMigration={needsUserMigration} /> : loading || !document ? <div className="flex min-h-96 items-center justify-center"><LoaderCircle className="animate-spin text-[#43becc]" /></div> : <>
           {view === "content" && <div className="grid gap-6 md:grid-cols-[220px_minmax(0,1fr)]"><div><p className="mb-3 text-xs font-bold text-white/40">{isAr ? "أقسام الصفحة" : "PAGE SECTIONS"}</p><div className="grid grid-cols-2 gap-2 md:grid-cols-1">{sections.map(([key]) => <button key={key} type="button" onClick={() => setActiveSection(key)} className={`min-h-11 rounded-md px-3 text-start text-sm font-bold ${selectedSection?.[0] === key ? "bg-white/10 text-[#43becc]" : "text-white/55 hover:bg-white/5 hover:text-white"}`}>{fieldLabel(["content", key], locale)}</button>)}</div></div><div className="min-w-0 rounded-md border border-white/10 bg-[var(--admin-panel)] p-5 md:p-7">{selectedSection ? <><div className="mb-5 border-b border-white/10 pb-4"><p className="text-xs font-bold text-[#43becc]">{isAr ? "محتوى القسم" : "SECTION CONTENT"}</p><h3 className="mt-1 text-xl font-black">{fieldLabel(["content", selectedSection[0]], locale)}</h3></div>{fieldGroups.length > 1 && <div className="mb-7"><p className="mb-3 text-xs font-bold text-white/40">{isAr ? "اختر الجزء الذي تريد تعديله" : "CHOOSE WHAT TO EDIT"}</p><div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-3">{fieldGroups.map((group) => <button key={group.id} type="button" onClick={() => setActiveFieldGroup(group.id)} className={`min-h-11 rounded-md border px-3 text-start text-sm font-bold transition ${selectedFieldGroup?.id === group.id ? "border-[#43becc] bg-[#43becc]/10 text-[#72dbe6]" : "border-white/10 bg-[#0c1017] text-white/58 hover:border-white/25 hover:text-white"}`}>{group.label}</button>)}</div></div>}{selectedFieldGroup && <div><h4 className="mb-5 text-base font-extrabold text-white/85">{selectedFieldGroup.label}</h4><ContentEditor {...editorProps} value={selectedFieldGroup.value} path={["content", selectedSection[0]]} /></div>}</> : <p className="text-sm text-white/45">{isAr ? "لا توجد أقسام قابلة للتعديل." : "No editable sections found."}</p>}</div></div>}
           {view === "media" && <div className="rounded-md border border-white/10 bg-[var(--admin-panel)] p-5 md:p-7"><div className="mb-6 border-b border-white/10 pb-4"><h3 className="text-xl font-black">{isAr ? "صور وفيديوهات الصفحة" : "Page images and videos"}</h3><p className="mt-2 text-sm leading-6 text-white/48">{isAr ? "اضغط رفع ملف جديد أو اختر ملفًا سبق رفعه من المكتبة." : "Upload a new file or choose an existing one from the media library."}</p></div><div className="space-y-8"><ContentEditor {...editorProps} value={document.media} path={["media"]} mediaOnly /><ContentEditor {...editorProps} value={document.content} path={["content"]} mediaOnly /></div></div>}
           {view === "library" && <div><div className="mb-5"><h3 className="text-xl font-black">{ui.library}</h3><p className="mt-1 text-sm text-white/45">{isAr ? "كل الملفات التي تم رفعها ويمكن إعادة استخدامها." : "All uploaded files, ready to reuse."}</p></div><div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">{mediaLibrary.map((asset) => <MediaCard key={asset.id} asset={asset} action={<button type="button" title={isAr ? "نسخ الرابط" : "Copy URL"} onClick={async () => { await navigator.clipboard.writeText(asset.secure_url); setNotice(isAr ? "تم نسخ رابط الملف" : "Media URL copied"); }} className="admin-icon"><Copy size={14} /></button>} />)}</div></div>}
         </>}
 
-        <div className="sticky bottom-3 z-30 mt-8 flex flex-wrap items-center justify-between gap-3 rounded-md border border-white/12 bg-[#111720]/95 p-3 shadow-2xl backdrop-blur-xl"><div className="min-w-0"><p className={`text-xs font-bold ${notice ? "text-[#62d6e2]" : dirty ? "text-amber-200" : "text-white/45"}`}>{notice || (dirty ? (isAr ? "احفظ التعديلات قبل مغادرة الصفحة" : "Save your changes before leaving") : (isAr ? "المحتوى محفوظ" : "Content is saved"))}</p><p className="mt-1 hidden text-[11px] text-white/30 md:block">{isAr ? "المسودة لا تظهر للزوار. النشر يجعل التعديلات ظاهرة على الموقع." : "A draft stays private. Publish makes the changes visible on the website."}</p></div><div className="flex gap-2"><button disabled={saving || !document || !dirty} onClick={saveDraft} className="admin-button">{saving ? <LoaderCircle size={15} className="animate-spin" /> : <Save size={15} />}{isAr ? "حفظ كمسودة" : "Save draft"}</button><button disabled={saving || !document} onClick={publish} className="admin-button border-[#118fc3] bg-[#118fc3] text-white hover:bg-[#17a8e2]"><Check size={16} />{isAr ? "نشر على الموقع" : "Publish website"}</button></div></div>
+        {view !== "users" && <div className="sticky bottom-3 z-30 mt-8 flex flex-wrap items-center justify-between gap-3 rounded-md border border-white/12 bg-[#111720]/95 p-3 shadow-2xl backdrop-blur-xl"><div className="min-w-0"><p className={`text-xs font-bold ${notice ? "text-[#62d6e2]" : dirty ? "text-amber-200" : "text-white/45"}`}>{notice || (dirty ? (isAr ? "احفظ التعديلات قبل مغادرة الصفحة" : "Save your changes before leaving") : (isAr ? "المحتوى محفوظ" : "Content is saved"))}</p><p className="mt-1 hidden text-[11px] text-white/30 md:block">{isAr ? "المسودة لا تظهر للزوار. النشر يجعل التعديلات ظاهرة على الموقع." : "A draft stays private. Publish makes the changes visible on the website."}</p></div><div className="flex gap-2"><button disabled={saving || !document || !dirty} onClick={saveDraft} className="admin-button">{saving ? <LoaderCircle size={15} className="animate-spin" /> : <Save size={15} />}{isAr ? "حفظ كمسودة" : "Save draft"}</button><button disabled={saving || !document} onClick={publish} className="admin-button border-[#118fc3] bg-[#118fc3] text-white hover:bg-[#17a8e2]"><Check size={16} />{isAr ? "نشر على الموقع" : "Publish website"}</button></div></div>}
       </div></section>
     </div>
 

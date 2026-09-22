@@ -25,7 +25,7 @@ const cairo = Cairo({
 export async function generateMetadata({
   params,
 }: {
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const resolvedParams = await params;
   const locale = resolvedParams.locale as Locale;
@@ -53,7 +53,7 @@ export default async function LocaleLayout({
   params,
 }: Readonly<{
   children: React.ReactNode;
-  params: { locale: string } | Promise<{ locale: string }>;
+  params: Promise<{ locale: string }>;
 }>) {
   const resolvedParams = await Promise.resolve(params);
   const rawLocale = resolvedParams?.locale;
