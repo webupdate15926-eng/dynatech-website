@@ -23,7 +23,7 @@ export function AdminChrome({
   globalMedia: CmsMediaMap;
 }) {
   const pathname = usePathname();
-  const isAdmin = pathname.startsWith(`/${locale}/admin`);
+  const isAdmin = pathname.startsWith(`/${locale}/admin`) || pathname.startsWith(`/${locale}/super-admin`) || pathname.startsWith(`/${locale}/maintenance`);
 
   if (isAdmin) return <>{children}</>;
 

@@ -7,7 +7,25 @@ function getPreferredLocale(): Locale {
   return defaultLocale;
 }
 
-export function proxy(request: NextRequest) {
+async function isMaintenanceEnabled() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
+  if (!url || !key) return false;
+
+  try {
+    const response = await fetch(`${url}/rest/v1/cms_pages?page_key=eq.site-control&locale=eq.en&select=document`, {
+      headers: { apikey: key, Authorization: `Bearer ${key}` },
+      cache: "no-store",
+    });
+    if (!response.ok) return false;
+    const rows = await response.json() as { document?: { maintenance?: { enabled?: boolean } } }[];
+    return rows[0]?.document?.maintenance?.enabled === true;
+  } catch {
+    return false;
+  }
+}
+
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   if (
@@ -24,6 +42,13 @@ export function proxy(request: NextRequest) {
   const hasLocale = locales.includes(first as Locale);
 
   if (hasLocale) {
+    const protectedArea = ["admin", "super-admin", "maintenance"].includes(segments[1] ?? "");
+    if (!protectedArea && await isMaintenanceEnabled()) {
+      const maintenanceUrl = request.nextUrl.clone();
+      maintenanceUrl.pathname = `/${first}/maintenance`;
+      return NextResponse.rewrite(maintenanceUrl);
+    }
+
     const requestHeaders = new Headers(request.headers);
     requestHeaders.set("x-locale", first);
 
