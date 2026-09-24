@@ -39,7 +39,13 @@ export async function generateMetadata({
       ? "دايناتك - شريكك الاستراتيجي في توطين التكنولوجيا والصناعات المتقدمة في مصر والشرق الأوسط."
       : "DYNATECH - Your strategic partner in technology localization and advanced industries in Egypt and the Middle East.",
     icons: {
-      icon: "/favicon.ico",
+      icon: [
+        { url: "/favicon.ico?v=2", type: "image/x-icon" },
+        { url: "/icon.svg?v=2", type: "image/svg+xml" },
+        { url: "/icon.png?v=2", type: "image/png", sizes: "512x512" },
+      ],
+      shortcut: "/favicon.ico?v=2",
+      apple: [{ url: "/apple-icon.png?v=2", sizes: "180x180", type: "image/png" }],
     },
   };
 }
