@@ -73,7 +73,7 @@ export function ContactForm({ locale, title, categories, submitLabel, fields }: 
 
       <textarea name="message" required minLength={10} maxLength={5000} placeholder={fields.message} rows={7} className="min-h-40 resize-y border border-white/10 bg-[#0a0f29] px-4 py-3 text-sm font-semibold text-white outline-none transition placeholder:text-white focus:border-[#008ED3]" />
 
-      <button type="submit" disabled={status === "sending"} className="mt-2 inline-flex min-h-12 items-center justify-center gap-2 bg-[#008ED3] px-7 text-xs font-black uppercase text-black transition hover:bg-white disabled:cursor-wait disabled:opacity-60">
+      <button type="submit" disabled={status === "sending"} className="mt-2 inline-flex min-h-12 items-center justify-center gap-2 bg-[#008ED3] px-7 text-xs font-black uppercase text-white transition hover:brightness-110 disabled:cursor-wait disabled:opacity-60">
         {status === "sending" ? <LoaderCircle size={17} className="animate-spin" /> : <Send size={17} />}
         {status === "sending" ? (isAr ? "جارٍ الإرسال..." : "Sending...") : submitLabel}
       </button>

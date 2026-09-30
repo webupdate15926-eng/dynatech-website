@@ -61,7 +61,7 @@ export default function FounderLayer({
               href={data.linkedinUrl}
               target="_blank"
               rel="noreferrer"
-              className={`inline-flex items-center gap-2 border border-[#008ED3]/40 bg-[#008ED3]/10 px-4 py-2 text-xs font-black uppercase tracking-[0.18em] text-[#008ED3] transition hover:border-[#008ED3] hover:bg-[#008ED3] hover:text-white ${isAr ? 'md:flex-row-reverse' : ''}`}
+              className={`inline-flex items-center gap-2 border border-[#008ED3] bg-[#008ED3] px-4 py-2 text-xs font-black uppercase tracking-[0.18em] text-white transition hover:brightness-110 ${isAr ? 'md:flex-row-reverse' : ''}`}
             >
               <Linkedin size={16} strokeWidth={2.4} />
               <span>{/^(learn more|اعرف المزيد)$/i.test(data.linkedinLabel?.trim() ?? '') ? 'LinkedIn' : data.linkedinLabel || 'LinkedIn'}</span>

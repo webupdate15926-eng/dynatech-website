@@ -47,7 +47,7 @@ function AnimatedFigure({ figure, index }: { figure: ProjectFigure; index: numbe
       className="group flex min-w-0 flex-col items-center text-center"
     >
       <div className="relative flex h-40 w-40 shrink-0 items-center justify-center rounded-full border border-[#008ED3]/40 bg-[#080d20] shadow-[0_0_42px_rgba(0,142,211,0.13)] md:h-44 md:w-44">
-        <div className="absolute inset-0 rounded-full bg-[conic-gradient(from_155deg,#008ED3,#008ED344,#8e257a,#008ED3)] opacity-80 transition duration-700 group-hover:rotate-90" />
+        <div className="absolute inset-0 rounded-full bg-[conic-gradient(from_155deg,#008ED3,#008ED344,#008ED3,#008ED3)] opacity-80 transition duration-700 group-hover:rotate-90" />
         <div className="absolute inset-[3px] rounded-full bg-[#111936]" />
         <div className="absolute inset-5 rounded-full border border-dashed border-white/15" />
         <p className="relative z-10 max-w-[138px] text-center text-[clamp(1.15rem,2vw,1.8rem)] font-black leading-tight text-white">{displayValue}</p>
@@ -196,12 +196,12 @@ export default function AutoHubPage({ content, locale, media }: Props) {
                   {member.image && <Image src={member.image} alt={member.name} fill sizes="(min-width:1280px) 25vw, (min-width:640px) 50vw, 100vw" className="object-cover transition duration-700 group-hover:scale-[1.035]" style={{ objectPosition: member.imagePosition }} />}
                   <div className="absolute inset-0 bg-gradient-to-t from-[#080d20] via-[#080d20]/10 to-transparent" />
                   <div className={`absolute inset-0 flex flex-col justify-end overflow-y-auto bg-[#080d20]/96 p-4 transition duration-500 md:p-5 ${activeTeamIndex === index ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100"}`}>
-                    <span className="w-fit bg-[#008ED3] px-2.5 py-1.5 text-[9px] font-black uppercase text-black">{member.category}</span>
+                    <span className="w-fit bg-[#008ED3] px-2.5 py-1.5 text-[9px] font-black uppercase text-white">{member.category}</span>
                     <h3 className="mt-3 text-lg font-black leading-tight text-white md:text-xl">{member.name}</h3>
                     <p className="mt-4 text-[11px] leading-[1.65] text-white md:text-xs">{member.biography}</p>
                   </div>
                   <div className={`absolute inset-x-0 bottom-0 p-5 transition duration-300 ${activeTeamIndex === index ? "pointer-events-none opacity-0" : "opacity-100 group-hover:opacity-0 group-focus-visible:opacity-0"}`}>
-                    <span className="inline-block bg-[#008ED3] px-2.5 py-1.5 text-[9px] font-black uppercase text-black">{member.category}</span>
+                    <span className="inline-block bg-[#008ED3] px-2.5 py-1.5 text-[9px] font-black uppercase text-white">{member.category}</span>
                     <h3 className="mt-3 text-xl font-black leading-tight text-white md:text-2xl">{member.name}</h3>
                   </div>
                 </button>
@@ -255,9 +255,9 @@ export default function AutoHubPage({ content, locale, media }: Props) {
 
       {activeGalleryIndex !== null ? (
         <div className="fixed inset-0 z-[310] flex items-center justify-center bg-black/92 px-4 py-5 backdrop-blur-md md:px-8" role="dialog" aria-modal="true" aria-label={isAr ? "صورة المشروع" : "Project image"}>
-          <button type="button" onClick={() => setActiveGalleryIndex(null)} className="absolute right-4 top-4 z-20 flex h-11 w-11 items-center justify-center bg-white text-black transition hover:bg-[#008ED3] md:right-7 md:top-7" aria-label={isAr ? "إغلاق" : "Close"}><X size={20} /></button>
-          <button type="button" onClick={() => setActiveGalleryIndex((current) => current === null ? current : (current - 1 + autoHubGallery.length) % autoHubGallery.length)} className="absolute left-4 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center border border-white/15 bg-black/55 text-white transition hover:bg-white hover:text-black md:left-7" aria-label={isAr ? "السابق" : "Previous"}><ChevronLeft size={22} /></button>
-          <button type="button" onClick={() => setActiveGalleryIndex((current) => current === null ? current : (current + 1) % autoHubGallery.length)} className="absolute right-4 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center border border-white/15 bg-black/55 text-white transition hover:bg-white hover:text-black md:right-7" aria-label={isAr ? "التالي" : "Next"}><ChevronRight size={22} /></button>
+          <button type="button" onClick={() => setActiveGalleryIndex(null)} className="absolute right-4 top-4 z-20 flex h-11 w-11 items-center justify-center bg-[#008ED3] text-white transition hover:brightness-110 md:right-7 md:top-7" aria-label={isAr ? "إغلاق" : "Close"}><X size={20} /></button>
+          <button type="button" onClick={() => setActiveGalleryIndex((current) => current === null ? current : (current - 1 + autoHubGallery.length) % autoHubGallery.length)} className="absolute left-4 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center border border-white/15 bg-[#008ED3] text-white transition hover:brightness-110 md:left-7" aria-label={isAr ? "السابق" : "Previous"}><ChevronLeft size={22} /></button>
+          <button type="button" onClick={() => setActiveGalleryIndex((current) => current === null ? current : (current + 1) % autoHubGallery.length)} className="absolute right-4 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center border border-white/15 bg-[#008ED3] text-white transition hover:brightness-110 md:right-7" aria-label={isAr ? "التالي" : "Next"}><ChevronRight size={22} /></button>
           <div className="relative h-full max-h-[86vh] w-full max-w-6xl overflow-hidden border border-white/10 bg-[#080d20]">
             <Image src={autoHubGallery[activeGalleryIndex]} alt="" fill sizes="100vw" className="object-contain" priority />
           </div>

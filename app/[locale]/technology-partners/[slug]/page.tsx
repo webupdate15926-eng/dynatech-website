@@ -35,7 +35,7 @@ export default async function Page({ params }: { params: Promise<{ locale: Local
           <h1 className="text-4xl font-black uppercase leading-tight md:text-6xl">{partner.name}</h1>
           <h2 className="mt-7 text-2xl font-bold text-[#008ED3]">{partner.heading}</h2>
           <div className="mt-8 space-y-5 text-lg leading-relaxed text-white">{partner.paragraphs.map((paragraph, index) => <p key={index}>{paragraph}</p>)}</div>
-          {partner.ctaHref && <a href={partner.ctaHref} target="_blank" rel="noopener noreferrer" className="mt-10 inline-flex items-center gap-3 bg-[#008ED3] px-6 py-4 text-sm font-black text-black hover:bg-white">{partner.ctaLabel}<ArrowUpRight size={18} /></a>}
+          {partner.ctaHref && <a href={partner.ctaHref} target="_blank" rel="noopener noreferrer" className="mt-10 inline-flex items-center gap-3 bg-[#008ED3] px-6 py-4 text-sm font-black text-white transition hover:brightness-110">{partner.ctaLabel}<ArrowUpRight size={18} /></a>}
         </div>
         {partner.image && <div className="relative aspect-[4/3] w-full bg-[#111936]"><Image src={partner.image} alt={partner.name} fill sizes="(min-width: 1024px) 40vw, 100vw" className="object-contain" /></div>}
       </div>

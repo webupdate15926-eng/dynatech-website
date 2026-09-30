@@ -204,7 +204,7 @@ export default function TechnologyPartnersPage({ content, locale, media }: Props
                         <span className="text-[11px] font-black uppercase tracking-[0.28em] text-white">
                           {partner.ctaLabel}
                         </span>
-                        <span className="flex h-11 w-11 items-center justify-center bg-[#008ED3] text-black transition duration-300 group-hover:bg-white">
+                        <span className="flex h-11 w-11 items-center justify-center bg-[#008ED3] text-white transition duration-300 group-hover:brightness-110">
                           <ArrowUpRight size={18} />
                         </span>
                       </div>

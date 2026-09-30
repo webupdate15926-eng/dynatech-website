@@ -88,7 +88,7 @@ export function Header({ locale, content, media }: HeaderProps) {
                   href={href}
                   className={`rounded-full px-5 py-2 text-[10px] font-black uppercase tracking-widest transition-all duration-300 ${
                     isActive
-                      ? "bg-[#008ED3] text-black shadow-[0_0_15px_rgba(0,142,211,0.5)]"
+                      ? "bg-[#008ED3] text-white shadow-[0_0_15px_rgba(0,142,211,0.5)]"
                       : "text-white hover:bg-white/5 hover:text-white"
                   }`}
                 >
@@ -103,7 +103,7 @@ export function Header({ locale, content, media }: HeaderProps) {
 
             <Link
               href={localizedPath(locale, siteRoutes.contact)}
-              className="group hidden items-center gap-2 rounded-full bg-white px-6 py-2.5 text-[10px] font-black uppercase tracking-widest text-black transition-all hover:bg-[#008ED3] hover:text-white md:flex"
+              className="group hidden items-center gap-2 rounded-full bg-[#008ED3] px-6 py-2.5 text-[10px] font-black uppercase tracking-widest text-white transition-all hover:brightness-110 md:flex"
             >
               <span>{contactLabel}</span>
               <ArrowRight size={14} />
@@ -183,7 +183,7 @@ export function Header({ locale, content, media }: HeaderProps) {
           <Link
             href={localizedPath(locale, siteRoutes.contact)}
             onClick={() => setIsMenuOpen(false)}
-            className="flex w-full items-center justify-center rounded-md bg-[#008ED3] py-4 text-xs font-black uppercase tracking-widest text-black"
+            className="flex w-full items-center justify-center rounded-md bg-[#008ED3] py-4 text-xs font-black uppercase tracking-widest text-white"
           >
             {contactLabel}
           </Link>

@@ -58,10 +58,6 @@ export default async function Page({
         <div className="absolute inset-0 bg-[#080d20]/12" />
         <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(8,13,32,0.58)_0%,rgba(8,13,32,0.12)_58%,rgba(8,13,32,0.02)_100%)]" />
         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#008ED3] to-transparent" />
-        <div className="pointer-events-none absolute -right-8 top-10 text-[15vw] font-black uppercase leading-none tracking-tight text-white/[0.025]">
-          {isAr ? "تواصل" : "Contact"}
-        </div>
-
         <div className="relative mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
           <div>
             <SectionKicker tone="cyan" className="mb-5">

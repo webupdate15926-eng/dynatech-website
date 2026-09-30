@@ -303,7 +303,7 @@ export function HeroSection({
           <button
             type="button"
             onClick={() => setActiveVideo(null)}
-            className="absolute right-4 top-4 flex h-11 w-11 cursor-pointer items-center justify-center border border-white/20 bg-white text-black transition hover:bg-[#008ED3] md:right-7 md:top-7"
+            className="absolute right-4 top-4 flex h-11 w-11 cursor-pointer items-center justify-center border border-white/20 bg-[#008ED3] text-white transition hover:brightness-110 md:right-7 md:top-7"
             aria-label={isAr ? "إغلاق فيديو الشريك" : "Close partner video"}
           >
             <X size={20} />

@@ -160,7 +160,7 @@ function MobileIntro({
           href={content.founder.linkedinUrl}
           target="_blank"
           rel="noreferrer"
-          className="mt-7 inline-flex items-center gap-2 border border-[#008ED3]/40 bg-[#008ED3]/10 px-4 py-3 text-xs font-black uppercase tracking-[0.16em] text-[#008ED3]"
+          className="mt-7 inline-flex items-center gap-2 border border-[#008ED3] bg-[#008ED3] px-4 py-3 text-xs font-black uppercase tracking-[0.16em] text-white transition hover:brightness-110"
         >
           <Linkedin size={16} strokeWidth={2.4} />
           <span>{/^(learn more|اعرف المزيد)$/i.test(content.founder.linkedinLabel.trim()) ? 'LinkedIn' : content.founder.linkedinLabel}</span>

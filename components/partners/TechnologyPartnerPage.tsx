@@ -148,7 +148,7 @@ export default function TechnologyPartnerPage({ partner, ecosystemColumn, locale
               href={hero.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-5 inline-flex items-center gap-3 px-6 py-4 text-xs font-black uppercase tracking-widest text-black transition hover:bg-white"
+              className="mt-5 inline-flex items-center gap-3 px-6 py-4 text-xs font-black uppercase tracking-widest text-white transition hover:brightness-110"
               style={{ backgroundColor: accent }}
             >
               {hero.ctaLabel}
@@ -228,7 +228,7 @@ export default function TechnologyPartnerPage({ partner, ecosystemColumn, locale
             href={hero.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-3 bg-white px-5 py-3 text-xs font-black uppercase tracking-widest text-black transition hover:bg-[#008ED3]"
+            className="inline-flex items-center gap-3 bg-[#008ED3] px-5 py-3 text-xs font-black uppercase tracking-widest text-white transition hover:brightness-110"
           >
             {mediaCopy.ctaLabel}
             <ArrowUpRight size={16} />
@@ -270,7 +270,7 @@ export default function TechnologyPartnerPage({ partner, ecosystemColumn, locale
                 <>
                   <div className="absolute inset-0 opacity-[0.08] [background-image:linear-gradient(#fff_1px,transparent_1px),linear-gradient(90deg,#fff_1px,transparent_1px)] [background-size:38px_38px]" />
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <ImageIcon size={34} className="text-white/30 transition group-hover:text-white" />
+                    <ImageIcon size={34} className="text-white" />
                   </div>
                 </>
               )}
@@ -279,7 +279,7 @@ export default function TechnologyPartnerPage({ partner, ecosystemColumn, locale
                 {item.type === "video" ? mediaCopy.videoBadge : mediaCopy.imageBadge}
               </div>
               {item.featured && (
-                <div className="pointer-events-none absolute left-5 top-5 border border-white/20 bg-[#008ED3] px-3 py-2 text-[10px] font-black uppercase tracking-[0.22em] text-black shadow-[0_10px_30px_rgba(0,0,0,0.3)]">
+                <div className="pointer-events-none absolute left-5 top-5 border border-white/20 bg-[#008ED3] px-3 py-2 text-[10px] font-black uppercase tracking-[0.22em] text-white shadow-[0_10px_30px_rgba(0,0,0,0.3)]">
                   {mediaCopy.featuredLabel}
                 </div>
               )}
