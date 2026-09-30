@@ -72,7 +72,7 @@ export function Header({ locale, content, media }: HeaderProps) {
                 fill
                 sizes="(min-width: 768px) 150px, (min-width: 640px) 138px, 118px"
                 priority
-                className="h-full w-full object-contain object-left transition-opacity duration-300 group-hover:opacity-80"
+                className={`h-full w-full object-contain transition-opacity duration-300 group-hover:opacity-80 ${isAr ? "object-right" : "object-left"}`}
               />
             </div>
           </Link>
@@ -106,7 +106,7 @@ export function Header({ locale, content, media }: HeaderProps) {
               className="group hidden items-center gap-2 rounded-full bg-[#008ED3] px-6 py-2.5 text-[10px] font-black uppercase tracking-widest text-white transition-all hover:brightness-110 md:flex"
             >
               <span>{contactLabel}</span>
-              <ArrowRight size={14} />
+              <ArrowRight size={14} className={isAr ? "rotate-180" : ""} />
             </Link>
 
             <button
@@ -170,7 +170,7 @@ export function Header({ locale, content, media }: HeaderProps) {
                 href={href}
                 onClick={() => setIsMenuOpen(false)}
                 className={`block text-xl font-black uppercase tracking-tight transition-all sm:text-2xl ${
-                  isActive ? "translate-x-2 text-[#008ED3]" : "text-white hover:text-white"
+                  isActive ? `${isAr ? "-translate-x-2" : "translate-x-2"} text-[#008ED3]` : "text-white hover:text-white"
                 }`}
               >
                 {item.label}

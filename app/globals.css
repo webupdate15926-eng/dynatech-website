@@ -136,6 +136,26 @@
   html[dir="rtl"] body * {
     letter-spacing: 0 !important;
   }
+
+  html[dir="rtl"] .site-shell :is(h1, h2, h3, h4) {
+    font-style: normal !important;
+    line-height: 1.35 !important;
+    overflow-wrap: anywhere;
+    text-wrap: balance;
+    white-space: normal !important;
+  }
+
+  html[dir="rtl"] .site-shell :is(p, li) {
+    overflow-wrap: anywhere;
+  }
+
+  html[dir="rtl"] .site-shell p {
+    word-break: normal;
+  }
+
+  html[dir="rtl"] .site-shell [dir="ltr"] {
+    font-family: var(--font-montserrat), sans-serif;
+  }
 }
 
 .ambient-motion {

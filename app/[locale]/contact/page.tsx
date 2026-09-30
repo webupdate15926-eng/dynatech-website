@@ -93,7 +93,8 @@ export default async function Page({
             </SectionKicker>
             <a
               href={`mailto:${contactDetails.email}`}
-              className="mt-3 block text-2xl font-black tracking-tight text-white transition hover:text-[#008ED3]"
+              dir="ltr"
+              className="mt-3 block text-left text-2xl font-black tracking-tight text-white transition hover:text-[#008ED3]"
             >
               {contactDetails.email}
             </a>

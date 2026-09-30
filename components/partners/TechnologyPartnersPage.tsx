@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
+import { ExpandableCollection } from "@/components/ExpandableCollection";
 import type { CmsMediaMap } from "@/lib/cms/types";
 import type { TechnologyPartnersContent } from "@/content/schema/site";
 
@@ -82,7 +83,7 @@ export default function TechnologyPartnersPage({ content, locale, media }: Props
             variants={reveal}
             transition={revealTransition}
             dir={isAr ? "rtl" : "ltr"}
-            className="self-center md:pr-4"
+            className={`self-center ${isAr ? "md:pl-4" : "md:pr-4"}`}
           >
             {content.hero.kicker ? <SectionKicker>{content.hero.kicker}</SectionKicker> : null}
             <h1 className="text-[2.45rem] font-black uppercase leading-[1.04] tracking-normal sm:text-5xl md:text-[clamp(2rem,3.2vw,3.5rem)]">
@@ -149,7 +150,7 @@ export default function TechnologyPartnersPage({ content, locale, media }: Props
       <section className="relative border-t border-white/10 bg-[#080d20] px-5 py-16 sm:px-6 md:px-12 md:py-20 lg:px-20">
         <div className="absolute inset-0 opacity-[0.04] [background-image:linear-gradient(#fff_1px,transparent_1px),linear-gradient(90deg,#fff_1px,transparent_1px)] [background-size:56px_56px]" />
         <div className="relative mx-auto max-w-7xl">
-          <div className="grid gap-5 lg:grid-cols-2">
+          <ExpandableCollection className="grid gap-5 lg:grid-cols-2" locale={locale}>
             {content.technologyPartners.partners.map((partner, index) => {
               const logoId = partner.id;
               const href = partner.href || (logoId === "cu" ? `/${locale}/technology-partners/composites-united` : `/${locale}/technology-partners/${logoId}`);
@@ -200,7 +201,7 @@ export default function TechnologyPartnersPage({ content, locale, media }: Props
                       <p className="mt-7 self-start text-xl font-black leading-snug text-white sm:mt-0 sm:self-center">
                         {partner.heading}
                       </p>
-                      <p className="line-clamp-4 self-start pt-4 text-sm leading-relaxed text-white md:text-base">
+                      <p className="self-start pt-4 text-sm leading-relaxed text-white md:text-base">
                         {partner.paragraphs.join(" ")}
                       </p>
 
@@ -209,7 +210,7 @@ export default function TechnologyPartnersPage({ content, locale, media }: Props
                           {partner.ctaLabel}
                         </span>
                         <span className="flex h-11 w-11 items-center justify-center bg-[#008ED3] text-white transition duration-300 group-hover:brightness-110">
-                          <ArrowUpRight size={18} />
+                          <ArrowUpRight size={18} className={isAr ? "-rotate-90" : ""} />
                         </span>
                       </div>
                     </div>
@@ -217,7 +218,7 @@ export default function TechnologyPartnersPage({ content, locale, media }: Props
                 </motion.div>
               );
             })}
-          </div>
+          </ExpandableCollection>
         </div>
       </section>
     </main>

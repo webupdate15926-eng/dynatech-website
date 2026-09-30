@@ -6,6 +6,7 @@ import { ChevronLeft, ChevronRight, Maximize2, X } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { AutoHubContent, ProjectFigure } from "@/content/schema/site";
 import type { CmsMediaMap } from "@/lib/cms/types";
+import { ExpandableCollection } from "@/components/ExpandableCollection";
 
 type Props = { content: AutoHubContent; locale: string; media: CmsMediaMap };
 
@@ -184,7 +185,7 @@ export default function AutoHubPage({ content, locale, media }: Props) {
             <h2 className="text-3xl font-black uppercase leading-tight tracking-normal md:text-4xl lg:text-5xl">{teamTitle}</h2>
             <span className="mx-auto mt-5 block h-px w-16 bg-[#008ED3]" />
           </div>
-          <div className="mt-12 grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+          <ExpandableCollection className="mt-12 grid gap-5 sm:grid-cols-2 xl:grid-cols-4" locale={locale}>
             {team.map((member, index) => (
               <motion.article key={member.name} {...reveal} viewport={{ once: true, amount: 0.15 }} transition={{ duration: 0.55, delay: index * 0.06 }} className="min-w-0">
                 <button
@@ -207,7 +208,7 @@ export default function AutoHubPage({ content, locale, media }: Props) {
                 </button>
               </motion.article>
             ))}
-          </div>
+          </ExpandableCollection>
         </div>
       </section>
 
@@ -218,9 +219,9 @@ export default function AutoHubPage({ content, locale, media }: Props) {
             <h2 className="text-3xl font-black uppercase leading-tight tracking-normal md:text-4xl lg:text-5xl">{figuresTitle}</h2>
             <span className="mx-auto mt-5 block h-px w-16 bg-[#008ED3]" />
           </div>
-          <div className="mt-12 grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
+          <ExpandableCollection className="mt-12 grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-4" locale={locale}>
             {figures.map((figure, index) => <AnimatedFigure key={figure.label} figure={figure} index={index} />)}
-          </div>
+          </ExpandableCollection>
         </div>
       </section>
 
@@ -231,7 +232,7 @@ export default function AutoHubPage({ content, locale, media }: Props) {
             <h2 className="text-3xl font-black uppercase leading-tight tracking-normal md:text-4xl lg:text-5xl">{galleryTitle}</h2>
             <span className="mt-5 block h-px w-16 bg-[#008ED3]" />
           </div>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <ExpandableCollection className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3" locale={locale}>
             {autoHubGallery.map((src, index) => (
             <motion.button
               key={src}
@@ -249,7 +250,7 @@ export default function AutoHubPage({ content, locale, media }: Props) {
               </span>
             </motion.button>
             ))}
-          </div>
+          </ExpandableCollection>
         </div>
       </section>
 

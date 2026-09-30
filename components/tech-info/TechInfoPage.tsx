@@ -5,6 +5,7 @@ import { ExternalLink, FileText, Play } from "lucide-react";
 import Image from "next/image";
 import type { TechInfoContent } from "@/content/schema/site";
 import type { CmsMediaMap } from "@/lib/cms/types";
+import { ExpandableCollection } from "@/components/ExpandableCollection";
 
 type Props = {
   content: TechInfoContent;
@@ -109,7 +110,7 @@ export default function TechInfoPage({ content, locale, media }: Props) {
             </h2>
           </div>
 
-          <div className="grid gap-5 lg:grid-cols-2">
+          <ExpandableCollection className="grid gap-5 lg:grid-cols-2" locale={locale}>
             {managedItems.map((item, index) => {
               const source = item.src!;
               const pdf = isPdfUrl(source);
@@ -185,7 +186,7 @@ export default function TechInfoPage({ content, locale, media }: Props) {
               </motion.article>
               );
             })}
-          </div>
+          </ExpandableCollection>
         </div>
       </section>
 

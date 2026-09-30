@@ -6,6 +6,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { ArrowLeft, ArrowUpRight, CheckCircle2, Image as ImageIcon } from "lucide-react";
 import type { EcosystemColumn, Partner, PartnerPageCopy } from "@/content/schema/site";
 import type { CmsMediaMap } from "@/lib/cms/types";
+import { ExpandableCollection } from "@/components/ExpandableCollection";
 
 type Props = {
   partner: Partner;
@@ -235,7 +236,7 @@ export default function TechnologyPartnerPage({ partner, ecosystemColumn, locale
           </a>
         </motion.div>
 
-        <div className="grid gap-5 lg:grid-cols-2">
+        <ExpandableCollection className="grid gap-5 lg:grid-cols-2" locale={locale}>
           {managedGallery.map((item, index) => (
             <motion.div
               key={`${item.label}-${index}`}
@@ -295,7 +296,7 @@ export default function TechnologyPartnerPage({ partner, ecosystemColumn, locale
               </div>
             </motion.div>
           ))}
-        </div>
+        </ExpandableCollection>
       </section>
     </main>
   );
