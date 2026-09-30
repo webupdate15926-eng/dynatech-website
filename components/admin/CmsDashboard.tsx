@@ -2,7 +2,7 @@
 
 import { createBrowserClient } from "@supabase/ssr";
 import type { Session } from "@supabase/supabase-js";
-import { Check, ChevronLeft, ChevronRight, CircleAlert, CloudUpload, Copy, Eye, FileText, Images, Languages, LayoutDashboard, LoaderCircle, LogOut, Menu, Save, Settings, Type, Users, X } from "lucide-react";
+import { Check, ChevronLeft, ChevronRight, CircleAlert, CloudUpload, Copy, Eye, FileText, Images, Languages, LayoutDashboard, ListPlus, LoaderCircle, LogOut, Menu, Save, Settings, Type, UserCog, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
@@ -21,8 +21,51 @@ import type { CmsMediaMap, CmsPageDefinition, JsonValue } from "@/lib/cms/types"
 
 type EditableDocument = { content: JsonValue; media: CmsMediaMap };
 type DefaultResponse = { configured: boolean; pages: CmsPageDefinition[]; document: EditableDocument };
-type ViewMode = "content" | "media" | "library" | "users";
+type ViewMode = "content" | "collections" | "media" | "library" | "users";
 type MediaRow = { id: string; public_id: string; resource_type: "image" | "video" | "raw"; secure_url: string; width: number | null; height: number | null; duration: number | null; created_at: string };
+type CollectionDefinition = { id: string; label: string; labelAr: string; path: EditorPath; hint: string; hintAr: string };
+
+const pageCollections: Record<string, CollectionDefinition[]> = {
+  "about-us": [
+    { id: "timeline", label: "Timeline entries", labelAr: "أحداث الخط الزمني", path: ["content", "timeline"], hint: "Add, remove or reorder company milestones.", hintAr: "إضافة أو حذف أو ترتيب أحداث الشركة." },
+    { id: "locations", label: "Locations", labelAr: "المواقع", path: ["content", "locations"], hint: "Manage the locations shown on the page.", hintAr: "إدارة المواقع الظاهرة في الصفحة." },
+  ],
+  "technology-partners": [
+    { id: "partners", label: "Technology partners", labelAr: "شركاء التكنولوجيا", path: ["content", "technologyPartners", "partners"], hint: "Add a new partner card or update the existing partners.", hintAr: "إضافة شريك جديد أو تعديل الشركاء الحاليين." },
+  ],
+  "partner-fft": [
+    { id: "videos", label: "Video library", labelAr: "مكتبة الفيديوهات", path: ["content", "videoSection", "items"], hint: "Add, remove and reorder FFT videos.", hintAr: "إضافة وحذف وترتيب فيديوهات FFT." },
+    { id: "gallery", label: "Gallery items", labelAr: "عناصر المعرض", path: ["content", "copy", "gallery"], hint: "Manage gallery titles and media items.", hintAr: "إدارة عناوين وملفات المعرض." },
+  ],
+  "partner-cu": [
+    { id: "videos", label: "Video library", labelAr: "مكتبة الفيديوهات", path: ["content", "videoSection", "items"], hint: "Add, remove and reorder CU videos.", hintAr: "إضافة وحذف وترتيب فيديوهات CU." },
+    { id: "gallery", label: "Gallery items", labelAr: "عناصر المعرض", path: ["content", "copy", "gallery"], hint: "Manage gallery titles and media items.", hintAr: "إدارة عناوين وملفات المعرض." },
+  ],
+  "the-auto-hub": [
+    { id: "team", label: "Project team", labelAr: "فريق المشروع", path: ["content", "team"], hint: "Add, remove or reorder team members.", hintAr: "إضافة أو حذف أو ترتيب أعضاء الفريق." },
+    { id: "figures", label: "Key project figures", labelAr: "أرقام المشروع", path: ["content", "figures"], hint: "Manage the project figures and their descriptions.", hintAr: "إدارة أرقام المشروع ووصف كل رقم." },
+    { id: "gallery", label: "Project gallery", labelAr: "معرض المشروع", path: ["media", "gallery"], hint: "Add, replace, remove or reorder gallery images.", hintAr: "إضافة أو استبدال أو حذف أو ترتيب صور المعرض." },
+  ],
+  "tech-info": [
+    { id: "videos", label: "Video library", labelAr: "مكتبة الفيديوهات", path: ["content", "videoSection", "items"], hint: "Add, remove and reorder technical videos.", hintAr: "إضافة وحذف وترتيب الفيديوهات التقنية." },
+  ],
+  careers: [
+    { id: "benefits", label: "Why join us items", labelAr: "عناصر لماذا تنضم إلينا", path: ["content", "why", "items"], hint: "Manage the benefits displayed on the Careers page.", hintAr: "إدارة المميزات الظاهرة في صفحة الوظائف." },
+  ],
+  contact: [
+    { id: "categories", label: "Inquiry categories", labelAr: "أنواع الاستفسارات", path: ["content", "form", "categories"], hint: "Add or remove choices from the contact form.", hintAr: "إضافة أو حذف اختيارات نموذج التواصل." },
+  ],
+};
+
+function valueAtPath(value: JsonValue, path: EditorPath): JsonValue | undefined {
+  let current: JsonValue | undefined = value;
+  for (const key of path) {
+    if (Array.isArray(current)) current = current[Number(key)];
+    else if (current && typeof current === "object") current = current[String(key)];
+    else return undefined;
+  }
+  return current;
+}
 
 const pageHints: Record<string, [string, string]> = {
   global: ["Navigation, footer and shared contact details", "القائمة والفوتر وبيانات التواصل المشتركة"],
@@ -62,6 +105,7 @@ export default function CmsDashboard({ locale }: { locale: Locale }) {
   const [savedSnapshot, setSavedSnapshot] = useState("");
   const [activeSection, setActiveSection] = useState("");
   const [activeFieldGroup, setActiveFieldGroup] = useState("");
+  const [activeCollection, setActiveCollection] = useState("");
   const [view, setView] = useState<ViewMode>("content");
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [pickingPath, setPickingPath] = useState<EditorPath | null>(null);
@@ -85,7 +129,15 @@ export default function CmsDashboard({ locale }: { locale: Locale }) {
   const selectedSection = sections.find(([key]) => key === activeSection) ?? sections[0];
   const fieldGroups = selectedSection ? groupSectionFields(selectedSection[1], locale, pageKey, ["content", selectedSection[0]]) : [];
   const selectedFieldGroup = fieldGroups.find((group) => group.id === activeFieldGroup) ?? fieldGroups[0];
-  const ui = { content: isAr ? "النصوص" : "Text content", media: isAr ? "الصور والفيديو" : "Images & video", library: isAr ? "مكتبة الوسائط" : "Media library", users: isAr ? "الحسابات" : "Accounts" };
+  const collections = pageCollections[pageKey] ?? [];
+  const selectedCollection = collections.find((collection) => collection.id === activeCollection) ?? collections[0];
+  const selectedCollectionValue = document && selectedCollection
+    ? valueAtPath(document as unknown as JsonValue, selectedCollection.path)
+    : undefined;
+  const ui = { content: isAr ? "النصوص" : "Text content", collections: isAr ? "إضافة وتنظيم" : "Add & organize", media: isAr ? "الصور والفيديو" : "Images & video", library: isAr ? "مكتبة الوسائط" : "Media library", users: isAr ? "إدارة المستخدمين" : "User management" };
+  const pageViews: ViewMode[] = collections.length
+    ? ["content", "collections", "media", "library"]
+    : ["content", "media", "library"];
 
   useEffect(() => {
     if (!supabase) { setConfigured(false); setLoading(false); return; }
@@ -102,7 +154,7 @@ export default function CmsDashboard({ locale }: { locale: Locale }) {
       if (!active) return;
       if (error) setConnectionError(error.code === "PGRST205" ? "CMS tables are missing. Run the migration in Supabase SQL Editor." : error.message);
       setIsAdmin(Boolean(data && data.is_active !== false));
-      if (data?.role === "owner") setAccountRole("owner");
+      setAccountRole(data?.role === "owner" ? "owner" : "editor");
       setNeedsUserMigration(Boolean(data && !data.role));
     });
     return () => { active = false; };
@@ -132,7 +184,7 @@ export default function CmsDashboard({ locale }: { locale: Locale }) {
   }, [editingLocale, isAdmin, pageKey, session, supabase]);
 
   useEffect(() => { void loadDocument(); }, [loadDocument]);
-  useEffect(() => { setActiveSection(""); setActiveFieldGroup(""); setView("content"); }, [pageKey, editingLocale]);
+  useEffect(() => { setActiveSection(""); setActiveFieldGroup(""); setActiveCollection(""); setView("content"); }, [pageKey, editingLocale]);
   useEffect(() => { setActiveFieldGroup(""); }, [activeSection]);
   useEffect(() => {
     const prevent = (event: BeforeUnloadEvent) => { if (dirty) event.preventDefault(); };
@@ -210,15 +262,29 @@ export default function CmsDashboard({ locale }: { locale: Locale }) {
         <div className="mb-5 flex items-center justify-between lg:hidden"><strong>{isAr ? "اختر الصفحة" : "Choose a page"}</strong><button type="button" className="admin-icon" onClick={() => setSidebarOpen(false)}><X size={17} /></button></div>
         <p className="mb-3 px-2 text-[11px] font-bold text-white/40">{isAr ? "صفحات الموقع" : "WEBSITE PAGES"}</p>
         <nav className="space-y-1">{pages.map((page) => { const active = pageKey === page.key; return <button key={page.key} onClick={() => choosePage(page.key)} className={`flex min-h-11 w-full items-center gap-3 rounded-md px-3 text-start text-sm font-bold transition ${active ? "bg-[#008ED3] text-white" : "text-white/66 hover:bg-white/5 hover:text-white"}`}><FileText size={16} className="shrink-0" /><span className="min-w-0 flex-1 truncate">{isAr ? page.labelAr : page.label}</span>{isAr ? <ChevronLeft size={14} /> : <ChevronRight size={14} />}</button>; })}</nav>
+        {accountRole === "owner" && <div className="mt-7 border-t border-white/10 pt-5">
+          <p className="mb-3 px-2 text-[11px] font-bold text-white/40">{isAr ? "الإدارة" : "MANAGEMENT"}</p>
+          <button type="button" onClick={() => { if (canLeave()) { setView("users"); setSidebarOpen(false); } }} className={`flex min-h-11 w-full items-center gap-3 rounded-md px-3 text-start text-sm font-bold transition ${view === "users" ? "bg-[#008ED3] text-white" : "text-white hover:bg-white/5"}`}><UserCog size={17} /><span>{ui.users}</span></button>
+        </div>}
         <div className="mt-8 border-t border-white/10 pt-5"><div className="flex items-center gap-2 px-2 text-xs text-white/35"><Settings size={14} /><span className="truncate">{session.user.email}</span></div></div>
       </aside>
 
       <section className="min-w-0 px-4 py-6 md:px-7 md:py-8 xl:px-10"><div className="mx-auto max-w-6xl">
         <div className="mb-7 flex flex-wrap items-start justify-between gap-4 border-b border-white/10 pb-6"><div><div className="mb-2 flex items-center gap-2 text-xs font-bold text-[#008ED3]"><LayoutDashboard size={15} />{isAr ? "تعديل صفحة" : "Editing page"}</div><h2 className="text-2xl font-black md:text-3xl">{isAr ? currentPage?.labelAr : currentPage?.label}</h2><p className="mt-2 text-sm text-white/48">{pageHints[pageKey]?.[isAr ? 1 : 0] ?? ""}</p></div><div className="flex items-center gap-2 rounded-md border border-white/10 bg-[#10151e] p-1"><Languages size={16} className="mx-2 text-white/45" />{(["en", "ar"] as Locale[]).map((item) => <button key={item} onClick={() => chooseLocale(item)} className={`h-9 rounded px-4 text-xs font-black ${editingLocale === item ? "bg-white text-black" : "text-white/50 hover:text-white"}`}>{item === "ar" ? "العربية" : "English"}</button>)}</div></div>
-        <div className="mb-6 flex gap-1 overflow-x-auto border-b border-white/10">{(["content", "media", "library", "users"] as ViewMode[]).map((item) => <button key={item} onClick={() => { if (canLeave()) setView(item); }} className={`flex min-h-12 shrink-0 items-center gap-2 border-b-2 px-4 text-sm font-bold ${view === item ? "border-[#008ED3] text-white" : "border-transparent text-white/45 hover:text-white"}`}>{item === "content" ? <Type size={17} /> : item === "media" ? <CloudUpload size={17} /> : item === "library" ? <Images size={17} /> : <Users size={17} />}{ui[item]}{item === "library" && <span className="rounded-full bg-white/8 px-2 py-0.5 text-[10px]">{mediaLibrary.length}</span>}</button>)}</div>
+        {view !== "users" && <div className="mb-6 flex gap-1 overflow-x-auto border-b border-white/10">{pageViews.map((item) => <button key={item} onClick={() => { if (canLeave()) setView(item); }} className={`flex min-h-12 shrink-0 items-center gap-2 border-b-2 px-4 text-sm font-bold ${view === item ? "border-[#008ED3] text-white" : "border-transparent text-white/45 hover:text-white"}`}>{item === "content" ? <Type size={17} /> : item === "collections" ? <ListPlus size={17} /> : item === "media" ? <CloudUpload size={17} /> : <Images size={17} />}{ui[item]}{item === "library" && <span className="rounded-full bg-white/8 px-2 py-0.5 text-[10px]">{mediaLibrary.length}</span>}</button>)}</div>}
 
         {view === "users" ? <UserManagement session={session} locale={locale} role={accountRole} needsMigration={needsUserMigration} /> : loading || !document ? <div className="flex min-h-96 items-center justify-center"><LoaderCircle className="animate-spin text-[#008ED3]" /></div> : <>
           {view === "content" && <div className="grid gap-6 md:grid-cols-[220px_minmax(0,1fr)]"><div><p className="mb-3 text-xs font-bold text-white/40">{isAr ? "أقسام الصفحة" : "PAGE SECTIONS"}</p><div className="grid grid-cols-2 gap-2 md:grid-cols-1">{sections.map(([key]) => <button key={key} type="button" onClick={() => setActiveSection(key)} className={`min-h-11 rounded-md px-3 text-start text-sm font-bold ${selectedSection?.[0] === key ? "bg-white/10 text-[#008ED3]" : "text-white/55 hover:bg-white/5 hover:text-white"}`}>{fieldLabel(["content", key], locale)}</button>)}</div></div><div className="min-w-0 rounded-md border border-white/10 bg-[var(--admin-panel)] p-5 md:p-7">{selectedSection ? <><div className="mb-5 border-b border-white/10 pb-4"><p className="text-xs font-bold text-[#008ED3]">{isAr ? "محتوى القسم" : "SECTION CONTENT"}</p><h3 className="mt-1 text-xl font-black">{fieldLabel(["content", selectedSection[0]], locale)}</h3></div>{fieldGroups.length > 1 && <div className="mb-7"><p className="mb-3 text-xs font-bold text-white/40">{isAr ? "اختر الجزء الذي تريد تعديله" : "CHOOSE WHAT TO EDIT"}</p><div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-3">{fieldGroups.map((group) => <button key={group.id} type="button" onClick={() => setActiveFieldGroup(group.id)} className={`min-h-11 rounded-md border px-3 text-start text-sm font-bold transition ${selectedFieldGroup?.id === group.id ? "border-[#008ED3] bg-[#008ED3]/10 text-[#008ED3]" : "border-white/10 bg-[#0c1017] text-white/58 hover:border-white/25 hover:text-white"}`}>{group.label}</button>)}</div></div>}{selectedFieldGroup && <div><h4 className="mb-5 text-base font-extrabold text-white/85">{selectedFieldGroup.label}</h4><ContentEditor {...editorProps} value={selectedFieldGroup.value} path={["content", selectedSection[0]]} /></div>}</> : <p className="text-sm text-white/45">{isAr ? "لا توجد أقسام قابلة للتعديل." : "No editable sections found."}</p>}</div></div>}
+          {view === "collections" && selectedCollection && selectedCollectionValue !== undefined && <div className="grid gap-6 md:grid-cols-[240px_minmax(0,1fr)]">
+            <div>
+              <p className="mb-3 text-xs font-bold text-white/40">{isAr ? "المحتوى القابل للإضافة" : "ADDABLE CONTENT"}</p>
+              <div className="grid grid-cols-2 gap-2 md:grid-cols-1">{collections.map((collection) => <button key={collection.id} type="button" onClick={() => setActiveCollection(collection.id)} className={`min-h-11 rounded-md px-3 text-start text-sm font-bold ${selectedCollection.id === collection.id ? "bg-white/10 text-[#008ED3]" : "text-white/55 hover:bg-white/5 hover:text-white"}`}>{isAr ? collection.labelAr : collection.label}</button>)}</div>
+            </div>
+            <div className="min-w-0 rounded-md border border-white/10 bg-[var(--admin-panel)] p-5 md:p-7">
+              <div className="mb-6 border-b border-white/10 pb-5"><div className="flex items-center gap-2 text-xs font-bold text-[#008ED3]"><ListPlus size={16} />{isAr ? "إضافة وحذف وترتيب" : "ADD, REMOVE & REORDER"}</div><h3 className="mt-2 text-xl font-black">{isAr ? selectedCollection.labelAr : selectedCollection.label}</h3><p className="mt-2 text-sm leading-6 text-white/55">{isAr ? selectedCollection.hintAr : selectedCollection.hint}</p></div>
+              <ContentEditor {...editorProps} value={selectedCollectionValue} path={selectedCollection.path} />
+            </div>
+          </div>}
           {view === "media" && <div className="rounded-md border border-white/10 bg-[var(--admin-panel)] p-5 md:p-7"><div className="mb-6 border-b border-white/10 pb-4"><h3 className="text-xl font-black">{isAr ? "صور وفيديوهات الصفحة" : "Page images and videos"}</h3><p className="mt-2 text-sm leading-6 text-white/48">{isAr ? "اضغط رفع ملف جديد أو اختر ملفًا سبق رفعه من المكتبة." : "Upload a new file or choose an existing one from the media library."}</p></div><div className="space-y-8"><ContentEditor {...editorProps} value={document.media} path={["media"]} mediaOnly /><ContentEditor {...editorProps} value={document.content} path={["content"]} mediaOnly /></div></div>}
           {view === "library" && <div><div className="mb-5"><h3 className="text-xl font-black">{ui.library}</h3><p className="mt-1 text-sm text-white/45">{isAr ? "كل الملفات التي تم رفعها ويمكن إعادة استخدامها." : "All uploaded files, ready to reuse."}</p></div><div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">{mediaLibrary.map((asset) => <MediaCard key={asset.id} asset={asset} action={<button type="button" title={isAr ? "نسخ الرابط" : "Copy URL"} onClick={async () => { await navigator.clipboard.writeText(asset.secure_url); setNotice(isAr ? "تم نسخ رابط الملف" : "Media URL copied"); }} className="admin-icon"><Copy size={14} /></button>} />)}</div></div>}
         </>}
