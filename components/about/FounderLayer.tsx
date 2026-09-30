@@ -43,7 +43,7 @@ export default function FounderLayer({
           <h2 
             dir="auto"
             style={{ unicodeBidi: "plaintext" }}
-            className="text-white text-4xl md:text-6xl font-black uppercase tracking-tighter leading-none"
+            className="whitespace-nowrap text-[clamp(2rem,3.2vw,3.75rem)] font-black uppercase leading-none text-white"
           >
             {data.name}
           </h2>
