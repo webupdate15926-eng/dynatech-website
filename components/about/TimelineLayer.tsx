@@ -31,11 +31,6 @@ export default function TimelineLayer({ x, opacity, scale, copy, items, isAr = f
         {/* Timeline Items */}
         {items.map((item, i) => (
           <div key={i} className={`min-w-[220px] md:min-w-[320px] relative pt-16 ${isAr ? 'text-right' : ''}`}>
-            {/* Background Year */}
-            <div className={`text-[100px] md:text-[140px] font-black text-white/[0.08] absolute -top-10 ${isAr ? '-right-6' : '-left-6'} leading-none select-none`}>
-              {item.year}
-            </div>
-            
             {/* Content */}
             <div className="relative z-10">
               <div className={`w-3 h-3 bg-[#006db1] rounded-full mb-6 shadow-[0_0_10px_#006db1] ${isAr ? 'mr-auto' : ''}`} />

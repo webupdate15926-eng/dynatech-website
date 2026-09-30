@@ -75,37 +75,25 @@ function CeoMessage({
         style={{ y: cardY, opacity: cardOpacity }}
         className={`relative z-10 mx-auto w-full max-w-5xl bg-[#111936]/82 p-6 shadow-[0_26px_90px_rgba(0,0,0,0.36)] backdrop-blur-sm md:p-8 lg:p-10 ${isAr ? 'border-r-4 border-[#0087cb] text-right' : 'border-l-4 border-[#0087cb]'}`}
       >
-        <p className="text-xs font-black uppercase tracking-[0.24em] text-[#43becc]">
-          {content.kicker}
-        </p>
-        <h2 className="mt-4 text-4xl font-black uppercase leading-none tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl">
+        <h2 className="text-4xl font-black uppercase leading-none tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl">
           {content.title}
         </h2>
-        <div className="mt-8 grid gap-x-12 gap-y-8 lg:grid-cols-2">
-          {[content.paragraphs.slice(0, 3), content.paragraphs.slice(3)].map(
-            (column, columnIndex) => (
-              <div key={columnIndex} className="space-y-5">
-                {column.map((paragraph, paragraphIndex) => (
-                  <motion.p
-                    key={paragraph}
-                    initial={{ opacity: 0, y: 22 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 0.15 }}
-                    transition={{
-                      duration: 0.55,
-                      delay: Math.min(
-                        (columnIndex * 3 + paragraphIndex) * 0.04,
-                        0.16,
-                      ),
-                    }}
-                    className="text-sm font-medium leading-relaxed text-zinc-300 md:text-base"
-                  >
-                    {paragraph}
-                  </motion.p>
-                ))}
-              </div>
-            ),
-          )}
+        <div className="mt-8 space-y-5">
+          {content.paragraphs.map((paragraph, paragraphIndex) => (
+            <motion.p
+              key={paragraph}
+              initial={{ opacity: 0, y: 22 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.15 }}
+              transition={{
+                duration: 0.55,
+                delay: Math.min(paragraphIndex * 0.04, 0.16),
+              }}
+              className="text-sm font-medium leading-relaxed text-zinc-300 md:text-base"
+            >
+              {paragraph}
+            </motion.p>
+          ))}
         </div>
         <div className="mt-9 border-t border-white/10 pt-6">
           <p className="font-black text-white">{content.signatureName}</p>
@@ -162,7 +150,7 @@ function MobileIntro({
         transition={{ duration: 0.65, ease: 'easeOut' }}
         className="mt-16"
       >
-        <h2 className="text-4xl font-black uppercase leading-none tracking-tight text-white">
+        <h2 className="whitespace-nowrap text-[clamp(1.55rem,8vw,2.25rem)] font-black uppercase leading-none tracking-tight text-white">
           {content.founder.name}
         </h2>
         <p className="mt-6 text-sm font-medium leading-6 text-zinc-300">
@@ -175,10 +163,10 @@ function MobileIntro({
           className="mt-7 inline-flex items-center gap-2 border border-[#0087cb]/40 bg-[#0087cb]/10 px-4 py-3 text-xs font-black uppercase tracking-[0.16em] text-[#43becc]"
         >
           <Linkedin size={16} strokeWidth={2.4} />
-          <span>{content.founder.linkedinLabel}</span>
+          <span>{/^(learn more|اعرف المزيد)$/i.test(content.founder.linkedinLabel.trim()) ? 'LinkedIn' : content.founder.linkedinLabel}</span>
           <ArrowUpRight size={15} />
         </a>
-        <div className="relative mt-8 aspect-[4/5] w-full overflow-hidden border border-white/10 bg-[#111936]">
+        <div className="relative mt-8 aspect-[4/5] w-full overflow-hidden bg-[#111936]">
           <Image
             src={content.founder.imageSrc}
             alt={content.founder.imageAlt}

@@ -29,16 +29,11 @@ export default function LocationsLayer({ opacity, copy, items, isAr = false }: P
       
       {/* Location Cards Grid */}
       <div className="grid w-full max-w-5xl grid-cols-1 gap-px border border-white/10 bg-white/10 md:grid-cols-2">
-        {items.map((loc, i) => (
+        {items.map((loc) => (
           <div 
-            key={i} 
+            key={loc.name}
             className="group bg-[#121b43] p-6 transition-all duration-500 hover:bg-[#0f1738] sm:p-8 md:p-9 lg:p-10"
           >
-            {/* Location Number */}
-            <div className="mb-5 font-mono text-xs tracking-widest text-[#006db1]">
-              0{i + 1}
-            </div>
-            
             {/* Location Name */}
             <h3 
               dir="auto"

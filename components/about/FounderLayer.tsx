@@ -27,7 +27,7 @@ export default function FounderLayer({
     >
       <div className={`max-w-6xl w-full grid grid-cols-1 md:grid-cols-[0.9fr_1.1fr] gap-8 md:gap-14 items-center ${isAr ? 'md:[direction:rtl]' : ''}`}>
         {/* Image - Order changes for RTL */}
-        <div className={`relative h-[260px] w-full overflow-hidden rounded-3xl border border-white/10 md:h-[min(560px,calc(100vh-10rem))] ${isAr ? 'order-1 md:order-2' : 'order-2 md:order-1'}`}>
+        <div className={`relative h-[260px] w-full overflow-hidden md:h-[min(560px,calc(100vh-10rem))] ${isAr ? 'order-1 md:order-2' : 'order-2 md:order-1'}`}>
           <Image
             src={data.imageSrc}
             alt={data.imageAlt}
@@ -64,7 +64,7 @@ export default function FounderLayer({
               className={`inline-flex items-center gap-2 border border-[#0087cb]/40 bg-[#0087cb]/10 px-4 py-2 text-xs font-black uppercase tracking-[0.18em] text-[#43becc] transition hover:border-[#43becc] hover:bg-[#0087cb] hover:text-white ${isAr ? 'md:flex-row-reverse' : ''}`}
             >
               <Linkedin size={16} strokeWidth={2.4} />
-              <span>{data.linkedinLabel ?? "LinkedIn"}</span>
+              <span>{/^(learn more|اعرف المزيد)$/i.test(data.linkedinLabel?.trim() ?? '') ? 'LinkedIn' : data.linkedinLabel || 'LinkedIn'}</span>
             </a>
           )}
           
