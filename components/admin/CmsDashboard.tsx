@@ -47,7 +47,7 @@ const pageCollections: Record<string, CollectionDefinition[]> = {
     { id: "gallery", label: "Project gallery", labelAr: "معرض المشروع", path: ["media", "gallery"], hint: "Add, replace, remove or reorder gallery images.", hintAr: "إضافة أو استبدال أو حذف أو ترتيب صور المعرض." },
   ],
   "tech-info": [
-    { id: "videos", label: "Video library", labelAr: "مكتبة الفيديوهات", path: ["content", "videoSection", "items"], hint: "Add, remove and reorder technical videos.", hintAr: "إضافة وحذف وترتيب الفيديوهات التقنية." },
+    { id: "resources", label: "Videos & PDF files", labelAr: "الفيديوهات وملفات PDF", path: ["content", "videoSection", "items"], hint: "Add, remove and reorder technical videos or PDF documents.", hintAr: "إضافة وحذف وترتيب الفيديوهات التقنية أو ملفات PDF." },
   ],
   careers: [
     { id: "benefits", label: "Why join us items", labelAr: "عناصر لماذا تنضم إلينا", path: ["content", "why", "items"], hint: "Manage the benefits displayed on the Careers page.", hintAr: "إدارة المميزات الظاهرة في صفحة الوظائف." },
@@ -75,18 +75,20 @@ const pageHints: Record<string, [string, string]> = {
   "partner-fft": ["FFT profile and video library", "صفحة FFT ومكتبة الفيديوهات"],
   "partner-cu": ["Composites United profile and video library", "صفحة Composites United ومكتبة الفيديوهات"],
   "the-auto-hub": ["Project introduction, team, figures and gallery", "مقدمة المشروع والفريق والأرقام والمعرض"],
-  "tech-info": ["Technology information and videos", "المعلومات التكنولوجية والفيديوهات"],
+  "tech-info": ["Technology information, videos and PDF documents", "المعلومات التكنولوجية والفيديوهات وملفات PDF"],
   careers: ["Careers page and Why Join Us", "صفحة الوظائف ولماذا تنضم إلينا"],
   contact: ["Contact copy, address and form", "نصوص التواصل والعنوان والنموذج"],
   privacy: ["Privacy policy and website disclaimer", "سياسة الخصوصية وإخلاء المسؤولية"],
 };
 
 function assetName(asset: MediaRow) { return asset.public_id.split("/").at(-1) ?? asset.public_id; }
+function isPdfAsset(asset: MediaRow) { return /\.pdf(?:$|[?#])/i.test(asset.secure_url) || asset.public_id.toLowerCase().endsWith(".pdf"); }
+function isTechInfoResourcePath(pageKey: string, path: EditorPath | null) { return pageKey === "tech-info" && path?.slice(0, 3).join(".") === "content.videoSection.items"; }
 
 function MediaCard({ asset, action, compact = false }: { asset: MediaRow; action?: ReactNode; compact?: boolean }) {
   return <article className="overflow-hidden rounded-md border border-white/10 bg-[#0c1017]">
     <div className={`relative bg-black ${compact ? "aspect-[4/3]" : "aspect-video"}`}>
-      {asset.resource_type === "image" ? <Image src={asset.secure_url} alt={assetName(asset)} fill sizes="(min-width:1280px) 20vw, (min-width:640px) 40vw, 100vw" className="object-contain" /> : asset.resource_type === "video" ? <video src={asset.secure_url} className="h-full w-full object-contain" muted controls={!action} playsInline preload="metadata" /> : <div className="flex h-full items-center justify-center"><FileText className="text-white/25" /></div>}
+      {isPdfAsset(asset) ? <div className="flex h-full flex-col items-center justify-center gap-2 bg-[#111936] px-4 text-center"><span className="flex h-14 w-14 items-center justify-center rounded-md bg-[#008ED3]/12 text-[#008ED3]"><FileText size={30} /></span><strong className="text-xs text-white">PDF document</strong></div> : asset.resource_type === "image" ? <Image src={asset.secure_url} alt={assetName(asset)} fill sizes="(min-width:1280px) 20vw, (min-width:640px) 40vw, 100vw" className="object-contain" /> : asset.resource_type === "video" ? <video src={asset.secure_url} className="h-full w-full object-contain" muted controls={!action} playsInline preload="metadata" /> : <div className="flex h-full items-center justify-center"><FileText className="text-white/25" /></div>}
     </div>
     <div className="flex min-h-12 items-center gap-2 p-3"><p className="min-w-0 flex-1 truncate text-xs text-white/65" title={asset.public_id}>{assetName(asset)}</p>{action}</div>
   </article>;
@@ -224,6 +226,16 @@ export default function CmsDashboard({ locale }: { locale: Locale }) {
 
   const upload = async (file: File, path: EditorPath) => {
     if (!supabase || !session || !document) return;
+    const pdf = file.type === "application/pdf" || file.name.toLowerCase().endsWith(".pdf");
+    const techInfoResource = isTechInfoResourcePath(pageKey, path);
+    if (pdf && !techInfoResource) {
+      setNotice(isAr ? "يمكن رفع ملفات PDF داخل Tech Info فقط." : "PDF files can only be uploaded inside Tech Info.");
+      return;
+    }
+    if (techInfoResource && !pdf && !file.type.startsWith("video/")) {
+      setNotice(isAr ? "هذا القسم يقبل فيديو أو ملف PDF فقط." : "This section accepts videos or PDF documents only.");
+      return;
+    }
     setUploadingPath(path.join(".")); setNotice("");
     try {
       const signatureResponse = await fetch("/api/cloudinary/sign", { method: "POST", headers: { Authorization: `Bearer ${session.access_token}` } });
@@ -231,7 +243,8 @@ export default function CmsDashboard({ locale }: { locale: Locale }) {
       if (!signatureResponse.ok) throw new Error(signatureData.error ?? "Upload authorization failed");
       const form = new FormData();
       form.set("file", file); form.set("api_key", signatureData.apiKey); form.set("timestamp", String(signatureData.timestamp)); form.set("signature", signatureData.signature); form.set("folder", signatureData.folder);
-      const response = await fetch(`https://api.cloudinary.com/v1_1/${signatureData.cloudName}/auto/upload`, { method: "POST", body: form });
+      const resourceType = pdf ? "raw" : "auto";
+      const response = await fetch(`https://api.cloudinary.com/v1_1/${signatureData.cloudName}/${resourceType}/upload`, { method: "POST", body: form });
       const asset = await response.json();
       if (!response.ok) throw new Error(asset.error?.message ?? "Cloudinary upload failed");
       changeDocument(path, asset.secure_url);
@@ -250,6 +263,9 @@ export default function CmsDashboard({ locale }: { locale: Locale }) {
   if (!isAdmin) return <main className="flex min-h-screen items-center justify-center bg-[#080d20] p-5 text-white"><div className="w-full max-w-lg border border-red-300/25 bg-red-400/10 p-6"><h1 className="text-2xl font-black">{connectionError ? "CMS connection error" : "Administrator access required"}</h1><p className="mt-3 text-sm text-white/60">{connectionError || "This account is signed in but is not listed in cms_admins."}</p><button onClick={() => supabase.auth.signOut()} className="admin-button mt-5">Sign out</button></div></main>;
 
   const editorProps = { locale, pageKey, onChange: changeDocument, onUpload: upload, onPickMedia: setPickingPath, uploadingPath };
+  const pickerAssets = mediaLibrary.filter((asset) => isTechInfoResourcePath(pageKey, pickingPath)
+    ? asset.resource_type === "video" || isPdfAsset(asset)
+    : !isPdfAsset(asset));
   return <main dir={isAr ? "rtl" : "ltr"} className="admin-ui min-h-screen bg-[var(--admin-bg)] text-white">
     <header className="sticky top-0 z-40 flex h-16 items-center justify-between gap-3 border-b border-white/10 bg-[#080b11]/95 px-4 backdrop-blur-xl md:px-6">
       <div className="flex min-w-0 items-center gap-3"><button type="button" className="admin-icon lg:hidden" aria-label={isAr ? "فتح الصفحات" : "Open pages"} onClick={() => setSidebarOpen(true)}><Menu size={19} /></button><div className="min-w-0"><p className="text-[10px] font-black text-[#008ED3]">DYNATECH CMS</p><h1 className="truncate text-base font-extrabold">{isAr ? "إدارة محتوى الموقع" : "Website content manager"}</h1></div></div>
@@ -282,10 +298,10 @@ export default function CmsDashboard({ locale }: { locale: Locale }) {
             </div>
             <div className="min-w-0 rounded-md border border-white/10 bg-[var(--admin-panel)] p-5 md:p-7">
               <div className="mb-6 border-b border-white/10 pb-5"><div className="flex items-center gap-2 text-xs font-bold text-[#008ED3]"><ListPlus size={16} />{isAr ? "إضافة وحذف وترتيب" : "ADD, REMOVE & REORDER"}</div><h3 className="mt-2 text-xl font-black">{isAr ? selectedCollection.labelAr : selectedCollection.label}</h3><p className="mt-2 text-sm leading-6 text-white/55">{isAr ? selectedCollection.hintAr : selectedCollection.hint}</p></div>
-              <ContentEditor {...editorProps} value={selectedCollectionValue} path={selectedCollection.path} />
+              <ContentEditor {...editorProps} value={selectedCollectionValue} path={selectedCollection.path} includeMedia />
             </div>
           </div>}
-          {view === "media" && <div className="rounded-md border border-white/10 bg-[var(--admin-panel)] p-5 md:p-7"><div className="mb-6 border-b border-white/10 pb-4"><h3 className="text-xl font-black">{isAr ? "صور وفيديوهات الصفحة" : "Page images and videos"}</h3><p className="mt-2 text-sm leading-6 text-white/48">{isAr ? "اضغط رفع ملف جديد أو اختر ملفًا سبق رفعه من المكتبة." : "Upload a new file or choose an existing one from the media library."}</p></div><div className="space-y-8"><ContentEditor {...editorProps} value={document.media} path={["media"]} mediaOnly /><ContentEditor {...editorProps} value={document.content} path={["content"]} mediaOnly /></div></div>}
+          {view === "media" && <div className="rounded-md border border-white/10 bg-[var(--admin-panel)] p-5 md:p-7"><div className="mb-6 border-b border-white/10 pb-4"><h3 className="text-xl font-black">{pageKey === "tech-info" ? (isAr ? "فيديوهات وملفات PDF" : "Videos and PDF documents") : (isAr ? "صور وفيديوهات الصفحة" : "Page images and videos")}</h3><p className="mt-2 text-sm leading-6 text-white/48">{isAr ? "اضغط رفع ملف جديد أو اختر ملفًا سبق رفعه من المكتبة." : "Upload a new file or choose an existing one from the media library."}</p></div><div className="space-y-8"><ContentEditor {...editorProps} value={document.media} path={["media"]} mediaOnly /><ContentEditor {...editorProps} value={document.content} path={["content"]} mediaOnly /></div></div>}
           {view === "library" && <div><div className="mb-5"><h3 className="text-xl font-black">{ui.library}</h3><p className="mt-1 text-sm text-white/45">{isAr ? "كل الملفات التي تم رفعها ويمكن إعادة استخدامها." : "All uploaded files, ready to reuse."}</p></div><div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">{mediaLibrary.map((asset) => <MediaCard key={asset.id} asset={asset} action={<button type="button" title={isAr ? "نسخ الرابط" : "Copy URL"} onClick={async () => { await navigator.clipboard.writeText(asset.secure_url); setNotice(isAr ? "تم نسخ رابط الملف" : "Media URL copied"); }} className="admin-icon"><Copy size={14} /></button>} />)}</div></div>}
         </>}
 
@@ -293,6 +309,6 @@ export default function CmsDashboard({ locale }: { locale: Locale }) {
       </div></section>
     </div>
 
-    {pickingPath && <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/75 p-3 backdrop-blur-sm" role="dialog" aria-modal="true"><div className="admin-scrollbar max-h-[90vh] w-full max-w-5xl overflow-y-auto rounded-md border border-white/15 bg-[#111720] p-5 shadow-2xl md:p-7"><div className="sticky top-0 z-10 mb-5 flex items-start justify-between gap-4 border-b border-white/10 bg-[#111720] pb-5"><div><h3 className="text-xl font-black">{isAr ? "اختر ملفًا من المكتبة" : "Choose from media library"}</h3><p className="mt-1 text-sm text-white/45">{isAr ? "اضغط على الصورة أو الفيديو لاستخدامه في هذا المكان." : "Select an image or video to use in this field."}</p></div><button type="button" className="admin-icon" onClick={() => setPickingPath(null)}><X size={17} /></button></div><div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">{mediaLibrary.map((asset) => <button type="button" key={asset.id} className="text-start transition hover:-translate-y-0.5 hover:ring-2 hover:ring-[#008ED3]" onClick={() => { changeDocument(pickingPath, asset.secure_url); setPickingPath(null); setNotice(isAr ? "تم اختيار الملف. لا تنسَ حفظ المسودة." : "File selected. Remember to save the draft."); }}><MediaCard asset={asset} compact /></button>)}</div></div></div>}
+    {pickingPath && <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/75 p-3 backdrop-blur-sm" role="dialog" aria-modal="true"><div className="admin-scrollbar max-h-[90vh] w-full max-w-5xl overflow-y-auto rounded-md border border-white/15 bg-[#111720] p-5 shadow-2xl md:p-7"><div className="sticky top-0 z-10 mb-5 flex items-start justify-between gap-4 border-b border-white/10 bg-[#111720] pb-5"><div><h3 className="text-xl font-black">{isAr ? "اختر ملفًا من المكتبة" : "Choose from media library"}</h3><p className="mt-1 text-sm text-white/45">{isTechInfoResourcePath(pageKey, pickingPath) ? (isAr ? "اختر فيديو أو ملف PDF لهذا القسم." : "Select a video or PDF document for this section.") : (isAr ? "اختر صورة أو فيديو لاستخدامه في هذا المكان." : "Select an image or video to use in this field.")}</p></div><button type="button" className="admin-icon" onClick={() => setPickingPath(null)}><X size={17} /></button></div><div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">{pickerAssets.map((asset) => <button type="button" key={asset.id} className="text-start transition hover:-translate-y-0.5 hover:ring-2 hover:ring-[#008ED3]" onClick={() => { changeDocument(pickingPath, asset.secure_url); setPickingPath(null); setNotice(isAr ? "تم اختيار الملف. لا تنسَ حفظ المسودة." : "File selected. Remember to save the draft."); }}><MediaCard asset={asset} compact /></button>)}</div></div></div>}
   </main>;
 }

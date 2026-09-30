@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useId, useState } from "react";
-import { ArrowDown, ArrowUp, CloudUpload, Images, Link2, LoaderCircle, Plus, Trash2 } from "lucide-react";
+import { ArrowDown, ArrowUp, CloudUpload, FileText, Images, Link2, LoaderCircle, Plus, Trash2 } from "lucide-react";
 
 import type { Locale } from "@/i18n/config";
 import type { JsonValue } from "@/lib/cms/types";
@@ -18,9 +18,22 @@ type Props = {
   onPickMedia: (path: EditorPath) => void;
   uploadingPath: string | null;
   mediaOnly?: boolean;
+  includeMedia?: boolean;
 };
 
 const inputClass = "w-full rounded border border-white/15 bg-[#10151e] px-3 py-2.5 text-sm leading-7 text-white outline-none focus:border-[#008ED3] focus:ring-1 focus:ring-[#008ED3]";
+
+function isPdfUrl(value: string) {
+  return /\.pdf(?:$|[?#])/i.test(value);
+}
+
+function fileNameFromUrl(value: string) {
+  try {
+    return decodeURIComponent(new URL(value).pathname.split("/").at(-1) || "document.pdf");
+  } catch {
+    return value.split("/").at(-1) || "document.pdf";
+  }
+}
 
 function newArrayItem(path: EditorPath, previous: JsonValue | undefined, locale: Locale): JsonValue {
   const key = path.join(".");
@@ -34,7 +47,7 @@ function newArrayItem(path: EditorPath, previous: JsonValue | undefined, locale:
 }
 
 export function ContentEditor(props: Props) {
-  const { value, path, locale, pageKey, onChange, onUpload, onPickMedia, uploadingPath, mediaOnly = false } = props;
+  const { value, path, locale, pageKey, onChange, onUpload, onPickMedia, uploadingPath, mediaOnly = false, includeMedia = false } = props;
   const id = useId();
   const [showLink, setShowLink] = useState(false);
   const ar = locale === "ar";
@@ -71,7 +84,7 @@ export function ContentEditor(props: Props) {
         const nextPath = [...path, key];
         if (isHiddenField(nextPath, pageKey)) return false;
         if (pageKey === "technology-partners" && key === "ctaHref" && ["fft", "cu"].includes(String(value.id))) return false;
-        return mediaOnly ? containsMedia(item, nextPath) : !isMediaPath(nextPath);
+        return includeMedia || (mediaOnly ? containsMedia(item, nextPath) : !isMediaPath(nextPath));
       })
       .map(([key, item]) => {
         const nextPath = [...path, key];
@@ -92,18 +105,23 @@ export function ContentEditor(props: Props) {
     ? <textarea aria-label={label} value={text} rows={Math.min(9, Math.max(3, Math.ceil(text.length / 100)))} onChange={(e) => onChange(path, e.target.value)} className={inputClass} />
     : <input aria-label={label} type={path.at(-1) === "recipientEmail" ? "email" : "text"} dir={path.at(-1) === "recipientEmail" ? "ltr" : undefined} value={text} onChange={(e) => onChange(path, e.target.value)} className={inputClass} />;
 
-  const video = /\.(mp4|webm|mov)(\?|$)/i.test(text) || /video/i.test(String(path.at(-1)));
+  const pdf = isPdfUrl(text);
+  const video = !pdf && (/\.(mp4|webm|mov)(\?|$)/i.test(text) || /video/i.test(String(path.at(-1))));
+  const techInfoResource = pageKey === "tech-info" && path.slice(0, 3).join(".") === "content.videoSection.items";
+  const acceptedFiles = techInfoResource ? "video/*,application/pdf,.pdf" : "image/*,video/*";
   const busy = uploadingPath === path.join(".");
   return <div className="space-y-3">
     <div className="relative flex aspect-video max-h-64 w-full items-center justify-center overflow-hidden rounded border border-white/10 bg-[#0c1017]">
-      {text ? video
-        ? <video key={text} src={text} controls muted playsInline preload="metadata" className="h-full w-full object-contain" />
-        : <Image src={text} alt={label} fill sizes="(min-width:1024px) 55vw, 100vw" className="object-contain" />
+      {text ? pdf
+        ? <div className="flex h-full w-full flex-col items-center justify-center gap-3 bg-[#111936] px-5 text-center"><span className="flex h-16 w-16 items-center justify-center rounded-md bg-[#008ED3]/12 text-[#008ED3]"><FileText size={34} /></span><strong className="text-sm text-white">PDF document</strong><span className="max-w-full truncate text-xs text-white/55" dir="ltr">{fileNameFromUrl(text)}</span></div>
+        : video
+          ? <video key={text} src={text} controls muted playsInline preload="metadata" className="h-full w-full object-contain" />
+          : <Image src={text} alt={label} fill sizes="(min-width:1024px) 55vw, 100vw" className="object-contain" />
         : <Images size={32} className="text-white/25" />}
     </div>
     <div className="flex flex-wrap gap-2">
       <label htmlFor={id} className="admin-button cursor-pointer bg-[#008ED3] text-white"><CloudUpload size={16} />{busy ? <LoaderCircle size={16} className="animate-spin" /> : ar ? "رفع ملف جديد" : "Upload new file"}</label>
-      <input id={id} type="file" accept="image/*,video/*" className="sr-only" disabled={Boolean(uploadingPath)} onChange={(e) => { const file = e.target.files?.[0]; if (file) onUpload(file, path); e.target.value = ""; }} />
+      <input id={id} type="file" accept={acceptedFiles} className="sr-only" disabled={Boolean(uploadingPath)} onChange={(e) => { const file = e.target.files?.[0]; if (file) onUpload(file, path); e.target.value = ""; }} />
       <button type="button" onClick={() => onPickMedia(path)} className="admin-button"><Images size={16} />{ar ? "اختيار من المكتبة" : "Choose from library"}</button>
       <button type="button" title={ar ? "تعديل الرابط" : "Edit link"} onClick={() => setShowLink(!showLink)} className="admin-icon"><Link2 size={16} /></button>
     </div>

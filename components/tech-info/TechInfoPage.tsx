@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Play } from "lucide-react";
+import { ExternalLink, FileText, Play } from "lucide-react";
 import type { TechInfoContent } from "@/content/schema/site";
 import type { CmsMediaMap } from "@/lib/cms/types";
 
@@ -27,9 +27,21 @@ function SectionKicker({ children }: { children: React.ReactNode }) {
   );
 }
 
+function isPdfUrl(value?: string) {
+  return Boolean(value && /\.pdf(?:$|[?#])/i.test(value));
+}
+
+function fileNameFromUrl(value: string) {
+  try {
+    return decodeURIComponent(new URL(value).pathname.split("/").at(-1) || "document.pdf");
+  } catch {
+    return value.split("/").at(-1) || "document.pdf";
+  }
+}
+
 export default function TechInfoPage({ content, locale, media }: Props) {
   const isAr = locale === "ar";
-  const managedVideos = content.videoSection.items.filter((item) => item.src);
+  const managedItems = content.videoSection.items.filter((item) => item.src);
 
   return (
     <main
@@ -93,7 +105,11 @@ export default function TechInfoPage({ content, locale, media }: Props) {
           </div>
 
           <div className="grid gap-5 lg:grid-cols-2">
-            {managedVideos.map((item, index) => (
+            {managedItems.map((item, index) => {
+              const source = item.src!;
+              const pdf = isPdfUrl(source);
+
+              return (
               <motion.article
                 key={`${item.title}-${index}`}
                 initial="hidden"
@@ -104,19 +120,37 @@ export default function TechInfoPage({ content, locale, media }: Props) {
                 className="group overflow-hidden border border-white/10 bg-[#121b43]"
               >
                 <div className="relative aspect-video bg-black">
-                  <video
-                    className="h-full w-full object-contain"
-                    controls
-                    playsInline
-                    preload="metadata"
-                  >
-                    <source src={item.src} type="video/mp4" />
-                  </video>
-                  <div className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-100 transition group-hover:opacity-0">
-                    <span className="flex h-16 w-16 items-center justify-center rounded-full border border-white/30 bg-black/55 text-white backdrop-blur-sm">
-                      <Play size={25} fill="currentColor" className="translate-x-0.5" />
-                    </span>
-                  </div>
+                  {pdf ? (
+                    <div className="flex h-full flex-col items-center justify-center gap-4 bg-[#0c1430] px-6 text-center">
+                      <span className="flex h-20 w-20 items-center justify-center rounded-md border border-[#008ED3]/35 bg-[#008ED3]/10 text-[#008ED3]">
+                        <FileText size={42} strokeWidth={1.7} />
+                      </span>
+                      <div>
+                        <p className="text-xs font-black uppercase text-[#008ED3]">
+                          {isAr ? "ملف PDF" : "PDF document"}
+                        </p>
+                        <p className="mt-2 max-w-md truncate text-sm font-semibold text-white" dir="ltr">
+                          {fileNameFromUrl(source)}
+                        </p>
+                      </div>
+                    </div>
+                  ) : (
+                    <>
+                      <video
+                        className="h-full w-full object-contain"
+                        controls
+                        playsInline
+                        preload="metadata"
+                      >
+                        <source src={source} type="video/mp4" />
+                      </video>
+                      <div className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-100 transition group-hover:opacity-0">
+                        <span className="flex h-16 w-16 items-center justify-center rounded-full border border-white/30 bg-black/55 text-white backdrop-blur-sm">
+                          <Play size={25} fill="currentColor" className="translate-x-0.5" />
+                        </span>
+                      </div>
+                    </>
+                  )}
                 </div>
                 <div className="p-6 md:p-7">
                   <p className="text-[11px] font-black uppercase tracking-[0.28em] text-[#008ED3]">
@@ -128,9 +162,21 @@ export default function TechInfoPage({ content, locale, media }: Props) {
                   <p className="mt-4 text-sm leading-relaxed text-white md:text-base">
                     {item.description}
                   </p>
+                  {pdf ? (
+                    <a
+                      href={source}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-6 inline-flex items-center gap-2 border border-[#008ED3] bg-[#008ED3] px-5 py-3 text-xs font-black uppercase text-white transition hover:bg-transparent"
+                    >
+                      {isAr ? "فتح ملف PDF" : "Open PDF"}
+                      <ExternalLink size={16} />
+                    </a>
+                  ) : null}
                 </div>
               </motion.article>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
