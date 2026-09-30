@@ -187,11 +187,8 @@ export default function TechnologyPartnersPage({ content, locale, media }: Props
                     ) : null}
                     <div className={`absolute inset-0 ${logoId === "cu" ? "bg-[linear-gradient(180deg,rgba(8,13,32,0.18),rgba(8,13,32,0.96))]" : "bg-[linear-gradient(180deg,rgba(8,13,32,0.24),rgba(8,13,32,0.9))]"}`} />
                     <div className="relative z-10 grid h-full grid-rows-[auto_auto_1fr_auto] sm:grid-rows-[7rem_4.5rem_1fr_auto]">
-                      <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between sm:gap-6">
-                        <h3 className="text-3xl font-black uppercase leading-none tracking-tight md:text-5xl">
-                          {partner.name}
-                        </h3>
-                        <div className="relative z-20 flex h-24 w-36 shrink-0 items-center justify-center border border-white/20 bg-white px-4 py-3 shadow-[0_12px_34px_rgba(0,0,0,0.22)]">
+                      <div className="flex justify-center">
+                        <div className="relative z-20 flex h-24 w-36 shrink-0 items-center justify-center bg-white px-4 py-3 shadow-[0_12px_34px_rgba(0,0,0,0.22)]">
                           <PartnerLogo id={logoId} name={partner.name} src={logo} />
                         </div>
                       </div>

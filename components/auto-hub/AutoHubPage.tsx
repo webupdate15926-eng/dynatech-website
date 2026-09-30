@@ -53,7 +53,7 @@ function AnimatedFigure({ figure, index }: { figure: ProjectFigure; index: numbe
         <p className="relative z-10 max-w-[138px] text-center text-[clamp(1.15rem,2vw,1.8rem)] font-black leading-tight text-white">{displayValue}</p>
       </div>
       <h3 className="mt-5 min-h-10 text-sm font-black uppercase leading-tight text-[#008ED3]">{figure.label}:</h3>
-      <p className="mt-2 max-w-[270px] text-sm leading-relaxed text-white">{figure.description}</p>
+      <p className="mt-2 max-w-[270px] text-center text-sm leading-relaxed text-white">{figure.description}</p>
     </motion.article>
   );
 }
@@ -240,10 +240,10 @@ export default function AutoHubPage({ content, locale, media }: Props) {
               viewport={{ once: true, amount: 0.15 }}
               transition={{ duration: 0.45, delay: Math.min(index * 0.03, 0.15) }}
               onClick={() => setActiveGalleryIndex(index)}
-              className="group relative aspect-[4/3] cursor-pointer overflow-hidden border border-white/10 bg-white"
+              className="group relative aspect-[4/3] cursor-pointer overflow-hidden bg-transparent"
               aria-label={isAr ? "فتح صورة المشروع" : "Open project image"}
             >
-              <Image src={src} alt="" fill sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw" className="object-contain transition duration-500 group-hover:brightness-105" />
+              <Image src={src} alt="" fill sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw" className="object-cover transition duration-500 group-hover:brightness-105" />
               <span className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center border border-white/20 bg-black/55 text-white opacity-0 backdrop-blur transition group-hover:opacity-100">
                 <Maximize2 size={17} />
               </span>

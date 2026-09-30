@@ -1,5 +1,6 @@
 import type { Locale } from "@/i18n/config";
 import Image from "next/image";
+import { ContactForm } from "@/components/contact/ContactForm";
 import type { ContactContent, GlobalCmsContent } from "@/content/schema/site";
 import { getPageDocument } from "@/lib/cms/page-document";
 
@@ -119,72 +120,7 @@ export default async function Page({
           </div>
         </aside>
 
-        <form
-          action={`mailto:${content.form.recipientEmail || contactDetails.email}`}
-          method="post"
-          encType="text/plain"
-          className="grid gap-4 border border-white/10 bg-[#121b43]/80 p-5 shadow-[0_30px_90px_rgba(0,0,0,0.35)] md:p-8"
-        >
-          <h2 className="mb-2 text-3xl font-black uppercase tracking-tight text-white md:text-4xl">
-            {content.form.title}
-          </h2>
-
-          <div className="grid gap-4 md:grid-cols-2">
-            <input
-              name="fullName"
-              required
-              placeholder={content.form.fields.fullName}
-              className="min-h-12 border border-white/10 bg-[#0a0f29] px-4 text-sm font-semibold text-white outline-none transition placeholder:text-white focus:border-[#008ED3]"
-            />
-            <input
-              name="company"
-              placeholder={content.form.fields.company}
-              className="min-h-12 border border-white/10 bg-[#0a0f29] px-4 text-sm font-semibold text-white outline-none transition placeholder:text-white focus:border-[#008ED3]"
-            />
-            <input
-              name="email"
-              type="email"
-              required
-              placeholder={content.form.fields.email}
-              className="min-h-12 border border-white/10 bg-[#0a0f29] px-4 text-sm font-semibold text-white outline-none transition placeholder:text-white focus:border-[#008ED3]"
-            />
-            <input
-              name="phone"
-              placeholder={content.form.fields.phone}
-              className="min-h-12 border border-white/10 bg-[#0a0f29] px-4 text-sm font-semibold text-white outline-none transition placeholder:text-white focus:border-[#008ED3]"
-            />
-          </div>
-
-          <select
-            name="inquiryType"
-            defaultValue=""
-            className="min-h-12 border border-white/10 bg-[#0a0f29] px-4 text-sm font-semibold text-white outline-none transition focus:border-[#008ED3]"
-          >
-            <option value="" disabled>
-              {content.form.fields.inquiryType}
-            </option>
-            {content.form.categories.map((category) => (
-              <option key={category} value={category}>
-                {category}
-              </option>
-            ))}
-          </select>
-
-          <textarea
-            name="message"
-            required
-            placeholder={content.form.fields.message}
-            rows={7}
-            className="min-h-40 resize-y border border-white/10 bg-[#0a0f29] px-4 py-3 text-sm font-semibold text-white outline-none transition placeholder:text-white focus:border-[#008ED3]"
-          />
-
-          <button
-            type="submit"
-            className="mt-2 inline-flex min-h-12 items-center justify-center bg-[#008ED3] px-7 text-xs font-black uppercase tracking-[0.24em] text-black transition hover:bg-white"
-          >
-            {content.form.submitLabel}
-          </button>
-        </form>
+        <ContactForm locale={locale} title={content.form.title} categories={content.form.categories} submitLabel={content.form.submitLabel} fields={content.form.fields} />
       </section>
     </main>
   );
