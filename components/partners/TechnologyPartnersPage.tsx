@@ -33,14 +33,14 @@ function SectionKicker({
   children: React.ReactNode;
   tone?: "cyan" | "blue";
 }) {
-  const color = tone === "cyan" ? "text-[#43becc]" : "text-[#0087cb]";
+  const color = tone === "cyan" ? "text-[#008ED3]" : "text-[#008ED3]";
 
   return (
     <div className="mb-5 inline-flex flex-col gap-3">
       <p className={`text-xs font-black uppercase tracking-[0.32em] ${color}`}>
         {children}
       </p>
-      <span className="h-px w-16 bg-[#0087cb]" />
+      <span className="h-px w-16 bg-[#008ED3]" />
     </div>
   );
 }
@@ -92,11 +92,11 @@ export default function TechnologyPartnersPage({ content, locale, media }: Props
                 </span>
               ))}
             </h1>
-            <div className="mt-7 max-w-3xl border-s-2 border-[#43becc] bg-[#080d20]/64 p-5 backdrop-blur-sm md:p-6">
+            <div className="mt-7 max-w-3xl border-s-2 border-[#008ED3] bg-[#080d20]/64 p-5 backdrop-blur-sm md:p-6">
               <p className="text-base font-semibold leading-relaxed text-white md:text-lg">
                 {content.hero.intro}
               </p>
-              <p className="mt-4 text-sm leading-relaxed text-zinc-200 md:text-base">
+              <p className="mt-4 text-sm leading-relaxed text-white md:text-base">
                 {content.hero.supporting}
               </p>
             </div>
@@ -164,7 +164,7 @@ export default function TechnologyPartnersPage({ content, locale, media }: Props
                 >
                   <Link
                     href={href}
-                    className="group relative block h-full min-h-[500px] overflow-hidden border border-white/10 bg-[#111936] p-5 transition duration-500 hover:-translate-y-1 hover:border-[#43becc]/55 sm:p-7 md:p-9"
+                    className="group relative block h-full min-h-[500px] overflow-hidden border border-white/10 bg-[#111936] p-5 transition duration-500 hover:-translate-y-1 hover:border-[#008ED3]/55 sm:p-7 md:p-9"
                   >
                     {background && logoId !== "cu" ? (
                       <Image
@@ -175,7 +175,7 @@ export default function TechnologyPartnersPage({ content, locale, media }: Props
                         className="object-contain object-center transition duration-700 group-hover:scale-[1.02]"
                       />
                     ) : logoId === "cu" ? (
-                      <div className="absolute inset-0 bg-[#111936] [background-image:linear-gradient(#43becc12_1px,transparent_1px),linear-gradient(90deg,#43becc12_1px,transparent_1px)] [background-size:48px_48px]">
+                      <div className="absolute inset-0 bg-[#111936] [background-image:linear-gradient(#008ED312_1px,transparent_1px),linear-gradient(90deg,#008ED312_1px,transparent_1px)] [background-size:48px_48px]">
                         <Image
                           src={background}
                           alt=""
@@ -196,10 +196,10 @@ export default function TechnologyPartnersPage({ content, locale, media }: Props
                         </div>
                       </div>
 
-                      <p className="mt-7 self-start text-xl font-black leading-snug text-white/90 sm:mt-0 sm:self-center">
+                      <p className="mt-7 self-start text-xl font-black leading-snug text-white sm:mt-0 sm:self-center">
                         {partner.heading}
                       </p>
-                      <p className="line-clamp-4 self-start pt-4 text-sm leading-relaxed text-zinc-400 md:text-base">
+                      <p className="line-clamp-4 self-start pt-4 text-sm leading-relaxed text-white md:text-base">
                         {partner.paragraphs.join(" ")}
                       </p>
 
@@ -207,7 +207,7 @@ export default function TechnologyPartnersPage({ content, locale, media }: Props
                         <span className="text-[11px] font-black uppercase tracking-[0.28em] text-white">
                           {partner.ctaLabel}
                         </span>
-                        <span className="flex h-11 w-11 items-center justify-center bg-[#0087cb] text-black transition duration-300 group-hover:bg-white">
+                        <span className="flex h-11 w-11 items-center justify-center bg-[#008ED3] text-black transition duration-300 group-hover:bg-white">
                           <ArrowUpRight size={18} />
                         </span>
                       </div>

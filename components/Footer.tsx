@@ -21,8 +21,8 @@ export function Footer({ locale, content, media }: FooterProps) {
 
   return (
     <footer className="relative overflow-hidden border-t border-white/10 bg-[#0a0f29] py-10 text-white md:py-12">
-      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#43becc]/55 to-transparent" />
-      <div className="pointer-events-none absolute inset-0 opacity-[0.045] [background-image:linear-gradient(#43becc_1px,transparent_1px),linear-gradient(90deg,#43becc_1px,transparent_1px)] [background-size:88px_88px]" />
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#008ED3]/55 to-transparent" />
+      <div className="pointer-events-none absolute inset-0 opacity-[0.045] [background-image:linear-gradient(#008ED3_1px,transparent_1px),linear-gradient(90deg,#008ED3_1px,transparent_1px)] [background-size:88px_88px]" />
 
       <div className="relative z-10 mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
         <div className="grid gap-9 lg:grid-cols-[0.95fr_1fr_1.1fr_0.82fr] lg:items-start">
@@ -44,7 +44,7 @@ export function Footer({ locale, content, media }: FooterProps) {
           </div>
 
           <div>
-            <h4 className="text-[10px] font-black uppercase tracking-[0.36em] text-[#0087cb]">
+            <h4 className="text-[10px] font-black uppercase tracking-[0.36em] text-[#008ED3]">
               {content.labels.location}
             </h4>
             <div className="mt-5 grid gap-5 sm:grid-cols-2">
@@ -69,7 +69,7 @@ export function Footer({ locale, content, media }: FooterProps) {
           </div>
 
           <div>
-            <h4 className="mb-4 text-[10px] font-black uppercase tracking-[0.36em] text-[#0087cb]">
+            <h4 className="mb-4 text-[10px] font-black uppercase tracking-[0.36em] text-[#008ED3]">
               {content.labels.quickLinks}
             </h4>
             <div className="grid grid-cols-2 gap-x-4 gap-y-2">
@@ -77,7 +77,7 @@ export function Footer({ locale, content, media }: FooterProps) {
                 <Link
                   key={item.path}
                   href={localizedPath(locale, item.path)}
-                  className="text-xs font-black uppercase tracking-[0.12em] text-white transition hover:text-[#43becc]"
+                  className="text-xs font-black uppercase tracking-[0.12em] text-white transition hover:text-[#008ED3]"
                 >
                   {item.label}
                 </Link>
@@ -86,22 +86,22 @@ export function Footer({ locale, content, media }: FooterProps) {
           </div>
 
           <div>
-            <h4 className="mb-4 text-[10px] font-black uppercase tracking-[0.36em] text-[#0087cb]">
+            <h4 className="mb-4 text-[10px] font-black uppercase tracking-[0.36em] text-[#008ED3]">
               {content.labels.connect}
             </h4>
             <div className="space-y-3 border-t border-white/10 pt-5 lg:border-t-0 lg:pt-0">
               <a
                 href={contact.phone.href}
-                className="flex items-center gap-3 text-sm font-black tracking-tight text-white transition hover:text-[#43becc]"
+                className="flex items-center gap-3 text-sm font-black tracking-tight text-white transition hover:text-[#008ED3]"
               >
-                <Phone size={16} className="text-[#43becc]" />
+                <Phone size={16} className="text-[#008ED3]" />
                 {contact.phone.display}
               </a>
               <a
                 href={`mailto:${contact.email}`}
-                className="flex items-center gap-3 text-xs font-semibold text-white transition hover:text-[#43becc]"
+                className="flex items-center gap-3 text-xs font-semibold text-white transition hover:text-[#008ED3]"
               >
-                <Mail size={16} className="text-[#43becc]" />
+                <Mail size={16} className="text-[#008ED3]" />
                 {contact.email}
               </a>
             </div>

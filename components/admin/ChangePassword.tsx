@@ -16,7 +16,7 @@ export function ChangePassword({ session, locale }: { session: Session; locale: 
   const [done, setDone] = useState(false);
 
   return <section className="rounded-md border border-white/10 bg-[var(--admin-panel)] p-5 md:p-7">
-    <div className="mb-2 flex items-center gap-2"><KeyRound size={18} className="text-[#43becc]" /><h3 className="text-lg font-extrabold">{isAr ? "تغيير كلمة مرور حسابك" : "Change your password"}</h3></div>
+    <div className="mb-2 flex items-center gap-2"><KeyRound size={18} className="text-[#008ED3]" /><h3 className="text-lg font-extrabold">{isAr ? "تغيير كلمة مرور حسابك" : "Change your password"}</h3></div>
     <p className="mb-5 text-sm text-white/55">{session.user.email}</p>
     {error && <p role="alert" className="mb-4 text-sm text-red-200">{error}</p>}
     {done && <p role="status" className="mb-4 text-sm text-emerald-200">{isAr ? "تم تغيير كلمة المرور" : "Password changed successfully"}</p>}
@@ -32,10 +32,10 @@ export function ChangePassword({ session, locale }: { session: Session; locale: 
       } catch (cause) { setError(cause instanceof Error ? cause.message : "Password change failed."); }
       finally { setBusy(false); }
     }}>
-      <label className="text-sm text-white/65">{isAr ? "كلمة المرور الحالية" : "Current password"}<input className="mt-2 h-11 w-full rounded border border-white/15 bg-[#0c1017] px-3 text-white outline-none focus:border-[#43becc]" type="password" autoComplete="current-password" required value={currentPassword} onChange={(event) => setCurrentPassword(event.target.value)} /></label>
-      <label className="text-sm text-white/65">{isAr ? "كلمة المرور الجديدة" : "New password"}<input className="mt-2 h-11 w-full rounded border border-white/15 bg-[#0c1017] px-3 text-white outline-none focus:border-[#43becc]" type="password" autoComplete="new-password" minLength={12} required value={password} onChange={(event) => setPassword(event.target.value)} /></label>
-      <label className="text-sm text-white/65">{isAr ? "تأكيد كلمة المرور" : "Confirm new password"}<input className="mt-2 h-11 w-full rounded border border-white/15 bg-[#0c1017] px-3 text-white outline-none focus:border-[#43becc]" type="password" autoComplete="new-password" minLength={12} required value={confirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} /></label>
-      <button className="admin-button w-fit border-[#118fc3] bg-[#118fc3] text-white" disabled={busy}>{busy ? <LoaderCircle size={16} className="animate-spin" /> : <KeyRound size={16} />}{isAr ? "حفظ كلمة المرور" : "Save password"}</button>
+      <label className="text-sm text-white/65">{isAr ? "كلمة المرور الحالية" : "Current password"}<input className="mt-2 h-11 w-full rounded border border-white/15 bg-[#0c1017] px-3 text-white outline-none focus:border-[#008ED3]" type="password" autoComplete="current-password" required value={currentPassword} onChange={(event) => setCurrentPassword(event.target.value)} /></label>
+      <label className="text-sm text-white/65">{isAr ? "كلمة المرور الجديدة" : "New password"}<input className="mt-2 h-11 w-full rounded border border-white/15 bg-[#0c1017] px-3 text-white outline-none focus:border-[#008ED3]" type="password" autoComplete="new-password" minLength={12} required value={password} onChange={(event) => setPassword(event.target.value)} /></label>
+      <label className="text-sm text-white/65">{isAr ? "تأكيد كلمة المرور" : "Confirm new password"}<input className="mt-2 h-11 w-full rounded border border-white/15 bg-[#0c1017] px-3 text-white outline-none focus:border-[#008ED3]" type="password" autoComplete="new-password" minLength={12} required value={confirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} /></label>
+      <button className="admin-button w-fit border-[#008ED3] bg-[#008ED3] text-white" disabled={busy}>{busy ? <LoaderCircle size={16} className="animate-spin" /> : <KeyRound size={16} />}{isAr ? "حفظ كلمة المرور" : "Save password"}</button>
     </form>
   </section>;
 }

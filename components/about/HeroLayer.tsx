@@ -23,9 +23,9 @@ export default function HeroLayer({
       className="absolute inset-0 z-10 flex flex-col items-center justify-center text-center px-6"
     >
       <h1 className="text-[12vw] font-black italic tracking-tighter text-white uppercase">
-        {titleLeft} <span className="text-[#0087cb]">{titleRight}</span>
+        {titleLeft} <span className="text-[#008ED3]">{titleRight}</span>
       </h1>
-      <p className="text-[#006db1] font-mono tracking-[1em] text-xs">
+      <p className="text-[#008ED3] font-mono tracking-[1em] text-xs">
         {tagline}
       </p>
     </motion.div>

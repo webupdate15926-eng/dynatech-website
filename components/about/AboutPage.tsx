@@ -21,7 +21,7 @@ function BackgroundGrid({ fixed = false }: { fixed?: boolean }) {
       <div
         className="absolute inset-0 opacity-[0.15]"
         style={{
-          backgroundImage: `linear-gradient(#0087cb22 1px, transparent 1px), linear-gradient(90deg, #0087cb22 1px, transparent 1px)`,
+          backgroundImage: `linear-gradient(#008ED322 1px, transparent 1px), linear-gradient(90deg, #008ED322 1px, transparent 1px)`,
           backgroundSize: '60px 60px',
         }}
       />
@@ -44,7 +44,7 @@ function VideoBackground({ fixed = false, src }: { fixed?: boolean; src: string 
         <source src={src} type="video/mp4" />
       </video>
       <div className="absolute inset-0 bg-[#050915]/8" />
-      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(10,15,41,0.34),rgba(10,15,41,0.1)_45%,rgba(10,15,41,0.34)),radial-gradient(circle_at_50%_45%,rgba(0,135,203,0.06),transparent_34%)]" />
+      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(10,15,41,0.34),rgba(10,15,41,0.1)_45%,rgba(10,15,41,0.34)),radial-gradient(circle_at_50%_45%,rgba(0,142,211,0.06),transparent_34%)]" />
       <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#0a0f29]/38 to-transparent" />
     </div>
   )
@@ -73,7 +73,7 @@ function CeoMessage({
     <section ref={sectionRef} className="relative z-10 overflow-hidden bg-[#0a0f29]/40 px-4 py-28 sm:px-6 md:py-36">
       <motion.div
         style={{ y: cardY, opacity: cardOpacity }}
-        className={`relative z-10 mx-auto w-full max-w-5xl bg-[#111936]/82 p-6 shadow-[0_26px_90px_rgba(0,0,0,0.36)] backdrop-blur-sm md:p-8 lg:p-10 ${isAr ? 'border-r-4 border-[#0087cb] text-right' : 'border-l-4 border-[#0087cb]'}`}
+        className={`relative z-10 mx-auto w-full max-w-5xl bg-[#111936]/82 p-6 shadow-[0_26px_90px_rgba(0,0,0,0.36)] backdrop-blur-sm md:p-8 lg:p-10 ${isAr ? 'border-r-4 border-[#008ED3] text-right' : 'border-l-4 border-[#008ED3]'}`}
       >
         <h2 className="text-4xl font-black uppercase leading-none tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl">
           {content.title}
@@ -89,7 +89,7 @@ function CeoMessage({
                 duration: 0.55,
                 delay: Math.min(paragraphIndex * 0.04, 0.16),
               }}
-              className="text-sm font-medium leading-relaxed text-zinc-300 md:text-base"
+              className="text-sm font-medium leading-relaxed text-white md:text-base"
             >
               {paragraph}
             </motion.p>
@@ -97,10 +97,10 @@ function CeoMessage({
         </div>
         <div className="mt-9 border-t border-white/10 pt-6">
           <p className="font-black text-white">{content.signatureName}</p>
-          <p className="mt-1 text-xs font-bold uppercase tracking-wider text-[#43becc]">
+          <p className="mt-1 text-xs font-bold uppercase tracking-wider text-[#008ED3]">
             {content.signatureRole}
           </p>
-          <p className="mt-1 text-xs text-zinc-500">
+          <p className="mt-1 text-xs text-white">
             {content.signatureCompany}
           </p>
         </div>
@@ -124,8 +124,8 @@ function MobileIntro({
         transition={{ duration: 0.6, ease: 'easeOut' }}
         className={`bg-[#111936]/82 p-5 shadow-[0_26px_90px_rgba(0,0,0,0.36)] backdrop-blur-sm ${
           isAr
-            ? 'border-r-4 border-[#0087cb] text-right'
-            : 'border-l-4 border-[#0087cb]'
+            ? 'border-r-4 border-[#008ED3] text-right'
+            : 'border-l-4 border-[#008ED3]'
         }`}
       >
         <h1 className="text-4xl font-black uppercase leading-none tracking-tight text-white">
@@ -135,7 +135,7 @@ function MobileIntro({
           {content.company.paragraphs.map((paragraph) => (
             <p
               key={paragraph}
-              className="text-sm font-medium leading-6 text-zinc-300"
+              className="text-sm font-medium leading-6 text-white"
             >
               {paragraph}
             </p>
@@ -153,14 +153,14 @@ function MobileIntro({
         <h2 className="whitespace-nowrap text-[clamp(1.55rem,8vw,2.25rem)] font-black uppercase leading-none tracking-tight text-white">
           {content.founder.name}
         </h2>
-        <p className="mt-6 text-sm font-medium leading-6 text-zinc-300">
+        <p className="mt-6 text-sm font-medium leading-6 text-white">
           {content.founder.description}
         </p>
         <a
           href={content.founder.linkedinUrl}
           target="_blank"
           rel="noreferrer"
-          className="mt-7 inline-flex items-center gap-2 border border-[#0087cb]/40 bg-[#0087cb]/10 px-4 py-3 text-xs font-black uppercase tracking-[0.16em] text-[#43becc]"
+          className="mt-7 inline-flex items-center gap-2 border border-[#008ED3]/40 bg-[#008ED3]/10 px-4 py-3 text-xs font-black uppercase tracking-[0.16em] text-[#008ED3]"
         >
           <Linkedin size={16} strokeWidth={2.4} />
           <span>{/^(learn more|اعرف المزيد)$/i.test(content.founder.linkedinLabel.trim()) ? 'LinkedIn' : content.founder.linkedinLabel}</span>

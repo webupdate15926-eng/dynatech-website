@@ -19,10 +19,10 @@ const fadeUp = {
 function SectionKicker({ children }: { children: React.ReactNode }) {
   return (
     <div className="mb-5 inline-flex flex-col gap-3">
-      <p className="text-xs font-black uppercase tracking-[0.24em] text-[#43becc]">
+      <p className="text-xs font-black uppercase tracking-[0.24em] text-[#008ED3]">
         {children}
       </p>
-      <span className="h-px w-16 bg-[#0087cb]" />
+      <span className="h-px w-16 bg-[#008ED3]" />
     </div>
   );
 }
@@ -35,7 +35,7 @@ export default function TechInfoPage({ content, locale, media }: Props) {
     <main
       dir={isAr ? "rtl" : "ltr"}
       lang={locale}
-      className="min-h-screen bg-[#0a0f29] pt-24 text-white selection:bg-[#0087cb] selection:text-black"
+      className="min-h-screen bg-[#0a0f29] pt-24 text-white selection:bg-[#008ED3] selection:text-black"
     >
       <section className="relative flex min-h-[calc(100svh-6rem)] items-center overflow-hidden border-b border-white/10">
         <video
@@ -52,7 +52,7 @@ export default function TechInfoPage({ content, locale, media }: Props) {
         <div className="absolute inset-0 bg-[#0a0f29]/16" />
         <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(10,15,41,0.52),rgba(10,15,41,0.18)_55%,rgba(10,15,41,0.4))]" />
         <div className="absolute inset-0 opacity-[0.045] [background-image:linear-gradient(#fff_1px,transparent_1px),linear-gradient(90deg,#fff_1px,transparent_1px)] [background-size:58px_58px]" />
-        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#0087cb] to-transparent" />
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#008ED3] to-transparent" />
 
         <div className="relative mx-auto grid max-w-7xl gap-12 px-6 py-20 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
           <motion.div
@@ -72,10 +72,10 @@ export default function TechInfoPage({ content, locale, media }: Props) {
             animate="visible"
             variants={fadeUp}
             transition={{ duration: 0.6, delay: 0.12 }}
-            className="relative border border-white/10 border-l-[#0087cb] bg-[#121b43]/75 p-6 shadow-[inset_4px_0_0_#0087cb] md:p-8"
+            className="relative border border-white/10 border-l-[#008ED3] bg-[#121b43]/75 p-6 shadow-[inset_4px_0_0_#008ED3] md:p-8"
           >
-            <div className="absolute right-0 top-0 h-8 w-8 border-r border-t border-[#0087cb]/70" />
-            <p className="text-lg font-semibold leading-relaxed text-[#43becc]">
+            <div className="absolute right-0 top-0 h-8 w-8 border-r border-t border-[#008ED3]/70" />
+            <p className="text-lg font-semibold leading-relaxed text-[#008ED3]">
               {content.hero.description}
             </p>
           </motion.div>
@@ -119,13 +119,13 @@ export default function TechInfoPage({ content, locale, media }: Props) {
                   </div>
                 </div>
                 <div className="p-6 md:p-7">
-                  <p className="text-[11px] font-black uppercase tracking-[0.28em] text-[#43becc]">
+                  <p className="text-[11px] font-black uppercase tracking-[0.28em] text-[#008ED3]">
                     0{index + 1}
                   </p>
                   <h3 className="mt-3 text-2xl font-black uppercase leading-tight tracking-tight text-white">
                     {item.title}
                   </h3>
-                  <p className="mt-4 text-sm leading-relaxed text-zinc-400 md:text-base">
+                  <p className="mt-4 text-sm leading-relaxed text-white md:text-base">
                     {item.description}
                   </p>
                 </div>

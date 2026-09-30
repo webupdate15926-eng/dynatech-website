@@ -16,7 +16,7 @@ type Props = {
 };
 
 function accentFor(id: string) {
-  return id === "fft" ? "#0087cb" : "#43becc";
+  return id === "fft" ? "#008ED3" : "#008ED3";
 }
 
 function PartnerLogo({ id, src }: { id: string; src: string }) {
@@ -114,7 +114,7 @@ export default function TechnologyPartnerPage({ partner, ecosystemColumn, locale
           >
             <Link
               href={`/${locale}/technology-partners`}
-              className="mb-5 inline-flex items-center gap-3 text-xs font-black uppercase tracking-[0.22em] text-zinc-300 transition hover:text-white"
+              className="mb-5 inline-flex items-center gap-3 text-xs font-black uppercase tracking-[0.22em] text-white transition hover:text-white"
             >
               <ArrowLeft size={16} />
               {copy?.backLabel ?? (isAr ? "الشركاء" : "Partners")}
@@ -139,7 +139,7 @@ export default function TechnologyPartnerPage({ partner, ecosystemColumn, locale
             <h1 className="max-w-5xl text-4xl font-black leading-[1.02] tracking-normal md:text-6xl xl:text-[4rem]">
               {hero.title}
             </h1>
-            <div className="mt-4 max-w-3xl space-y-3 text-base leading-relaxed text-zinc-200 md:text-lg">
+            <div className="mt-4 max-w-3xl space-y-3 text-base leading-relaxed text-white md:text-lg">
               {hero.paragraphs.map((paragraph) => (
                 <p key={paragraph}>{paragraph}</p>
               ))}
@@ -168,7 +168,7 @@ export default function TechnologyPartnerPage({ partner, ecosystemColumn, locale
           className="border border-white/10 bg-[#111936] p-7 md:p-9"
         >
           <SectionKicker color={accent}>{partner.roleTitle}</SectionKicker>
-          <p className="text-lg leading-relaxed text-zinc-300 md:text-xl">
+          <p className="text-lg leading-relaxed text-white md:text-xl">
             {partner.roleText}
           </p>
 
@@ -177,7 +177,7 @@ export default function TechnologyPartnerPage({ partner, ecosystemColumn, locale
           </h2>
           <div className="mt-6 grid gap-3 sm:grid-cols-2">
             {partner.scope.map((item) => (
-              <div key={item} className="flex items-center gap-3 border border-white/10 bg-[#080d20] p-4 text-sm font-bold text-zinc-300">
+              <div key={item} className="flex items-center gap-3 border border-white/10 bg-[#080d20] p-4 text-sm font-bold text-white">
                 <CheckCircle2 size={16} style={{ color: accent }} />
                 <span>{item}</span>
               </div>
@@ -199,7 +199,7 @@ export default function TechnologyPartnerPage({ partner, ecosystemColumn, locale
           </h2>
           <ul className="mt-7 space-y-4">
             {ecosystemColumn.items.map((item) => (
-              <li key={item} className="border-b border-white/10 pb-3 text-sm font-bold uppercase tracking-wide text-zinc-400">
+              <li key={item} className="border-b border-white/10 pb-3 text-sm font-bold uppercase tracking-wide text-white">
                 {item}
               </li>
             ))}
@@ -228,7 +228,7 @@ export default function TechnologyPartnerPage({ partner, ecosystemColumn, locale
             href={hero.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-3 bg-white px-5 py-3 text-xs font-black uppercase tracking-widest text-black transition hover:bg-[#43becc]"
+            className="inline-flex items-center gap-3 bg-white px-5 py-3 text-xs font-black uppercase tracking-widest text-black transition hover:bg-[#008ED3]"
           >
             {mediaCopy.ctaLabel}
             <ArrowUpRight size={16} />
@@ -270,7 +270,7 @@ export default function TechnologyPartnerPage({ partner, ecosystemColumn, locale
                 <>
                   <div className="absolute inset-0 opacity-[0.08] [background-image:linear-gradient(#fff_1px,transparent_1px),linear-gradient(90deg,#fff_1px,transparent_1px)] [background-size:38px_38px]" />
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <ImageIcon size={34} className="text-white/30 transition group-hover:text-white/60" />
+                    <ImageIcon size={34} className="text-white/30 transition group-hover:text-white" />
                   </div>
                 </>
               )}
@@ -279,7 +279,7 @@ export default function TechnologyPartnerPage({ partner, ecosystemColumn, locale
                 {item.type === "video" ? mediaCopy.videoBadge : mediaCopy.imageBadge}
               </div>
               {item.featured && (
-                <div className="pointer-events-none absolute left-5 top-5 border border-white/20 bg-[#0087cb] px-3 py-2 text-[10px] font-black uppercase tracking-[0.22em] text-black shadow-[0_10px_30px_rgba(0,0,0,0.3)]">
+                <div className="pointer-events-none absolute left-5 top-5 border border-white/20 bg-[#008ED3] px-3 py-2 text-[10px] font-black uppercase tracking-[0.22em] text-black shadow-[0_10px_30px_rgba(0,0,0,0.3)]">
                   {mediaCopy.featuredLabel}
                 </div>
               )}

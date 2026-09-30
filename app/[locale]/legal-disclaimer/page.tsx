@@ -36,14 +36,14 @@ export default async function LegalDisclaimerPage({
       className="min-h-screen bg-[#0a0f29] px-5 pb-20 pt-32 text-white sm:px-6 md:px-12 lg:px-20"
     >
       <section className="mx-auto max-w-5xl">
-        <div className={`mb-10 ${isAr ? "border-r pr-5" : "border-l pl-5"} border-[#43becc]`}>
-          <p className="text-[10px] font-black uppercase tracking-[0.34em] text-[#43becc]">
+        <div className={`mb-10 ${isAr ? "border-r pr-5" : "border-l pl-5"} border-[#008ED3]`}>
+          <p className="text-[10px] font-black uppercase tracking-[0.34em] text-[#008ED3]">
             {content.kicker}
           </p>
           <h1 className="mt-4 text-4xl font-black uppercase leading-tight tracking-tight md:text-6xl">
             {content.title}
           </h1>
-          <p className="mt-5 max-w-3xl text-sm font-semibold leading-relaxed text-zinc-400 md:text-base">
+          <p className="mt-5 max-w-3xl text-sm font-semibold leading-relaxed text-white md:text-base">
             {content.description}
           </p>
         </div>
@@ -54,7 +54,7 @@ export default async function LegalDisclaimerPage({
               <h2 className="text-base font-black uppercase tracking-[0.08em] text-white md:text-lg">
                 {section.title}
               </h2>
-              <p className="mt-4 text-sm font-medium leading-8 text-zinc-400 md:text-base">
+              <p className="mt-4 text-sm font-medium leading-8 text-white md:text-base">
                 {section.body}
               </p>
             </article>

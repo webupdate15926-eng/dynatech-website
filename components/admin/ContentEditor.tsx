@@ -20,7 +20,7 @@ type Props = {
   mediaOnly?: boolean;
 };
 
-const inputClass = "w-full rounded border border-white/15 bg-[#10151e] px-3 py-2.5 text-sm leading-7 text-white outline-none focus:border-[#43becc] focus:ring-1 focus:ring-[#43becc]";
+const inputClass = "w-full rounded border border-white/15 bg-[#10151e] px-3 py-2.5 text-sm leading-7 text-white outline-none focus:border-[#008ED3] focus:ring-1 focus:ring-[#008ED3]";
 
 function newArrayItem(path: EditorPath, previous: JsonValue | undefined, locale: Locale): JsonValue {
   const key = path.join(".");
@@ -102,7 +102,7 @@ export function ContentEditor(props: Props) {
         : <Images size={32} className="text-white/25" />}
     </div>
     <div className="flex flex-wrap gap-2">
-      <label htmlFor={id} className="admin-button cursor-pointer bg-[#0087cb] text-white"><CloudUpload size={16} />{busy ? <LoaderCircle size={16} className="animate-spin" /> : ar ? "رفع ملف جديد" : "Upload new file"}</label>
+      <label htmlFor={id} className="admin-button cursor-pointer bg-[#008ED3] text-white"><CloudUpload size={16} />{busy ? <LoaderCircle size={16} className="animate-spin" /> : ar ? "رفع ملف جديد" : "Upload new file"}</label>
       <input id={id} type="file" accept="image/*,video/*" className="sr-only" disabled={Boolean(uploadingPath)} onChange={(e) => { const file = e.target.files?.[0]; if (file) onUpload(file, path); e.target.value = ""; }} />
       <button type="button" onClick={() => onPickMedia(path)} className="admin-button"><Images size={16} />{ar ? "اختيار من المكتبة" : "Choose from library"}</button>
       <button type="button" title={ar ? "تعديل الرابط" : "Edit link"} onClick={() => setShowLink(!showLink)} className="admin-icon"><Link2 size={16} /></button>

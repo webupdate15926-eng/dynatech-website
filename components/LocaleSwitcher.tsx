@@ -22,7 +22,7 @@ export function LocaleSwitcher({
   return (
     <button
       type="button"
-      className={`inline-flex cursor-pointer items-center rounded-full border border-black/[.08] px-4 py-2 text-sm font-medium transition-all duration-300 hover:border-[#0087cb]/50 hover:bg-black/[.04] hover:text-[#0087cb] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0087cb]/60 dark:border-white/[.145] dark:hover:bg-white/[.06] ${
+      className={`inline-flex cursor-pointer items-center rounded-full border border-black/[.08] px-4 py-2 text-sm font-medium transition-all duration-300 hover:border-[#008ED3]/50 hover:bg-black/[.04] hover:text-[#008ED3] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#008ED3]/60 dark:border-white/[.145] dark:hover:bg-white/[.06] ${
         className ?? ""
       }`}
       onClick={() => {

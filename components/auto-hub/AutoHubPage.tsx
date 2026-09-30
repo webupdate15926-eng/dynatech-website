@@ -46,14 +46,14 @@ function AnimatedFigure({ figure, index }: { figure: ProjectFigure; index: numbe
       transition={{ duration: 0.5, delay: index * 0.04 }}
       className="group flex min-w-0 flex-col items-center text-center"
     >
-      <div className="relative flex h-40 w-40 shrink-0 items-center justify-center rounded-full border border-[#43becc]/40 bg-[#080d20] shadow-[0_0_42px_rgba(0,135,203,0.13)] md:h-44 md:w-44">
-        <div className="absolute inset-0 rounded-full bg-[conic-gradient(from_155deg,#0087cb,#43becc44,#8e257a,#0087cb)] opacity-80 transition duration-700 group-hover:rotate-90" />
+      <div className="relative flex h-40 w-40 shrink-0 items-center justify-center rounded-full border border-[#008ED3]/40 bg-[#080d20] shadow-[0_0_42px_rgba(0,142,211,0.13)] md:h-44 md:w-44">
+        <div className="absolute inset-0 rounded-full bg-[conic-gradient(from_155deg,#008ED3,#008ED344,#8e257a,#008ED3)] opacity-80 transition duration-700 group-hover:rotate-90" />
         <div className="absolute inset-[3px] rounded-full bg-[#111936]" />
         <div className="absolute inset-5 rounded-full border border-dashed border-white/15" />
         <p className="relative z-10 max-w-[138px] text-center text-[clamp(1.15rem,2vw,1.8rem)] font-black leading-tight text-white">{displayValue}</p>
       </div>
-      <h3 className="mt-5 min-h-10 text-sm font-black uppercase leading-tight text-[#43becc]">{figure.label}:</h3>
-      <p className="mt-2 max-w-[270px] text-sm leading-relaxed text-zinc-400">{figure.description}</p>
+      <h3 className="mt-5 min-h-10 text-sm font-black uppercase leading-tight text-[#008ED3]">{figure.label}:</h3>
+      <p className="mt-2 max-w-[270px] text-sm leading-relaxed text-white">{figure.description}</p>
     </motion.article>
   );
 }
@@ -133,7 +133,7 @@ export default function AutoHubPage({ content, locale, media }: Props) {
                 <span key={line} className="block">{line}</span>
               ))}
             </h1>
-            <span className="mt-7 block h-px w-20 bg-[#0087cb]" />
+            <span className="mt-7 block h-px w-20 bg-[#008ED3]" />
           </motion.div>
 
           <motion.div {...reveal} viewport={{ once: true, amount: 0.22 }} transition={{ duration: 0.7, delay: 0.08 }} className="relative aspect-[16/10] overflow-hidden border border-white/15 bg-white shadow-[0_30px_80px_rgba(0,0,0,0.32)] lg:left-8 xl:left-12">
@@ -154,8 +154,8 @@ export default function AutoHubPage({ content, locale, media }: Props) {
         <div dir="ltr" className="relative mx-auto grid max-w-[1440px] gap-10 lg:grid-cols-[1.08fr_0.92fr] lg:items-center lg:gap-16">
           <motion.div dir={isAr ? "rtl" : "ltr"} {...reveal} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.65 }}>
             <h2 className="text-4xl font-black uppercase leading-tight tracking-normal md:text-5xl lg:text-6xl">{introductionTitle}</h2>
-            <span className="mt-5 block h-px w-16 bg-[#0087cb]" />
-            <p className="mt-8 text-base leading-[1.9] text-zinc-300 md:text-lg">
+            <span className="mt-5 block h-px w-16 bg-[#008ED3]" />
+            <p className="mt-8 text-base leading-[1.9] text-white md:text-lg">
               {introduction}
             </p>
           </motion.div>
@@ -182,7 +182,7 @@ export default function AutoHubPage({ content, locale, media }: Props) {
         <div className="mx-auto max-w-[1440px]">
           <div className="mx-auto max-w-4xl text-center">
             <h2 className="text-3xl font-black uppercase leading-tight tracking-normal md:text-4xl lg:text-5xl">{teamTitle}</h2>
-            <span className="mx-auto mt-5 block h-px w-16 bg-[#0087cb]" />
+            <span className="mx-auto mt-5 block h-px w-16 bg-[#008ED3]" />
           </div>
           <div className="mt-12 grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
             {team.map((member, index) => (
@@ -191,17 +191,17 @@ export default function AutoHubPage({ content, locale, media }: Props) {
                   type="button"
                   onClick={() => setActiveTeamIndex((current) => current === index ? null : index)}
                   aria-expanded={activeTeamIndex === index}
-                  className="group relative block aspect-[3/4] w-full overflow-hidden border border-white/10 bg-[#080d20] text-start transition duration-500 hover:-translate-y-1 hover:border-[#43becc]/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#43becc]"
+                  className="group relative block aspect-[3/4] w-full overflow-hidden border border-white/10 bg-[#080d20] text-start transition duration-500 hover:-translate-y-1 hover:border-[#008ED3]/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#008ED3]"
                 >
                   {member.image && <Image src={member.image} alt={member.name} fill sizes="(min-width:1280px) 25vw, (min-width:640px) 50vw, 100vw" className="object-cover transition duration-700 group-hover:scale-[1.035]" style={{ objectPosition: member.imagePosition }} />}
                   <div className="absolute inset-0 bg-gradient-to-t from-[#080d20] via-[#080d20]/10 to-transparent" />
                   <div className={`absolute inset-0 flex flex-col justify-end overflow-y-auto bg-[#080d20]/96 p-4 transition duration-500 md:p-5 ${activeTeamIndex === index ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100"}`}>
-                    <span className="w-fit bg-[#0087cb] px-2.5 py-1.5 text-[9px] font-black uppercase text-black">{member.category}</span>
+                    <span className="w-fit bg-[#008ED3] px-2.5 py-1.5 text-[9px] font-black uppercase text-black">{member.category}</span>
                     <h3 className="mt-3 text-lg font-black leading-tight text-white md:text-xl">{member.name}</h3>
-                    <p className="mt-4 text-[11px] leading-[1.65] text-zinc-300 md:text-xs">{member.biography}</p>
+                    <p className="mt-4 text-[11px] leading-[1.65] text-white md:text-xs">{member.biography}</p>
                   </div>
                   <div className={`absolute inset-x-0 bottom-0 p-5 transition duration-300 ${activeTeamIndex === index ? "pointer-events-none opacity-0" : "opacity-100 group-hover:opacity-0 group-focus-visible:opacity-0"}`}>
-                    <span className="inline-block bg-[#0087cb] px-2.5 py-1.5 text-[9px] font-black uppercase text-black">{member.category}</span>
+                    <span className="inline-block bg-[#008ED3] px-2.5 py-1.5 text-[9px] font-black uppercase text-black">{member.category}</span>
                     <h3 className="mt-3 text-xl font-black leading-tight text-white md:text-2xl">{member.name}</h3>
                   </div>
                 </button>
@@ -216,7 +216,7 @@ export default function AutoHubPage({ content, locale, media }: Props) {
         <div className="relative mx-auto max-w-7xl">
           <div className="mx-auto max-w-4xl text-center">
             <h2 className="text-3xl font-black uppercase leading-tight tracking-normal md:text-4xl lg:text-5xl">{figuresTitle}</h2>
-            <span className="mx-auto mt-5 block h-px w-16 bg-[#0087cb]" />
+            <span className="mx-auto mt-5 block h-px w-16 bg-[#008ED3]" />
           </div>
           <div className="mt-12 grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
             {figures.map((figure, index) => <AnimatedFigure key={figure.label} figure={figure} index={index} />)}
@@ -229,7 +229,7 @@ export default function AutoHubPage({ content, locale, media }: Props) {
         <div className="relative mx-auto max-w-7xl">
           <div className="mb-10">
             <h2 className="text-3xl font-black uppercase leading-tight tracking-normal md:text-4xl lg:text-5xl">{galleryTitle}</h2>
-            <span className="mt-5 block h-px w-16 bg-[#0087cb]" />
+            <span className="mt-5 block h-px w-16 bg-[#008ED3]" />
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {autoHubGallery.map((src, index) => (
@@ -255,7 +255,7 @@ export default function AutoHubPage({ content, locale, media }: Props) {
 
       {activeGalleryIndex !== null ? (
         <div className="fixed inset-0 z-[310] flex items-center justify-center bg-black/92 px-4 py-5 backdrop-blur-md md:px-8" role="dialog" aria-modal="true" aria-label={isAr ? "صورة المشروع" : "Project image"}>
-          <button type="button" onClick={() => setActiveGalleryIndex(null)} className="absolute right-4 top-4 z-20 flex h-11 w-11 items-center justify-center bg-white text-black transition hover:bg-[#43becc] md:right-7 md:top-7" aria-label={isAr ? "إغلاق" : "Close"}><X size={20} /></button>
+          <button type="button" onClick={() => setActiveGalleryIndex(null)} className="absolute right-4 top-4 z-20 flex h-11 w-11 items-center justify-center bg-white text-black transition hover:bg-[#008ED3] md:right-7 md:top-7" aria-label={isAr ? "إغلاق" : "Close"}><X size={20} /></button>
           <button type="button" onClick={() => setActiveGalleryIndex((current) => current === null ? current : (current - 1 + autoHubGallery.length) % autoHubGallery.length)} className="absolute left-4 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center border border-white/15 bg-black/55 text-white transition hover:bg-white hover:text-black md:left-7" aria-label={isAr ? "السابق" : "Previous"}><ChevronLeft size={22} /></button>
           <button type="button" onClick={() => setActiveGalleryIndex((current) => current === null ? current : (current + 1) % autoHubGallery.length)} className="absolute right-4 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center border border-white/15 bg-black/55 text-white transition hover:bg-white hover:text-black md:right-7" aria-label={isAr ? "التالي" : "Next"}><ChevronRight size={22} /></button>
           <div className="relative h-full max-h-[86vh] w-full max-w-6xl overflow-hidden border border-white/10 bg-[#080d20]">

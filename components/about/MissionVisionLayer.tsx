@@ -19,7 +19,7 @@ export default function MissionVisionLayer({ opacity, data, isAr = false }: Prop
     >
       <div
         className={`w-full max-w-5xl bg-[#111936]/82 p-6 shadow-[0_26px_90px_rgba(0,0,0,0.36)] backdrop-blur-sm md:p-8 lg:p-10 ${
-          isAr ? "border-r-4 border-[#0087cb] text-right" : "border-l-4 border-[#0087cb]"
+          isAr ? "border-r-4 border-[#008ED3] text-right" : "border-l-4 border-[#008ED3]"
         }`}
       >
         <div className="max-w-4xl">
@@ -30,7 +30,7 @@ export default function MissionVisionLayer({ opacity, data, isAr = false }: Prop
             {paragraphs.map((paragraph) => (
               <p
                 key={paragraph}
-                className="max-w-3xl text-sm font-medium leading-relaxed text-zinc-300 md:text-base"
+                className="max-w-3xl text-sm font-medium leading-relaxed text-white md:text-base"
               >
                 {paragraph}
               </p>

@@ -35,7 +35,7 @@ export default function CareersPage({ content, locale, media }: Props) {
     <main
       dir={isAr ? "rtl" : "ltr"}
       lang={locale}
-      className="min-h-screen bg-[#0a0f29] pt-24 text-white selection:bg-[#0087cb] selection:text-black"
+      className="min-h-screen bg-[#0a0f29] pt-24 text-white selection:bg-[#008ED3] selection:text-black"
     >
       <section className="relative flex min-h-[calc(100svh-6rem)] items-center overflow-hidden border-b border-white/10 px-6 py-20">
         <video
@@ -58,9 +58,9 @@ export default function CareersPage({ content, locale, media }: Props) {
             <h1 className="text-4xl font-black uppercase leading-tight tracking-tight md:text-6xl">
               {content.why.title}
             </h1>
-            <span className="mt-5 block h-px w-16 bg-[#0087cb]" />
+            <span className="mt-5 block h-px w-16 bg-[#008ED3]" />
           </div>
-          <p className="text-base leading-relaxed text-zinc-400">
+          <p className="text-base leading-relaxed text-white">
             {content.why.description}
           </p>
         </div>
@@ -76,14 +76,14 @@ export default function CareersPage({ content, locale, media }: Props) {
               transition={{ duration: 0.45, delay: index * 0.05 }}
               className="group relative min-h-[260px] overflow-hidden bg-[#121b43] p-6 transition hover:bg-[#0f1738]"
             >
-              <div className="absolute inset-x-0 top-0 h-px origin-left scale-x-0 bg-[#0087cb] transition-transform duration-500 group-hover:scale-x-100" />
-              <div className="mb-6 flex h-12 w-12 items-center justify-center border border-[#0087cb]/35 bg-[#0087cb]/10 text-[#43becc]">
+              <div className="absolute inset-x-0 top-0 h-px origin-left scale-x-0 bg-[#008ED3] transition-transform duration-500 group-hover:scale-x-100" />
+              <div className="mb-6 flex h-12 w-12 items-center justify-center border border-[#008ED3]/35 bg-[#008ED3]/10 text-[#008ED3]">
                 <BenefitIcon index={index} />
               </div>
-              <h3 className="text-xl font-black uppercase leading-tight tracking-tight text-white transition-colors group-hover:text-[#0087cb]">
+              <h3 className="text-xl font-black uppercase leading-tight tracking-tight text-white transition-colors group-hover:text-[#008ED3]">
                 {item.title}
               </h3>
-              <p className="mt-4 text-sm leading-relaxed text-zinc-400">
+              <p className="mt-4 text-sm leading-relaxed text-white">
                 {item.description}
               </p>
             </motion.article>

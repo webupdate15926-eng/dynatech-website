@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -21,13 +21,13 @@ type HeroSectionProps = {
 function InfoCard({ title, lines }: { title: string; lines: string[] }) {
   return (
     <div className="min-w-0 max-w-full rounded-md border border-white/15 bg-[#0a0f29]/35 px-3 py-2 text-left shadow-[0_18px_50px_rgba(0,0,0,0.35)] backdrop-blur-md sm:min-w-[226px] sm:px-4 sm:py-3">
-      <p className="mb-1.5 text-[10px] font-black uppercase tracking-[0.16em] text-[#43becc] sm:mb-2 sm:text-[11px]">
+      <p className="mb-1.5 text-[10px] font-black uppercase tracking-[0.16em] text-[#008ED3] sm:mb-2 sm:text-[11px]">
         {title}
       </p>
       {lines.map((line) => (
         <p
           key={line}
-          className={`text-[9px] font-semibold leading-relaxed text-white/80 sm:text-[10px] ${
+          className={`text-[9px] font-semibold leading-relaxed text-white sm:text-[10px] ${
             /New Cairo|القاهرة الجديدة/.test(line) ? "whitespace-nowrap" : ""
           }`}
         >
@@ -52,7 +52,7 @@ function PartnerAction({
       type="button"
       aria-label={ariaLabel}
       onClick={onClick}
-      className="pointer-events-auto inline-flex min-h-8 cursor-pointer items-center gap-1.5 border-b border-[#43becc]/45 pb-1 text-[8px] font-black uppercase tracking-[0.2em] text-[#43becc] transition hover:border-white hover:text-white sm:text-[9px]"
+      className="pointer-events-auto inline-flex min-h-8 cursor-pointer items-center gap-1.5 border-b border-[#008ED3]/45 pb-1 text-[8px] font-black uppercase tracking-[0.2em] text-[#008ED3] transition hover:border-white hover:text-white sm:text-[9px]"
     >
       <span>{label}</span>
       <ArrowUpRight size={13} strokeWidth={2.5} />
@@ -175,12 +175,12 @@ export function HeroSection({
           <source src={String(media.backgroundVideo)} type="video/mp4" />
         </video>
         <div className="absolute inset-0 bg-[#050915]/52 sm:bg-[#050915]/45" />
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,#050915_0%,rgba(5,9,21,0.94)_25%,rgba(5,9,21,0.28)_48%,rgba(5,9,21,0.48)_100%)] sm:bg-[radial-gradient(circle_at_34%_42%,rgba(67,190,204,0.16),transparent_26%),linear-gradient(90deg,rgba(3,7,18,0.62),rgba(3,7,18,0.18)_45%,rgba(3,7,18,0.62))]" />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,#050915_0%,rgba(5,9,21,0.94)_25%,rgba(5,9,21,0.28)_48%,rgba(5,9,21,0.48)_100%)] sm:bg-[radial-gradient(circle_at_34%_42%,rgba(0,142,211,0.16),transparent_26%),linear-gradient(90deg,rgba(3,7,18,0.62),rgba(3,7,18,0.18)_45%,rgba(3,7,18,0.62))]" />
         <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-[#050915] to-transparent" />
-        <div className="absolute inset-x-0 bottom-0 h-px bg-[#43becc]/25" />
+        <div className="absolute inset-x-0 bottom-0 h-px bg-[#008ED3]/25" />
       </div>
 
-      <div className="pointer-events-none absolute inset-0 opacity-10 [background-image:linear-gradient(#43becc_1px,transparent_1px),linear-gradient(90deg,#43becc_1px,transparent_1px)] [background-size:96px_96px] [mask-image:linear-gradient(to_top,black,transparent_62%)]" />
+      <div className="pointer-events-none absolute inset-0 opacity-10 [background-image:linear-gradient(#008ED3_1px,transparent_1px),linear-gradient(90deg,#008ED3_1px,transparent_1px)] [background-size:96px_96px] [mask-image:linear-gradient(to_top,black,transparent_62%)]" />
 
       <div className="relative z-10 flex h-full min-h-0 flex-col px-4 pb-4 pt-24 sm:min-h-[100svh] sm:px-6 sm:pb-5 sm:pt-[5.5rem] md:px-9 md:pb-6 md:pt-32">
         <motion.div
@@ -208,7 +208,7 @@ export function HeroSection({
             className="max-w-[88vw] text-[clamp(1rem,5.2vw,1.35rem)] font-[1000] uppercase italic leading-[1.14] tracking-[0.01em] text-white drop-shadow-[0_8px_26px_rgba(0,0,0,0.55)] sm:text-[clamp(1.05rem,5.4vw,3.55rem)] sm:leading-[1.14] lg:max-w-5xl lg:text-[clamp(1.3rem,3.45vw,3.55rem)] lg:leading-[1.12] lg:tracking-[0.04em]"
           >
             <span className="lg:block">{headlineLine1} </span>
-            <span className="whitespace-nowrap text-[#43becc] lg:mt-4 lg:block">{headlineLine2}</span>
+            <span className="whitespace-nowrap text-[#008ED3] lg:mt-4 lg:block">{headlineLine2}</span>
           </motion.h1>
 
           <motion.div
@@ -271,11 +271,11 @@ export function HeroSection({
                 lines={autoHubLines}
               />
             </div>
-            <p className="mt-2 text-[10px] font-medium text-white/75 sm:mt-4 sm:text-[11px]">
+            <p className="mt-2 text-[10px] font-medium text-white sm:mt-4 sm:text-[11px]">
               {contactLabel}{" "}
               <a
                 href={`mailto:${contactEmail}`}
-                className="pointer-events-auto text-[#43becc] transition hover:text-white"
+                className="pointer-events-auto text-[#008ED3] transition hover:text-white"
               >
                 {contactEmail}
               </a>
@@ -286,7 +286,7 @@ export function HeroSection({
 
           <Link
             href={localizedPath(locale, siteRoutes.legalDisclaimer)}
-            className="pointer-events-auto justify-self-end text-right text-[10px] font-black uppercase tracking-[0.2em] text-white/45 transition hover:text-[#43becc]"
+            className="pointer-events-auto justify-self-end text-right text-[10px] font-black uppercase tracking-[0.2em] text-white transition hover:text-[#008ED3]"
           >
             {isAr ? "إخلاء المسؤولية القانونية" : "Legal Disclaimer"}
           </Link>
@@ -303,14 +303,14 @@ export function HeroSection({
           <button
             type="button"
             onClick={() => setActiveVideo(null)}
-            className="absolute right-4 top-4 flex h-11 w-11 cursor-pointer items-center justify-center border border-white/20 bg-white text-black transition hover:bg-[#43becc] md:right-7 md:top-7"
+            className="absolute right-4 top-4 flex h-11 w-11 cursor-pointer items-center justify-center border border-white/20 bg-white text-black transition hover:bg-[#008ED3] md:right-7 md:top-7"
             aria-label={isAr ? "إغلاق فيديو الشريك" : "Close partner video"}
           >
             <X size={20} />
           </button>
 
           <div className="w-full max-w-5xl overflow-hidden border border-white/15 bg-[#0a0f29] shadow-[0_28px_100px_rgba(0,0,0,0.68)]">
-            <div className="border-b border-white/10 px-4 py-3 text-[10px] font-black uppercase tracking-[0.28em] text-[#43becc] md:px-5">
+            <div className="border-b border-white/10 px-4 py-3 text-[10px] font-black uppercase tracking-[0.28em] text-[#008ED3] md:px-5">
               {activeVideo.title}
             </div>
             <video

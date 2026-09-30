@@ -23,7 +23,7 @@ export default function LocationsLayer({ opacity, copy, items, isAr = false }: P
           style={{ unicodeBidi: "plaintext" }}
           className="text-4xl font-black italic tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl"
         >
-          {copy.titleLine1} <span className="text-[#0087cb]">{copy.titleHighlight}</span>
+          {copy.titleLine1} <span className="text-[#008ED3]">{copy.titleHighlight}</span>
         </h2>
       </div>
       
@@ -38,7 +38,7 @@ export default function LocationsLayer({ opacity, copy, items, isAr = false }: P
             <h3 
               dir="auto"
               style={{ unicodeBidi: "plaintext" }}
-              className="mb-3 text-xl font-black uppercase tracking-tight text-white transition-colors group-hover:text-[#0087cb] md:text-2xl"
+              className="mb-3 text-xl font-black uppercase tracking-tight text-white transition-colors group-hover:text-[#008ED3] md:text-2xl"
             >
               {loc.name}
             </h3>
@@ -50,7 +50,7 @@ export default function LocationsLayer({ opacity, copy, items, isAr = false }: P
             <p 
               dir="auto"
               style={{ unicodeBidi: "plaintext" }}
-              className="font-mono text-sm leading-relaxed text-zinc-400"
+              className="font-mono text-sm leading-relaxed text-white"
             >
               {loc.detail}
             </p>
@@ -58,7 +58,7 @@ export default function LocationsLayer({ opacity, copy, items, isAr = false }: P
               <p
                 dir="auto"
                 style={{ unicodeBidi: "plaintext" }}
-                className="mt-3 text-[#43becc] text-xs font-bold uppercase tracking-wider"
+                className="mt-3 text-[#008ED3] text-xs font-bold uppercase tracking-wider"
               >
                 {loc.status}
               </p>

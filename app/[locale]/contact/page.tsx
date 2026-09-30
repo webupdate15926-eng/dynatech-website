@@ -12,8 +12,8 @@ function SectionKicker({
   tone?: "blue" | "cyan";
   className?: string;
 }) {
-  const textColor = tone === "cyan" ? "text-[#43becc]" : "text-[#0087cb]";
-  const lineColor = tone === "cyan" ? "bg-[#43becc]" : "bg-[#0087cb]";
+  const textColor = tone === "cyan" ? "text-[#008ED3]" : "text-[#008ED3]";
+  const lineColor = tone === "cyan" ? "bg-[#008ED3]" : "bg-[#008ED3]";
 
   return (
     <div className={`inline-flex flex-col gap-3 ${className}`}>
@@ -43,7 +43,7 @@ export default async function Page({
     <main
       dir={isAr ? "rtl" : "ltr"}
       lang={locale}
-      className="min-h-screen bg-[#0a0f29] pt-32 text-white selection:bg-[#0087cb] selection:text-black"
+      className="min-h-screen bg-[#0a0f29] pt-32 text-white selection:bg-[#008ED3] selection:text-black"
     >
       <section className="relative overflow-hidden border-b border-white/10 px-5 pb-16 pt-8 sm:px-6 md:px-12 lg:px-20">
         <Image
@@ -56,7 +56,7 @@ export default async function Page({
         />
         <div className="absolute inset-0 bg-[#080d20]/12" />
         <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(8,13,32,0.58)_0%,rgba(8,13,32,0.12)_58%,rgba(8,13,32,0.02)_100%)]" />
-        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#43becc] to-transparent" />
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#008ED3] to-transparent" />
         <div className="pointer-events-none absolute -right-8 top-10 text-[15vw] font-black uppercase leading-none tracking-tight text-white/[0.025]">
           {isAr ? "تواصل" : "Contact"}
         </div>
@@ -83,7 +83,7 @@ export default async function Page({
         <aside className="space-y-8">
           <div>
             <SectionKicker>{content.conversation.title}</SectionKicker>
-            <div className="space-y-4 text-base leading-relaxed text-zinc-300">
+            <div className="space-y-4 text-base leading-relaxed text-white">
               {content.conversation.paragraphs.map((paragraph) => (
                 <p key={paragraph}>{paragraph}</p>
               ))}
@@ -96,7 +96,7 @@ export default async function Page({
             </SectionKicker>
             <a
               href={`mailto:${contactDetails.email}`}
-              className="mt-3 block text-2xl font-black tracking-tight text-white transition hover:text-[#43becc]"
+              className="mt-3 block text-2xl font-black tracking-tight text-white transition hover:text-[#008ED3]"
             >
               {contactDetails.email}
             </a>
@@ -110,7 +110,7 @@ export default async function Page({
               {content.form.categories.map((category) => (
                 <span
                   key={category}
-                  className="border border-[#0087cb]/30 bg-[#0087cb]/10 px-3 py-2 text-[10px] font-bold uppercase tracking-wider text-[#43becc]"
+                  className="border border-[#008ED3]/30 bg-[#008ED3]/10 px-3 py-2 text-[10px] font-bold uppercase tracking-wider text-[#008ED3]"
                 >
                   {category}
                 </span>
@@ -134,31 +134,31 @@ export default async function Page({
               name="fullName"
               required
               placeholder={content.form.fields.fullName}
-              className="min-h-12 border border-white/10 bg-[#0a0f29] px-4 text-sm font-semibold text-white outline-none transition placeholder:text-zinc-500 focus:border-[#43becc]"
+              className="min-h-12 border border-white/10 bg-[#0a0f29] px-4 text-sm font-semibold text-white outline-none transition placeholder:text-white focus:border-[#008ED3]"
             />
             <input
               name="company"
               placeholder={content.form.fields.company}
-              className="min-h-12 border border-white/10 bg-[#0a0f29] px-4 text-sm font-semibold text-white outline-none transition placeholder:text-zinc-500 focus:border-[#43becc]"
+              className="min-h-12 border border-white/10 bg-[#0a0f29] px-4 text-sm font-semibold text-white outline-none transition placeholder:text-white focus:border-[#008ED3]"
             />
             <input
               name="email"
               type="email"
               required
               placeholder={content.form.fields.email}
-              className="min-h-12 border border-white/10 bg-[#0a0f29] px-4 text-sm font-semibold text-white outline-none transition placeholder:text-zinc-500 focus:border-[#43becc]"
+              className="min-h-12 border border-white/10 bg-[#0a0f29] px-4 text-sm font-semibold text-white outline-none transition placeholder:text-white focus:border-[#008ED3]"
             />
             <input
               name="phone"
               placeholder={content.form.fields.phone}
-              className="min-h-12 border border-white/10 bg-[#0a0f29] px-4 text-sm font-semibold text-white outline-none transition placeholder:text-zinc-500 focus:border-[#43becc]"
+              className="min-h-12 border border-white/10 bg-[#0a0f29] px-4 text-sm font-semibold text-white outline-none transition placeholder:text-white focus:border-[#008ED3]"
             />
           </div>
 
           <select
             name="inquiryType"
             defaultValue=""
-            className="min-h-12 border border-white/10 bg-[#0a0f29] px-4 text-sm font-semibold text-white outline-none transition focus:border-[#43becc]"
+            className="min-h-12 border border-white/10 bg-[#0a0f29] px-4 text-sm font-semibold text-white outline-none transition focus:border-[#008ED3]"
           >
             <option value="" disabled>
               {content.form.fields.inquiryType}
@@ -175,12 +175,12 @@ export default async function Page({
             required
             placeholder={content.form.fields.message}
             rows={7}
-            className="min-h-40 resize-y border border-white/10 bg-[#0a0f29] px-4 py-3 text-sm font-semibold text-white outline-none transition placeholder:text-zinc-500 focus:border-[#43becc]"
+            className="min-h-40 resize-y border border-white/10 bg-[#0a0f29] px-4 py-3 text-sm font-semibold text-white outline-none transition placeholder:text-white focus:border-[#008ED3]"
           />
 
           <button
             type="submit"
-            className="mt-2 inline-flex min-h-12 items-center justify-center bg-[#0087cb] px-7 text-xs font-black uppercase tracking-[0.24em] text-black transition hover:bg-white"
+            className="mt-2 inline-flex min-h-12 items-center justify-center bg-[#008ED3] px-7 text-xs font-black uppercase tracking-[0.24em] text-black transition hover:bg-white"
           >
             {content.form.submitLabel}
           </button>

@@ -88,8 +88,8 @@ export function Header({ locale, content, media }: HeaderProps) {
                   href={href}
                   className={`rounded-full px-5 py-2 text-[10px] font-black uppercase tracking-widest transition-all duration-300 ${
                     isActive
-                      ? "bg-[#0087cb] text-black shadow-[0_0_15px_rgba(0,135,203,0.5)]"
-                      : "text-zinc-400 hover:bg-white/5 hover:text-white"
+                      ? "bg-[#008ED3] text-black shadow-[0_0_15px_rgba(0,142,211,0.5)]"
+                      : "text-white hover:bg-white/5 hover:text-white"
                   }`}
                 >
                   {item.label}
@@ -99,11 +99,11 @@ export function Header({ locale, content, media }: HeaderProps) {
           </nav>
 
           <div className="flex shrink-0 items-center gap-3">
-            <LocaleSwitcher className="border-none bg-transparent px-2.5 py-2 text-xs font-black text-white transition-all hover:bg-white/5 hover:text-[#0087cb] hover:ring-1 hover:ring-[#0087cb]/40 sm:px-3" />
+            <LocaleSwitcher className="border-none bg-transparent px-2.5 py-2 text-xs font-black text-white transition-all hover:bg-white/5 hover:text-[#008ED3] hover:ring-1 hover:ring-[#008ED3]/40 sm:px-3" />
 
             <Link
               href={localizedPath(locale, siteRoutes.contact)}
-              className="group hidden items-center gap-2 rounded-full bg-white px-6 py-2.5 text-[10px] font-black uppercase tracking-widest text-black transition-all hover:bg-[#0087cb] hover:text-white md:flex"
+              className="group hidden items-center gap-2 rounded-full bg-white px-6 py-2.5 text-[10px] font-black uppercase tracking-widest text-black transition-all hover:bg-[#008ED3] hover:text-white md:flex"
             >
               <span>{contactLabel}</span>
               <ArrowRight size={14} />
@@ -148,7 +148,7 @@ export function Header({ locale, content, media }: HeaderProps) {
         } ${isMenuOpen ? "translate-x-0" : isAr ? "translate-x-full" : "-translate-x-full"}`}
       >
         <div className="flex items-center justify-between border-b border-white/5 p-6">
-          <span className="text-sm font-black uppercase tracking-tight text-[#0087cb]">{isAr ? "القائمة" : "Menu"}</span>
+          <span className="text-sm font-black uppercase tracking-tight text-[#008ED3]">{isAr ? "القائمة" : "Menu"}</span>
           <button
             onClick={() => setIsMenuOpen(false)}
             className="p-1 text-white"
@@ -170,7 +170,7 @@ export function Header({ locale, content, media }: HeaderProps) {
                 href={href}
                 onClick={() => setIsMenuOpen(false)}
                 className={`block text-xl font-black uppercase tracking-tight transition-all sm:text-2xl ${
-                  isActive ? "translate-x-2 text-[#0087cb]" : "text-zinc-500 hover:text-white"
+                  isActive ? "translate-x-2 text-[#008ED3]" : "text-white hover:text-white"
                 }`}
               >
                 {item.label}
@@ -183,7 +183,7 @@ export function Header({ locale, content, media }: HeaderProps) {
           <Link
             href={localizedPath(locale, siteRoutes.contact)}
             onClick={() => setIsMenuOpen(false)}
-            className="flex w-full items-center justify-center rounded-md bg-[#0087cb] py-4 text-xs font-black uppercase tracking-widest text-black"
+            className="flex w-full items-center justify-center rounded-md bg-[#008ED3] py-4 text-xs font-black uppercase tracking-widest text-black"
           >
             {contactLabel}
           </Link>

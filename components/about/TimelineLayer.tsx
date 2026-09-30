@@ -33,7 +33,7 @@ export default function TimelineLayer({ x, opacity, scale, copy, items, isAr = f
           <div key={i} className={`min-w-[220px] md:min-w-[320px] relative pt-16 ${isAr ? 'text-right' : ''}`}>
             {/* Content */}
             <div className="relative z-10">
-              <div className={`w-3 h-3 bg-[#006db1] rounded-full mb-6 shadow-[0_0_10px_#006db1] ${isAr ? 'mr-auto' : ''}`} />
+              <div className={`w-3 h-3 bg-[#008ED3] rounded-full mb-6 shadow-[0_0_10px_#008ED3] ${isAr ? 'mr-auto' : ''}`} />
               <div className="text-white font-black text-2xl md:text-4xl mb-3 tracking-tighter">{item.year}</div>
               <p 
                 dir={isAr ? "rtl" : "ltr"}

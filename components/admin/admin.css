@@ -4,8 +4,8 @@
   --admin-panel: #10151e;
   --admin-panel-2: #151c27;
   --admin-line: rgba(255, 255, 255, 0.11);
-  --admin-accent: #12a7e0;
-  --admin-cyan: #43becc;
+  --admin-accent: #008ED3;
+  --admin-cyan: #008ED3;
 }
 
 .admin-ui button,
@@ -64,4 +64,4 @@
   list-style-position: inside;
 }
 
-.admin-scrollbar { scrollbar-width: thin; scrollbar-color: rgba(67,190,204,.45) transparent; }
+.admin-scrollbar { scrollbar-width: thin; scrollbar-color: rgba(0,142,211,.45) transparent; }
