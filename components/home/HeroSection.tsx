@@ -25,7 +25,12 @@ function InfoCard({ title, lines }: { title: string; lines: string[] }) {
         {title}
       </p>
       {lines.map((line) => (
-        <p key={line} className="text-[9px] font-semibold leading-relaxed text-white/80 sm:text-[10px]">
+        <p
+          key={line}
+          className={`text-[9px] font-semibold leading-relaxed text-white/80 sm:text-[10px] ${
+            /New Cairo|القاهرة الجديدة/.test(line) ? "whitespace-nowrap" : ""
+          }`}
+        >
           {line}
         </p>
       ))}
@@ -132,12 +137,6 @@ export function HeroSection({
           transition: { duration: 0.58, ease: "easeOut" as const },
         },
       };
-  const mobileHeadlineLine1 = isAr
-    ? headlineLine1
-    : headlineLine1.replace(/\sforce\s/i, "\nForce ");
-  const mobileHeadlineLine2 = isAr
-    ? headlineLine2
-    : headlineLine2.replace(/\sindustry/i, "\nIndustry");
   const [activeVideo, setActiveVideo] = useState<{
     src: string;
     title: string;
@@ -208,17 +207,8 @@ export function HeroSection({
             variants={heroItem}
             className="max-w-[88vw] text-[clamp(1rem,5.2vw,1.35rem)] font-[1000] uppercase italic leading-[1.14] tracking-[0.01em] text-white drop-shadow-[0_8px_26px_rgba(0,0,0,0.55)] sm:text-[clamp(1.05rem,5.4vw,3.55rem)] sm:leading-[1.14] lg:max-w-5xl lg:text-[clamp(1.3rem,3.45vw,3.55rem)] lg:leading-[1.12] lg:tracking-[0.04em]"
           >
-            <span className="block whitespace-pre-line lg:hidden">
-              {mobileHeadlineLine1}
-            </span>
-            <span className="hidden lg:block">{headlineLine1}</span>
-            <span className="my-2 block h-px w-0 lg:hidden" aria-hidden="true" />
-            <span className="block whitespace-pre-line text-[#43becc] lg:hidden">
-              {mobileHeadlineLine2}
-            </span>
-            <span className="hidden text-[#43becc] lg:mt-4 lg:block">
-              {headlineLine2}
-            </span>
+            <span className="lg:block">{headlineLine1} </span>
+            <span className="whitespace-nowrap text-[#43becc] lg:mt-4 lg:block">{headlineLine2}</span>
           </motion.h1>
 
           <motion.div
