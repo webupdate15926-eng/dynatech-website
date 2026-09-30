@@ -1,34 +1,32 @@
 "use client";
 
-import { MotionValue, motion } from "framer-motion";
 import type { LocationItem, LocationsSectionCopy } from "@/content/schema/about";
 
 type Props = {
-  opacity: MotionValue<number>;
   copy: LocationsSectionCopy;
   items: LocationItem[];
   isAr?: boolean;
 };
 
-export default function LocationsLayer({ opacity, copy, items, isAr = false }: Props) {
+export default function LocationsLayer({ copy, items, isAr = false }: Props) {
   return (
-    <motion.div 
-      style={{ opacity }} 
-      className="absolute inset-0 z-[60] flex flex-col items-center justify-start px-4 pb-6 pt-[150px] sm:px-6 md:pt-[160px] lg:pt-[150px]"
+    <section
+      dir={isAr ? "rtl" : "ltr"}
+      className="relative z-10 bg-[#0a0f29]/56 px-5 py-16 backdrop-blur-sm sm:px-6 md:px-12 md:py-24 lg:px-20"
     >
-      {/* Section Header */}
-      <div className={`mb-8 w-full max-w-5xl md:mb-10 ${isAr ? 'text-right' : 'text-left'}`}>
+      <div className={`mx-auto mb-10 w-full max-w-7xl ${isAr ? 'text-right' : 'text-left'}`}>
+        {copy.kicker ? <p className="text-xs font-black uppercase text-[#008ED3]">{copy.kicker}</p> : null}
         <h2 
           dir="auto"
           style={{ unicodeBidi: "plaintext" }}
-          className="text-4xl font-black italic tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl"
+          className="mt-3 text-4xl font-black uppercase leading-none text-white sm:text-5xl md:text-6xl"
         >
           {copy.titleLine1} <span className="text-[#008ED3]">{copy.titleHighlight}</span>
         </h2>
+        <span className="mt-5 block h-px w-16 bg-[#008ED3]" />
       </div>
-      
-      {/* Location Cards Grid */}
-      <div className="grid w-full max-w-5xl grid-cols-1 gap-px border border-white/10 bg-white/10 md:grid-cols-2">
+
+      <div className="mx-auto grid w-full max-w-7xl grid-cols-1 gap-px border border-white/10 bg-white/10 md:grid-cols-2">
         {items.map((loc) => (
           <div 
             key={loc.name}
@@ -67,6 +65,6 @@ export default function LocationsLayer({ opacity, copy, items, isAr = false }: P
         ))}
       </div>
 
-    </motion.div>
+    </section>
   );
 }

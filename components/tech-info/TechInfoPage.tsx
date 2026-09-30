@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { ExternalLink, FileText, Play } from "lucide-react";
+import Image from "next/image";
 import type { TechInfoContent } from "@/content/schema/site";
 import type { CmsMediaMap } from "@/lib/cms/types";
 
@@ -29,6 +30,10 @@ function SectionKicker({ children }: { children: React.ReactNode }) {
 
 function isPdfUrl(value?: string) {
   return Boolean(value && /\.pdf(?:$|[?#])/i.test(value));
+}
+
+function isImageUrl(value?: string) {
+  return Boolean(value && (/\.(?:avif|gif|jpe?g|png|webp)(?:$|[?#])/i.test(value) || /\/image\/upload\//i.test(value)));
 }
 
 function fileNameFromUrl(value: string) {
@@ -108,6 +113,7 @@ export default function TechInfoPage({ content, locale, media }: Props) {
             {managedItems.map((item, index) => {
               const source = item.src!;
               const pdf = isPdfUrl(source);
+              const image = !pdf && isImageUrl(source);
 
               return (
               <motion.article
@@ -134,6 +140,8 @@ export default function TechInfoPage({ content, locale, media }: Props) {
                         </p>
                       </div>
                     </div>
+                  ) : image ? (
+                    <Image src={source} alt={item.title} fill sizes="(min-width:1024px) 50vw, 100vw" className="object-contain" />
                   ) : (
                     <>
                       <video

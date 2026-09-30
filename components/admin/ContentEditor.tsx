@@ -108,7 +108,7 @@ export function ContentEditor(props: Props) {
   const pdf = isPdfUrl(text);
   const video = !pdf && (/\.(mp4|webm|mov)(\?|$)/i.test(text) || /video/i.test(String(path.at(-1))));
   const techInfoResource = pageKey === "tech-info" && path.slice(0, 3).join(".") === "content.videoSection.items";
-  const acceptedFiles = techInfoResource ? "video/*,application/pdf,.pdf" : "image/*,video/*";
+  const acceptedFiles = techInfoResource ? "image/*,video/*,application/pdf,.pdf" : "image/*,video/*";
   const busy = uploadingPath === path.join(".");
   return <div className="space-y-3">
     <div className="relative flex aspect-video max-h-64 w-full items-center justify-center overflow-hidden rounded border border-white/10 bg-[#0c1017]">

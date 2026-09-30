@@ -13,7 +13,7 @@ export default async function Page({ params }: { params: Promise<{ locale: Local
       <div className="mx-auto mt-10 h-px w-20 bg-[#008ED3]" />
       <h1 className="mt-8 text-4xl font-black uppercase leading-tight md:text-6xl">{isAr ? "الموقع متوقف مؤقتًا" : "Temporarily Offline"}</h1>
       <p className="mx-auto mt-6 max-w-xl text-base leading-8 text-white md:text-lg">{isAr ? "نجري حاليًا بعض التحديثات على الموقع. سنعود للعمل قريبًا." : "We are currently making updates to the website. We will be back online shortly."}</p>
-      <p className="mt-8 text-sm font-bold text-[#008ED3]">info@dynatech-eg.com</p>
+      <p className="mt-8 text-sm font-bold text-[#008ED3]">info@dynatecheg.com</p>
     </div>
   </main>;
 }

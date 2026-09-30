@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight, X } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -116,27 +115,6 @@ export function HeroSection({
   },
 }: HeroSectionProps) {
   const isAr = locale === "ar";
-  const reduceMotion = useReducedMotion();
-  const heroContainer = reduceMotion
-    ? { hidden: {}, show: {} }
-    : {
-        hidden: {},
-        show: {
-          transition: {
-            staggerChildren: 0.08,
-          },
-        },
-      };
-  const heroItem = reduceMotion
-    ? { hidden: { opacity: 1, y: 0 }, show: { opacity: 1, y: 0 } }
-    : {
-        hidden: { opacity: 0, y: 18 },
-        show: {
-          opacity: 1,
-          y: 0,
-          transition: { duration: 0.58, ease: "easeOut" as const },
-        },
-      };
   const [activeVideo, setActiveVideo] = useState<{
     src: string;
     title: string;
@@ -183,14 +161,10 @@ export function HeroSection({
       <div className="pointer-events-none absolute inset-0 opacity-10 [background-image:linear-gradient(#008ED3_1px,transparent_1px),linear-gradient(90deg,#008ED3_1px,transparent_1px)] [background-size:96px_96px] [mask-image:linear-gradient(to_top,black,transparent_62%)]" />
 
       <div className="relative z-10 flex h-full min-h-0 flex-col px-4 pb-4 pt-24 sm:min-h-[100svh] sm:px-6 sm:pb-5 sm:pt-[5.5rem] md:px-9 md:pb-6 md:pt-32">
-        <motion.div
-          initial="hidden"
-          animate="show"
-          variants={heroContainer}
+        <div
           className="mx-auto flex min-h-0 flex-1 flex-col items-center justify-start pt-2 text-center sm:justify-center sm:pt-0"
         >
-          <motion.div
-            variants={heroItem}
+          <div
             className="relative mb-4 h-10 w-40 max-w-[62vw] sm:mb-4 sm:h-[66px] sm:w-[254px] md:h-[86px] md:w-[330px] xl:h-[96px] xl:w-[372px]"
           >
             <Image
@@ -201,25 +175,21 @@ export function HeroSection({
               sizes="420px"
               className="object-contain"
             />
-          </motion.div>
+          </div>
 
-          <motion.h1
-            variants={heroItem}
+          <h1
             className="max-w-[88vw] text-[clamp(1rem,5.2vw,1.35rem)] font-[1000] uppercase italic leading-[1.14] tracking-[0.01em] text-white drop-shadow-[0_8px_26px_rgba(0,0,0,0.55)] sm:text-[clamp(1.05rem,5.4vw,3.55rem)] sm:leading-[1.14] lg:max-w-5xl lg:text-[clamp(1.3rem,3.45vw,3.55rem)] lg:leading-[1.12] lg:tracking-[0.04em]"
           >
-            <span className="lg:block">{headlineLine1} </span>
-            <span className="whitespace-nowrap text-[#008ED3] lg:mt-4 lg:block">{headlineLine2}</span>
-          </motion.h1>
+            {headlineLine1} {headlineLine2}
+          </h1>
 
-          <motion.div
-            variants={heroItem}
+          <div
             className="mt-auto pt-4 text-[9px] font-black uppercase tracking-[0.34em] text-white sm:mt-4 sm:pt-0 sm:text-[10px] md:mt-5 md:text-[11px]"
           >
             {strategicPartnersLabel}
-          </motion.div>
+          </div>
 
-          <motion.div
-            variants={heroItem}
+          <div
             className="mt-3 grid w-full max-w-[340px] grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-start justify-center gap-2 sm:w-auto sm:max-w-none sm:gap-4 md:mt-4 md:gap-8"
           >
             <PartnerBlock
@@ -251,13 +221,10 @@ export function HeroSection({
                 })
               }
             />
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
 
-        <motion.div
-          initial={reduceMotion ? false : { opacity: 0, y: 14 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.55, delay: 0.45, ease: "easeOut" }}
+        <div
           className="relative z-20 mt-3 grid gap-2 sm:mt-4 sm:gap-3 md:grid-cols-[auto_1fr_auto] md:items-end md:gap-5"
         >
           <div>
@@ -290,7 +257,7 @@ export function HeroSection({
           >
             {isAr ? "إخلاء المسؤولية القانونية" : "Legal Disclaimer"}
           </Link>
-        </motion.div>
+        </div>
       </div>
 
       {activeVideo && (

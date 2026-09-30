@@ -27,7 +27,7 @@
       }
     ],
     "contact": {
-      "email": "info@dynatech-eg.com",
+      "email": "info@dynatecheg.com",
       "phone": {
         "display": "+2 01010299 435",
         "href": "tel:+201010299435"
@@ -503,7 +503,7 @@
     },
     "form": {
       "title": "Form Fields",
-      "recipientEmail": "info@dynatech-eg.com",
+      "recipientEmail": "info@dynatecheg.com",
       "fields": {
         "fullName": "Full Name",
         "company": "Company / Organization",

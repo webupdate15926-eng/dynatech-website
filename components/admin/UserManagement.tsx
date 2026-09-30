@@ -5,6 +5,7 @@ import { KeyRound, LoaderCircle, ShieldCheck, Trash2, UserPlus, Users } from "lu
 import { useCallback, useEffect, useState } from "react";
 
 import { ChangePassword } from "@/components/admin/ChangePassword";
+import { ChangeEmail } from "@/components/admin/ChangeEmail";
 import type { Locale } from "@/i18n/config";
 
 type Role = "owner" | "editor";
@@ -76,6 +77,9 @@ export function UserManagement({ session, locale, role, needsMigration }: { sess
       </div>)}</div>}
     </section>}
 
-    <ChangePassword session={session} locale={locale} />
+    <div className="grid gap-6 xl:grid-cols-2">
+      <ChangeEmail session={session} locale={locale} />
+      <ChangePassword session={session} locale={locale} />
+    </div>
   </div>;
 }
