@@ -20,6 +20,9 @@
 # production
 /build
 
+# imported landing-page source (integrated into the main app)
+/public/dynatech-landing/
+
 # misc
 .DS_Store
 *.pem

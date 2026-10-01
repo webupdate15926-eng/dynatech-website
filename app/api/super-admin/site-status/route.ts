@@ -35,8 +35,12 @@ export async function PATCH(request: NextRequest) {
   const body = await request.json().catch(() => null) as { enabled?: unknown } | null;
   if (typeof body?.enabled !== "boolean") return NextResponse.json({ error: "Invalid site status." }, { status: 400 });
 
+  const { data: current, error: readError } = await access.admin.from("cms_pages").select("document").eq("page_key", "site-control").eq("locale", "en").maybeSingle();
+  if (readError) return NextResponse.json({ error: readError.message }, { status: 500 });
+
   const updatedAt = new Date().toISOString();
-  const document = { maintenance: { enabled: body.enabled, updatedAt, updatedBy: "private-super-admin" } };
+  const currentDocument = (current?.document as Record<string, unknown> | null) ?? {};
+  const document = { ...currentDocument, maintenance: { enabled: body.enabled, updatedAt, updatedBy: "private-super-admin" } };
   const { error } = await access.admin.from("cms_pages").upsert({ page_key: "site-control", locale: "en", document, updated_at: updatedAt, published_at: updatedAt }, { onConflict: "page_key,locale" });
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
 

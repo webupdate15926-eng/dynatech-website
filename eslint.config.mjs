@@ -11,6 +11,7 @@ const eslintConfig = defineConfig([
     ".next/**",
     "out/**",
     "build/**",
+    "public/dynatech-landing/**",
     "next-env.d.ts",
   ]),
 ]);

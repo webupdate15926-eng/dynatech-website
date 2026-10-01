@@ -7,21 +7,26 @@ function getPreferredLocale(): Locale {
   return defaultLocale;
 }
 
-async function isMaintenanceEnabled() {
+type SiteControl = { maintenanceEnabled: boolean; displayMode: "website" | "landing" };
+
+async function getSiteControl(): Promise<SiteControl> {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
-  if (!url || !key) return false;
+  if (!url || !key) return { maintenanceEnabled: false, displayMode: "website" };
 
   try {
     const response = await fetch(`${url}/rest/v1/cms_pages?page_key=eq.site-control&locale=eq.en&select=document`, {
       headers: { apikey: key, Authorization: `Bearer ${key}` },
       cache: "no-store",
     });
-    if (!response.ok) return false;
-    const rows = await response.json() as { document?: { maintenance?: { enabled?: boolean } } }[];
-    return rows[0]?.document?.maintenance?.enabled === true;
+    if (!response.ok) return { maintenanceEnabled: false, displayMode: "website" };
+    const rows = await response.json() as { document?: { maintenance?: { enabled?: boolean }; display?: { mode?: string } } }[];
+    return {
+      maintenanceEnabled: rows[0]?.document?.maintenance?.enabled === true,
+      displayMode: rows[0]?.document?.display?.mode === "landing" ? "landing" : "website",
+    };
   } catch {
-    return false;
+    return { maintenanceEnabled: false, displayMode: "website" };
   }
 }
 
@@ -43,10 +48,18 @@ export async function proxy(request: NextRequest) {
 
   if (hasLocale) {
     const protectedArea = ["admin", "super-admin", "maintenance"].includes(segments[1] ?? "");
-    if (!protectedArea && await isMaintenanceEnabled()) {
-      const maintenanceUrl = request.nextUrl.clone();
-      maintenanceUrl.pathname = `/${first}/maintenance`;
-      return NextResponse.rewrite(maintenanceUrl);
+    if (!protectedArea) {
+      const control = await getSiteControl();
+      if (control.maintenanceEnabled) {
+        const maintenanceUrl = request.nextUrl.clone();
+        maintenanceUrl.pathname = `/${first}/maintenance`;
+        return NextResponse.rewrite(maintenanceUrl);
+      }
+      if (control.displayMode === "landing" && segments[1] !== "landing") {
+        const landingUrl = request.nextUrl.clone();
+        landingUrl.pathname = `/${first}/landing`;
+        return NextResponse.rewrite(landingUrl);
+      }
     }
 
     const requestHeaders = new Headers(request.headers);
