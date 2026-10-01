@@ -191,6 +191,7 @@ export default function AboutPage({
 }) {
   const isAr = locale === 'ar'
   const introRef = useRef<HTMLElement>(null)
+  const timelineRef = useRef<HTMLElement>(null)
 
   const { scrollYProgress: introProgress } = useScroll({
     target: introRef,
@@ -204,6 +205,10 @@ export default function AboutPage({
     [0.3, 0.4, 0.9, 0.98],
     [0, 1, 1, 0],
   )
+  const { scrollYProgress: timelineProgress } = useScroll({
+    target: timelineRef,
+    offset: ['start start', 'end end'],
+  })
 
   return (
     <main
@@ -239,11 +244,20 @@ export default function AboutPage({
 
       <CeoMessage content={content.ceoMessage} isAr={isAr} />
 
-      <TimelineLayer
-        copy={{ kicker: content.timeline.kicker, titleLine1: content.timeline.title, titleHighlight: '' }}
-        items={content.timeline.items}
-        isAr={isAr}
-      />
+      <section
+        ref={timelineRef}
+        className="relative z-10 w-full"
+        style={{ height: `${Math.max(360, content.timeline.items.length * 42)}vh` }}
+      >
+        <div className="sticky top-0 h-[100svh] w-full overflow-hidden">
+          <TimelineLayer
+            progress={timelineProgress}
+            copy={{ kicker: content.timeline.kicker, titleLine1: content.timeline.title, titleHighlight: '' }}
+            items={content.timeline.items}
+            isAr={isAr}
+          />
+        </div>
+      </section>
       <LocationsLayer
         copy={{ kicker: content.locations.kicker, titleLine1: content.locations.title, titleHighlight: '' }}
         items={content.locations.items}
