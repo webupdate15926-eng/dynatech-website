@@ -28,7 +28,7 @@ function InfoCard({ title, lines }: { title: string; lines: string[] }) {
   }).filter(Boolean);
 
   return (
-    <div className="min-w-0 max-w-full rounded-md border border-white/15 bg-[#0a0f29]/35 px-3 py-2 text-start shadow-[0_18px_50px_rgba(0,0,0,0.35)] backdrop-blur-md sm:min-w-[226px] sm:px-4 sm:py-3">
+    <div className="min-w-0 max-w-full rounded-md border border-white/15 bg-[#0a0f29]/35 px-3 py-2 text-start [hyphens:none] [overflow-wrap:normal] [word-break:keep-all] shadow-[0_18px_50px_rgba(0,0,0,0.35)] backdrop-blur-md sm:min-w-[226px] sm:px-4 sm:py-3">
       <p className="mb-1.5 text-[10px] font-black uppercase tracking-[0.16em] text-[#008ED3] sm:mb-2 sm:text-[11px]">
         {title}
       </p>

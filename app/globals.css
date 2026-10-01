@@ -179,17 +179,17 @@
   html[dir="rtl"] .site-shell :is(h1, h2, h3, h4) {
     font-style: normal !important;
     line-height: 1.35 !important;
-    overflow-wrap: anywhere;
+    overflow-wrap: normal;
+    word-break: keep-all;
+    hyphens: none;
     text-wrap: balance;
     white-space: normal !important;
   }
 
   html[dir="rtl"] .site-shell :is(p, li) {
-    overflow-wrap: anywhere;
-  }
-
-  html[dir="rtl"] .site-shell p {
-    word-break: normal;
+    overflow-wrap: normal;
+    word-break: keep-all;
+    hyphens: none;
   }
 
   html[dir="rtl"] .site-shell [dir="ltr"] {
