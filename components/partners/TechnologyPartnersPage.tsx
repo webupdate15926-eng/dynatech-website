@@ -63,87 +63,33 @@ export default function TechnologyPartnersPage({ content, locale, media }: Props
       lang={locale}
       className="min-h-screen bg-[#080d20] text-white"
     >
-      <section className="relative flex min-h-[760px] items-center overflow-hidden px-5 pb-16 pt-32 sm:px-6 md:min-h-screen md:px-12 md:pb-20 md:pt-36 lg:px-20">
-        <video
-          className="absolute inset-0 h-full w-full object-cover"
-          src={String(media.backgroundVideo)}
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-        />
-        <div className="absolute inset-0 bg-[#080d20]/72" />
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(8,13,32,0.76),rgba(8,13,32,0.52))]" />
+      <section className="relative z-[2] overflow-hidden bg-[#080d20] px-5 pb-14 pt-28 sm:px-7 md:px-12 md:pb-16 md:pt-32 lg:px-16">
+        <div dir="ltr" className="relative z-10 mx-auto grid w-full max-w-[1180px] gap-9 md:grid-cols-[1.52fr_1fr] md:items-start md:gap-x-9 lg:gap-x-10">
+          <div className="contents md:flex md:min-w-0 md:flex-col">
+            <motion.div initial={false} animate="show" variants={reveal} transition={revealTransition} dir={isAr ? "rtl" : "ltr"} className="order-1 md:order-none">
+              {content.hero.kicker ? <SectionKicker>{content.hero.kicker}</SectionKicker> : null}
+              <h1 className="max-w-[640px] text-[2rem] font-black uppercase leading-[1.08] tracking-normal sm:text-[2.5rem] md:text-[clamp(2rem,3.45vw,3.15rem)]">
+                {heroTitleLines.map((line, index) => (
+                  <span key={line} className={`block ${index > 0 ? "mt-5 text-[#008ED3]" : "text-white"}`}>{line}</span>
+                ))}
+              </h1>
+            </motion.div>
 
-        <div dir="ltr" className="relative z-10 mx-auto grid w-full max-w-7xl gap-7 md:grid-cols-[1.2fr_0.8fr] md:grid-rows-[auto_auto] md:items-start md:gap-x-10 md:gap-y-7 lg:gap-x-12">
-          <motion.div
-            initial={false}
-            animate="show"
-            variants={reveal}
-            transition={revealTransition}
-            dir={isAr ? "rtl" : "ltr"}
-            className={`self-center ${isAr ? "md:pl-4" : "md:pr-4"}`}
-          >
-            {content.hero.kicker ? <SectionKicker>{content.hero.kicker}</SectionKicker> : null}
-            <h1 className="text-[2.45rem] font-black uppercase leading-[1.04] tracking-normal sm:text-5xl md:text-[clamp(2rem,3.2vw,3.5rem)]">
-              {heroTitleLines.map((line, index) => (
-                <span key={line} className={`block ${index > 0 ? "mt-3 text-[#008ED3]" : "text-white"}`}>
-                  {line}
-                </span>
-              ))}
-            </h1>
-          </motion.div>
+            <motion.div initial={false} animate="show" variants={reveal} transition={{ ...revealTransition, delay: reduceMotion ? 0 : 0.18 }} className="relative order-3 aspect-[3/2] w-full overflow-hidden rounded-md bg-[#080d20] md:order-none md:mt-24">
+              <Image src={String(media.cuSigningImage)} alt={isAr ? "توقيع اتفاقية الشراكة مع CU" : "CU partnership agreement signing"} fill priority sizes="(min-width: 1280px) 670px, (min-width: 768px) 58vw, 100vw" className="object-cover object-center" />
+            </motion.div>
+          </div>
 
-          <motion.div
-            initial={false}
-            animate="show"
-            variants={reveal}
-            transition={{ ...revealTransition, delay: reduceMotion ? 0 : 0.12 }}
-            className="relative aspect-[4/3] w-full overflow-hidden rounded-md border border-white/15 bg-[#080d20] md:justify-self-end"
-          >
-            <Image
-              src={String(media.fftSigningImage)}
-              alt={isAr ? "توقيع اتفاقية الشراكة مع FFT" : "FFT partnership agreement signing"}
-              fill
-              priority
-              sizes="(min-width: 768px) 36vw, 100vw"
-              className="object-cover object-top"
-            />
-          </motion.div>
+          <div className="contents md:flex md:min-w-0 md:flex-col">
+            <motion.div initial={false} animate="show" variants={reveal} transition={{ ...revealTransition, delay: reduceMotion ? 0 : 0.12 }} className="relative order-2 aspect-[192/209] w-full overflow-hidden rounded-md bg-[#080d20] md:order-none">
+              <Image src={String(media.fftSigningImage)} alt={isAr ? "توقيع اتفاقية الشراكة مع FFT" : "FFT partnership agreement signing"} fill priority sizes="(min-width: 1280px) 430px, (min-width: 768px) 36vw, 100vw" className="object-cover object-top" />
+            </motion.div>
 
-          <motion.div
-            initial={false}
-            animate="show"
-            variants={reveal}
-            transition={{ ...revealTransition, delay: reduceMotion ? 0 : 0.18 }}
-            className="relative aspect-[16/10] w-full overflow-hidden rounded-md border border-white/15 bg-[#080d20]"
-          >
-            <Image
-              src={String(media.cuSigningImage)}
-              alt={isAr ? "توقيع اتفاقية الشراكة مع CU" : "CU partnership agreement signing"}
-              fill
-              priority
-              sizes="(min-width: 768px) 58vw, 100vw"
-              className="object-cover object-center"
-            />
-          </motion.div>
-
-          <motion.div
-            initial={false}
-            animate="show"
-            variants={reveal}
-            transition={{ ...revealTransition, delay: reduceMotion ? 0 : 0.24 }}
-            dir={isAr ? "rtl" : "ltr"}
-            className="self-center py-2 md:px-1"
-          >
-            <p className="text-sm font-semibold leading-relaxed text-white md:text-base">
-              {content.hero.intro}
-            </p>
-            <p className="mt-5 text-sm leading-relaxed text-[#008ED3] md:text-base">
-              {content.hero.supporting}
-            </p>
-          </motion.div>
+            <motion.div initial={false} animate="show" variants={reveal} transition={{ ...revealTransition, delay: reduceMotion ? 0 : 0.24 }} dir={isAr ? "rtl" : "ltr"} className="order-4 px-1 md:order-none md:pt-8">
+              <p className="text-[11px] font-medium leading-[1.65] text-white sm:text-xs md:text-[13px]">{content.hero.intro}</p>
+              <p className="mt-5 text-[11px] leading-[1.55] text-[#008ED3] sm:text-xs md:text-[13px]">{content.hero.supporting}</p>
+            </motion.div>
+          </div>
         </div>
       </section>
 
