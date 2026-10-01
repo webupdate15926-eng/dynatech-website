@@ -65,7 +65,7 @@ export default function TimelineLayer({ progress, copy, items, isAr = false }: P
       {items.map((item, index) => <article
           key={`${item.year}-${index}`}
           dir={isAr ? "rtl" : "ltr"}
-          className={`w-[270px] shrink-0 sm:w-[300px] md:w-[340px] ${isAr ? "text-right" : "text-left"}`}
+          className={`grid h-[280px] w-[270px] shrink-0 grid-rows-[auto_auto_1fr] content-start sm:h-[300px] sm:w-[300px] md:w-[340px] ${isAr ? "text-right" : "text-left"}`}
         >
           <div className="mb-5 flex items-center gap-3">
             <span className="h-3 w-3 shrink-0 rounded-full bg-[#008ED3] shadow-[0_0_12px_rgba(0,142,211,0.9)]" />
