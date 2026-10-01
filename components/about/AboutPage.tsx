@@ -2,7 +2,8 @@
 
 import { useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
-import { ArrowUpRight, Linkedin } from 'lucide-react'
+import { ArrowUpRight } from 'lucide-react'
+import { FaLinkedin } from 'react-icons/fa'
 import Image from 'next/image'
 
 import type { DynatechContent } from '@/content/schema/about'
@@ -162,7 +163,7 @@ function MobileIntro({
           rel="noreferrer"
           className="mt-7 inline-flex items-center gap-2 border border-[#008ED3] bg-[#008ED3] px-4 py-3 text-xs font-black uppercase tracking-[0.16em] text-white transition hover:brightness-110"
         >
-          <Linkedin size={16} strokeWidth={2.4} />
+          <FaLinkedin size={16} aria-hidden="true" />
           <span>{/^(learn more|اعرف المزيد)$/i.test(content.founder.linkedinLabel.trim()) ? 'LinkedIn' : content.founder.linkedinLabel}</span>
           <ArrowUpRight size={15} />
         </a>

@@ -2,7 +2,7 @@
 
 import { MotionValue, motion } from "framer-motion";
 import Image from "next/image";
-import { Linkedin } from "lucide-react";
+import { FaLinkedin } from "react-icons/fa";
 import type { DynatechContent } from "@/content/schema/about";
 
 type Props = {
@@ -63,7 +63,7 @@ export default function FounderLayer({
               rel="noreferrer"
               className={`inline-flex items-center gap-2 border border-[#008ED3] bg-[#008ED3] px-4 py-2 text-xs font-black uppercase tracking-[0.18em] text-white transition hover:brightness-110 ${isAr ? 'md:flex-row-reverse' : ''}`}
             >
-              <Linkedin size={16} strokeWidth={2.4} />
+              <FaLinkedin size={16} aria-hidden="true" />
               <span>{/^(learn more|اعرف المزيد)$/i.test(data.linkedinLabel?.trim() ?? '') ? 'LinkedIn' : data.linkedinLabel || 'LinkedIn'}</span>
             </a>
           )}
