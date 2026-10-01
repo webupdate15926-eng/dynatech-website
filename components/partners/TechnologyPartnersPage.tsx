@@ -48,9 +48,11 @@ function SectionKicker({
 
 export default function TechnologyPartnersPage({ content, locale, media }: Props) {
   const isAr = locale === "ar";
-  const heroTitleLines = content.hero.title.split(". ").map((line, index, lines) =>
-    index < lines.length - 1 ? `${line}.` : line
-  );
+  const titleEndsWithPeriod = content.hero.title.trim().endsWith(".");
+  const heroTitleLines = content.hero.title
+    .split(/\.\s*/)
+    .filter(Boolean)
+    .map((line, index, lines) => index === lines.length - 1 && titleEndsWithPeriod ? `${line}.` : line);
   const reduceMotion = useReducedMotion();
   const reveal = reduceMotion
     ? { hidden: { opacity: 1, y: 0 }, show: { opacity: 1, y: 0 } }
@@ -63,29 +65,28 @@ export default function TechnologyPartnersPage({ content, locale, media }: Props
       lang={locale}
       className="min-h-screen bg-[#080d20] text-white"
     >
-      <section className="relative overflow-hidden bg-[#080d20] px-5 pb-14 pt-28 sm:px-7 md:px-12 md:pb-16 md:pt-32 lg:px-16">
-        <video className="absolute inset-0 h-full w-full object-cover" src={String(media.backgroundVideo)} autoPlay muted loop playsInline preload="auto" />
-        <div className="absolute inset-0 bg-[#080d20]/72" />
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(8,13,32,0.76),rgba(8,13,32,0.52))]" />
+      <section className="relative overflow-hidden border-b border-[#008ED3] bg-[#080d20] px-5 pb-14 pt-28 sm:px-7 md:px-12 md:pb-20 md:pt-40 lg:px-16 lg:pb-24 lg:pt-44">
+        <video className="absolute inset-0 h-full w-full object-cover opacity-15" src={String(media.backgroundVideo)} autoPlay muted loop playsInline preload="auto" />
+        <div className="absolute inset-0 bg-[#080d20]/94" />
 
-        <div dir="ltr" className="relative z-10 mx-auto grid w-full max-w-[1100px] gap-9 md:grid-cols-[1.52fr_1fr] md:items-start md:gap-x-8 lg:gap-x-9">
+        <div dir="ltr" className="relative z-10 mx-auto grid w-full max-w-[1200px] gap-9 md:grid-cols-[1.52fr_1fr] md:items-start md:gap-x-10 lg:gap-x-12">
           <div className="contents md:flex md:min-w-0 md:flex-col">
             <motion.div initial={false} animate="show" variants={reveal} transition={revealTransition} dir={isAr ? "rtl" : "ltr"} className="order-1 md:order-none">
               {content.hero.kicker ? <SectionKicker>{content.hero.kicker}</SectionKicker> : null}
-              <h1 className="max-w-[610px] text-[2rem] font-black uppercase leading-[1.08] tracking-normal sm:text-[2.5rem] md:text-[clamp(2rem,3.2vw,2.9rem)]">
+              <h1 className="max-w-[650px] text-[2rem] font-black uppercase leading-[1.08] tracking-normal sm:text-[2.5rem] md:text-[clamp(2rem,3.15vw,3rem)]">
                 {heroTitleLines.map((line, index) => (
                   <span key={line} className={`block ${index > 0 ? "mt-5 text-[#008ED3]" : "text-white"}`}>{line}</span>
                 ))}
               </h1>
             </motion.div>
 
-            <motion.div initial={false} animate="show" variants={reveal} transition={{ ...revealTransition, delay: reduceMotion ? 0 : 0.18 }} className="relative order-3 aspect-[3/2] w-full overflow-hidden rounded-[14px] border border-[#008ED3] bg-[#080d20] md:order-none md:mt-24">
+            <motion.div initial={false} animate="show" variants={reveal} transition={{ ...revealTransition, delay: reduceMotion ? 0 : 0.18 }} className="relative order-3 aspect-[3/2] w-full overflow-hidden rounded-[10px] border border-[#008ED3] bg-[#080d20] md:order-none md:mt-[4.75rem]">
               <Image src={String(media.cuSigningImage)} alt={isAr ? "توقيع اتفاقية الشراكة مع CU" : "CU partnership agreement signing"} fill priority sizes="(min-width: 1280px) 670px, (min-width: 768px) 58vw, 100vw" className="object-cover object-center" />
             </motion.div>
           </div>
 
           <div className="contents md:flex md:min-w-0 md:flex-col">
-            <motion.div initial={false} animate="show" variants={reveal} transition={{ ...revealTransition, delay: reduceMotion ? 0 : 0.12 }} className="relative order-2 aspect-[192/209] w-full overflow-hidden rounded-[14px] border border-[#008ED3] bg-[#080d20] md:order-none">
+            <motion.div initial={false} animate="show" variants={reveal} transition={{ ...revealTransition, delay: reduceMotion ? 0 : 0.12 }} className="relative order-2 aspect-[192/209] w-full overflow-hidden rounded-[10px] border border-[#008ED3] bg-[#080d20] md:order-none">
               <Image src={String(media.fftSigningImage)} alt={isAr ? "توقيع اتفاقية الشراكة مع FFT" : "FFT partnership agreement signing"} fill priority sizes="(min-width: 1280px) 430px, (min-width: 768px) 36vw, 100vw" className="object-cover object-top" />
             </motion.div>
 
@@ -95,10 +96,10 @@ export default function TechnologyPartnersPage({ content, locale, media }: Props
               variants={reveal}
               transition={{ ...revealTransition, delay: reduceMotion ? 0 : 0.24 }}
               dir={isAr ? "rtl" : "ltr"}
-              className={`order-4 pt-1 md:order-none md:mt-8 ${isAr ? "border-r-2 border-[#008ED3] pr-3" : "border-l-2 border-[#008ED3] pl-3"}`}
+              className={`order-4 pt-1 md:order-none md:mt-7 ${isAr ? "border-r-2 border-[#008ED3] pr-3" : "border-l-2 border-[#008ED3] pl-3"}`}
             >
-              <p className="text-[11px] font-medium leading-[1.65] text-white sm:text-xs md:text-[13px]">{content.hero.intro}</p>
-              <p className="mt-4 border-t border-[#008ED3]/35 pt-4 text-[11px] leading-[1.55] text-[#008ED3] sm:text-xs md:text-[13px]">{content.hero.supporting}</p>
+              <p className="text-[11px] font-medium leading-[1.65] text-white sm:text-xs md:text-[12px]">{content.hero.intro}</p>
+              <p className="mt-4 border-t border-[#008ED3]/35 pt-4 text-[11px] leading-[1.55] text-[#008ED3] sm:text-xs md:text-[12px]">{content.hero.supporting}</p>
             </motion.div>
           </div>
         </div>
