@@ -13,11 +13,12 @@ import type { CmsMediaMap } from "@/lib/cms/types";
 export default function LandingPage({ locale, content, media }: { locale: Locale; content: LandingContent; media: CmsMediaMap }) {
   const isAr = locale === "ar";
   const [muted, setMuted] = useState(true);
-  const [videoOpen, setVideoOpen] = useState(false);
+  const [activePartnerVideo, setActivePartnerVideo] = useState<string | null>(null);
   const desktopVideo = useRef<HTMLVideoElement>(null);
   const mobileVideo = useRef<HTMLVideoElement>(null);
   const backgroundVideo = String(media.backgroundVideo);
   const fftVideo = String(media.fftVideo);
+  const cuVideo = String(media.cuVideo);
 
   useEffect(() => {
     void desktopVideo.current?.play().catch(() => undefined);
@@ -71,14 +72,14 @@ export default function LandingPage({ locale, content, media }: { locale: Locale
               <Link href={content.partners.fftHref} target="_blank" rel="noreferrer" className="relative h-16 w-28 overflow-hidden rounded-xl shadow-2xl md:h-24 md:w-40">
                 <Image src={String(media.fftLogo)} alt="FFT Logo" fill className="object-contain p-3 opacity-100 md:p-5" sizes="(min-width:768px) 160px, 112px" />
               </Link>
-              <button type="button" onClick={() => setVideoOpen(true)} className="border-b border-[#008ED3]/60 pb-0.5 text-[9px] font-black uppercase tracking-[0.25em] text-[#008ED3] transition-colors hover:border-white hover:text-white md:text-[11px]">{content.partners.knowMoreLabel}</button>
+              <button type="button" onClick={() => setActivePartnerVideo(fftVideo)} className="border-b border-[#008ED3]/60 pb-0.5 text-[9px] font-black uppercase tracking-[0.25em] text-[#008ED3] transition-colors hover:border-white hover:text-white md:text-[11px]">{content.partners.knowMoreLabel}</button>
             </div>
             <div className="h-14 w-px bg-white" />
             <div className="flex flex-col items-center gap-2">
               <Link href={content.partners.cuHref} target="_blank" rel="noreferrer" className="relative h-16 w-28 overflow-hidden md:h-24 md:w-40">
                 <Image src={String(media.cuLogo)} alt="CU Logo" fill className="object-contain p-3 opacity-100 md:p-5" sizes="(min-width:768px) 160px, 112px" />
               </Link>
-              <Link href={content.partners.cuHref} target="_blank" rel="noreferrer" className="border-b border-[#008ED3]/60 pb-0.5 text-[9px] font-black uppercase tracking-[0.25em] text-[#008ED3] transition-colors hover:border-white hover:text-white md:text-[11px]">{content.partners.knowMoreLabel}</Link>
+              <button type="button" onClick={() => setActivePartnerVideo(cuVideo)} className="border-b border-[#008ED3]/60 pb-0.5 text-[9px] font-black uppercase tracking-[0.25em] text-[#008ED3] transition-colors hover:border-white hover:text-white md:text-[11px]">{content.partners.knowMoreLabel}</button>
             </div>
           </div>
         </motion.div>
@@ -99,10 +100,10 @@ export default function LandingPage({ locale, content, media }: { locale: Locale
       </div>
     </div>
 
-    <AnimatePresence>{videoOpen ? <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[70] flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm" role="dialog" aria-modal="true">
+    <AnimatePresence>{activePartnerVideo ? <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[70] flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm" role="dialog" aria-modal="true">
       <motion.div initial={{ scale: 0.96, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.96, opacity: 0 }} className="relative w-full max-w-3xl rounded-2xl border border-white/10 bg-[#0f0f0f] p-3 shadow-2xl md:p-4">
-        <button type="button" onClick={() => setVideoOpen(false)} title={isAr ? "إغلاق" : "Close"} className="absolute -end-3 -top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-white text-black shadow-xl"><X size={17} /></button>
-        <video className="h-auto w-full rounded-xl" controls autoPlay playsInline><source src={fftVideo} type="video/mp4" /></video>
+        <button type="button" onClick={() => setActivePartnerVideo(null)} title={isAr ? "إغلاق" : "Close"} className="absolute -end-3 -top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-white text-black shadow-xl"><X size={17} /></button>
+        <video key={activePartnerVideo} className="h-auto w-full rounded-xl" controls autoPlay playsInline><source src={activePartnerVideo} type="video/mp4" /></video>
       </motion.div>
     </motion.div> : null}</AnimatePresence>
   </main>;
