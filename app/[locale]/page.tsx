@@ -7,9 +7,9 @@ import { getPageDocument } from "@/lib/cms/page-document";
 export default async function Home({
   params,
 }: {
-  params: { locale: Locale } | Promise<{ locale: Locale }>;
+  params: Promise<{ locale: Locale }>;
 }) {
-  const { locale } = await Promise.resolve(params);
+  const { locale } = await params;
   const [document, globalDocument] = await Promise.all([
     getPageDocument<HomeContent>("home", locale),
     getPageDocument<GlobalCmsContent>("global", locale),

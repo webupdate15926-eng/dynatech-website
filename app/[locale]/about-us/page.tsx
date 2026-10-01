@@ -6,9 +6,9 @@ import type { DynatechContent } from "@/content/schema/about";
 export default async function Page({
   params,
 }: {
-  params: { locale: Locale } | Promise<{ locale: Locale }>;
+  params: Promise<{ locale: Locale }>;
 }) {
-  const { locale } = await Promise.resolve(params);
+  const { locale } = await params;
   const document = await getPageDocument<DynatechContent>("about-us", locale);
   return <AboutPage content={document.content} media={document.media} locale={locale} />;
 }

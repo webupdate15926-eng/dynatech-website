@@ -6,9 +6,9 @@ import { getPageDocument } from "@/lib/cms/page-document";
 export default async function Page({
   params,
 }: {
-  params: { locale: Locale } | Promise<{ locale: Locale }>;
+  params: Promise<{ locale: Locale }>;
 }) {
-  const { locale } = await Promise.resolve(params);
+  const { locale } = await params;
   const document = await getPageDocument<CareersPageContent>("careers", locale);
   return <CareersPage content={document.content} media={document.media} locale={locale} />;
 }

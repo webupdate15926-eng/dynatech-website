@@ -7,9 +7,9 @@ import { getPageDocument } from "@/lib/cms/page-document";
 export async function generateMetadata({
   params,
 }: {
-  params: { locale: Locale } | Promise<{ locale: Locale }>;
+  params: Promise<{ locale: Locale }>;
 }): Promise<Metadata> {
-  const { locale } = await Promise.resolve(params);
+  const { locale } = await params;
   return locale === "ar"
     ? {
         title: "إخلاء المسؤولية القانونية",
@@ -24,9 +24,9 @@ export async function generateMetadata({
 export default async function LegalDisclaimerPage({
   params,
 }: {
-  params: { locale: Locale } | Promise<{ locale: Locale }>;
+  params: Promise<{ locale: Locale }>;
 }) {
-  const { locale } = await Promise.resolve(params);
+  const { locale } = await params;
   const isAr = locale === "ar";
   const { content } = await getPageDocument<LegalContent>("legal-disclaimer", locale);
 
