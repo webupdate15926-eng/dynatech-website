@@ -191,7 +191,6 @@ export default function AboutPage({
 }) {
   const isAr = locale === 'ar'
   const introRef = useRef<HTMLElement>(null)
-  const timelineRef = useRef<HTMLElement>(null)
 
   const { scrollYProgress: introProgress } = useScroll({
     target: introRef,
@@ -205,16 +204,6 @@ export default function AboutPage({
     [0.3, 0.4, 0.9, 0.98],
     [0, 1, 1, 0],
   )
-
-  const { scrollYProgress: timelineProgress } = useScroll({
-    target: timelineRef,
-    offset: ['start start', 'end end'],
-  })
-  const timelineXEn = useTransform(timelineProgress, [0, 0.06, 0.92], [80, 80, -3100])
-  const timelineXAr = useTransform(timelineProgress, [0, 0.06, 0.92], [-80, -80, 3100])
-  const timelineX = isAr ? timelineXAr : timelineXEn
-  const timelineScale = useTransform(timelineProgress, [0, 0.06, 0.92, 1], [0.94, 1, 1, 0.97])
-  const timelineOpacity = useTransform(timelineProgress, [0, 0.05, 0.94, 1], [0, 1, 1, 0])
 
   return (
     <main
@@ -250,26 +239,11 @@ export default function AboutPage({
 
       <CeoMessage content={content.ceoMessage} isAr={isAr} />
 
-      <div className="md:hidden">
-        <TimelineLayer
-          copy={{ kicker: content.timeline.kicker, titleLine1: content.timeline.title, titleHighlight: '' }}
-          items={content.timeline.items}
-          isAr={isAr}
-        />
-      </div>
-
-      <section ref={timelineRef} className="relative z-10 hidden h-[430vh] w-full md:block">
-        <div className="sticky top-0 flex h-screen w-full items-center overflow-hidden border-y border-white/10 bg-[#080d20]/76 backdrop-blur-sm">
-          <TimelineLayer
-            x={timelineX}
-            opacity={timelineOpacity}
-            scale={timelineScale}
-            copy={{ kicker: content.timeline.kicker, titleLine1: content.timeline.title, titleHighlight: '' }}
-            items={content.timeline.items}
-            isAr={isAr}
-          />
-        </div>
-      </section>
+      <TimelineLayer
+        copy={{ kicker: content.timeline.kicker, titleLine1: content.timeline.title, titleHighlight: '' }}
+        items={content.timeline.items}
+        isAr={isAr}
+      />
       <LocationsLayer
         copy={{ kicker: content.locations.kicker, titleLine1: content.locations.title, titleHighlight: '' }}
         items={content.locations.items}
