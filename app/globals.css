@@ -5,6 +5,40 @@
   display: none;
 }
 
+.landing-main-logo {
+  margin: 1rem auto 0;
+}
+
+@media (max-width: 375px) {
+  .landing-main-logo {
+    width: 210px;
+    height: 130px;
+    margin-top: 0.5rem;
+  }
+}
+
+@media (min-width: 376px) and (max-width: 400px) {
+  .landing-main-logo {
+    width: 220px;
+    height: 140px;
+    margin-top: 0.75rem;
+  }
+
+  .landing-content-up {
+    padding-top: 0.5rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .landing-content-up {
+    padding-top: clamp(0.5rem, 2.5vw, 1rem);
+  }
+
+  .landing-content-down {
+    padding-top: clamp(1rem, 3vw, 1.5rem);
+  }
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {

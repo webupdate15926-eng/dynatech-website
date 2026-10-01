@@ -24,6 +24,7 @@ export type LandingContent = {
   partners: {
     title: string;
     knowMoreLabel: string;
+    fftHref: string;
     cuHref: string;
   };
   details: {
