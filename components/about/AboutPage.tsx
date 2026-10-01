@@ -166,7 +166,7 @@ function MobileIntro({
           <span>{/^(learn more|اعرف المزيد)$/i.test(content.founder.linkedinLabel.trim()) ? 'LinkedIn' : content.founder.linkedinLabel}</span>
           <ArrowUpRight size={15} />
         </a>
-        <div className="relative mt-8 aspect-[4/5] w-full overflow-hidden bg-[#111936]">
+        <div className="relative mt-8 aspect-[4/5] w-full overflow-hidden bg-white">
           <Image
             src={content.founder.imageSrc}
             alt={content.founder.imageAlt}
@@ -174,7 +174,6 @@ function MobileIntro({
             sizes="calc(100vw - 32px)"
             className="object-contain object-bottom"
           />
-          <div className="absolute inset-x-0 bottom-0 h-1/4 bg-gradient-to-t from-[#050505] to-transparent" />
         </div>
       </motion.div>
     </section>
@@ -192,6 +191,7 @@ export default function AboutPage({
 }) {
   const isAr = locale === 'ar'
   const introRef = useRef<HTMLElement>(null)
+  const timelineRef = useRef<HTMLElement>(null)
 
   const { scrollYProgress: introProgress } = useScroll({
     target: introRef,
@@ -205,6 +205,16 @@ export default function AboutPage({
     [0.3, 0.4, 0.9, 0.98],
     [0, 1, 1, 0],
   )
+
+  const { scrollYProgress: timelineProgress } = useScroll({
+    target: timelineRef,
+    offset: ['start start', 'end end'],
+  })
+  const timelineXEn = useTransform(timelineProgress, [0, 0.06, 0.92], [80, 80, -3100])
+  const timelineXAr = useTransform(timelineProgress, [0, 0.06, 0.92], [-80, -80, 3100])
+  const timelineX = isAr ? timelineXAr : timelineXEn
+  const timelineScale = useTransform(timelineProgress, [0, 0.06, 0.92, 1], [0.94, 1, 1, 0.97])
+  const timelineOpacity = useTransform(timelineProgress, [0, 0.05, 0.94, 1], [0, 1, 1, 0])
 
   return (
     <main
@@ -240,11 +250,26 @@ export default function AboutPage({
 
       <CeoMessage content={content.ceoMessage} isAr={isAr} />
 
-      <TimelineLayer
-        copy={{ kicker: content.timeline.kicker, titleLine1: content.timeline.title, titleHighlight: '' }}
-        items={content.timeline.items}
-        isAr={isAr}
-      />
+      <div className="md:hidden">
+        <TimelineLayer
+          copy={{ kicker: content.timeline.kicker, titleLine1: content.timeline.title, titleHighlight: '' }}
+          items={content.timeline.items}
+          isAr={isAr}
+        />
+      </div>
+
+      <section ref={timelineRef} className="relative z-10 hidden h-[430vh] w-full md:block">
+        <div className="sticky top-0 flex h-screen w-full items-center overflow-hidden border-y border-white/10 bg-[#080d20]/76 backdrop-blur-sm">
+          <TimelineLayer
+            x={timelineX}
+            opacity={timelineOpacity}
+            scale={timelineScale}
+            copy={{ kicker: content.timeline.kicker, titleLine1: content.timeline.title, titleHighlight: '' }}
+            items={content.timeline.items}
+            isAr={isAr}
+          />
+        </div>
+      </section>
       <LocationsLayer
         copy={{ kicker: content.locations.kicker, titleLine1: content.locations.title, titleHighlight: '' }}
         items={content.locations.items}
