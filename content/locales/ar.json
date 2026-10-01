@@ -76,6 +76,14 @@
       "email": "info@dynatecheg.com"
     }
   },
+  "maintenance": {
+    "page": {
+      "logoAlt": "شعار دايناتك كوربوريشن",
+      "title": "الموقع متوقف مؤقتًا",
+      "description": "نجري حاليًا بعض التحديثات على الموقع. سنعود للعمل قريبًا.",
+      "email": "info@dynatecheg.com"
+    }
+  },
   "home": {
     "hero": {
       "heroImageAlt": "نظام دايناتك للتكنولوجيا الصناعية",

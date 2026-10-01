@@ -37,6 +37,15 @@ export type LandingContent = {
   };
 };
 
+export type MaintenanceContent = {
+  page: {
+    logoAlt: string;
+    title: string;
+    description: string;
+    email: string;
+  };
+};
+
 export type GlobalCmsContent = {
   navigation: { label: string; path: string }[];
   contact: {

@@ -76,6 +76,14 @@
       "email": "info@dynatecheg.com"
     }
   },
+  "maintenance": {
+    "page": {
+      "logoAlt": "DYNATECH Corporation",
+      "title": "Temporarily Offline",
+      "description": "We are currently making updates to the website. We will be back online shortly.",
+      "email": "info@dynatecheg.com"
+    }
+  },
   "home": {
     "hero": {
       "logoAlt": "DYNATECH Corporation",

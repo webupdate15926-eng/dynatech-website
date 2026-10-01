@@ -9,6 +9,7 @@ type Dictionary = Record<string, JsonValue>;
 const contentKeys: Partial<Record<CmsPageKey, string>> = {
   global: "global",
   landing: "landing",
+  maintenance: "maintenance",
   home: "home",
   "about-us": "about",
   "technology-partners": "technologyPartners",

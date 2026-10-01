@@ -10,6 +10,7 @@ export const defaultMedia = {
     cuLogo: "/landing/cu-logo.png",
     fftVideo: "https://res.cloudinary.com/dnosimawo/video/upload/v1776011180/WhatsApp_Video_2026-04-01_at_9.26.04_PM_d0kq38.mp4",
   },
+  maintenance: { logo: "/logo-cropped.png" },
   home: {
     backgroundVideo: "/hero.mp4",
     brandLogo: "/logo-cropped.png",
