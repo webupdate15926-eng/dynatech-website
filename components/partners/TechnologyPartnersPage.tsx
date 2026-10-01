@@ -63,7 +63,7 @@ export default function TechnologyPartnersPage({ content, locale, media }: Props
       lang={locale}
       className="min-h-screen bg-[#080d20] text-white"
     >
-      <section className="relative flex min-h-screen items-center overflow-hidden bg-[#080d20] px-5 pb-10 pt-28 sm:px-7 md:h-screen md:px-12 md:pb-8 md:pt-28 lg:px-16">
+      <section className="relative overflow-hidden bg-[#080d20] px-5 pb-14 pt-28 sm:px-7 md:px-12 md:pb-16 md:pt-32 lg:px-16">
         <video className="absolute inset-0 h-full w-full object-cover" src={String(media.backgroundVideo)} autoPlay muted loop playsInline preload="auto" />
         <div className="absolute inset-0 bg-[#080d20]/72" />
         <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(8,13,32,0.76),rgba(8,13,32,0.52))]" />
@@ -79,19 +79,26 @@ export default function TechnologyPartnersPage({ content, locale, media }: Props
               </h1>
             </motion.div>
 
-            <motion.div initial={false} animate="show" variants={reveal} transition={{ ...revealTransition, delay: reduceMotion ? 0 : 0.18 }} className="relative order-3 aspect-[3/2] w-full overflow-hidden rounded-md bg-[#080d20] md:order-none md:mt-14">
+            <motion.div initial={false} animate="show" variants={reveal} transition={{ ...revealTransition, delay: reduceMotion ? 0 : 0.18 }} className="relative order-3 aspect-[3/2] w-full overflow-hidden rounded-[14px] border border-[#008ED3] bg-[#080d20] md:order-none md:mt-24">
               <Image src={String(media.cuSigningImage)} alt={isAr ? "توقيع اتفاقية الشراكة مع CU" : "CU partnership agreement signing"} fill priority sizes="(min-width: 1280px) 670px, (min-width: 768px) 58vw, 100vw" className="object-cover object-center" />
             </motion.div>
           </div>
 
           <div className="contents md:flex md:min-w-0 md:flex-col">
-            <motion.div initial={false} animate="show" variants={reveal} transition={{ ...revealTransition, delay: reduceMotion ? 0 : 0.12 }} className="relative order-2 aspect-[192/209] w-full overflow-hidden rounded-md bg-[#080d20] md:order-none">
+            <motion.div initial={false} animate="show" variants={reveal} transition={{ ...revealTransition, delay: reduceMotion ? 0 : 0.12 }} className="relative order-2 aspect-[192/209] w-full overflow-hidden rounded-[14px] border border-[#008ED3] bg-[#080d20] md:order-none">
               <Image src={String(media.fftSigningImage)} alt={isAr ? "توقيع اتفاقية الشراكة مع FFT" : "FFT partnership agreement signing"} fill priority sizes="(min-width: 1280px) 430px, (min-width: 768px) 36vw, 100vw" className="object-cover object-top" />
             </motion.div>
 
-            <motion.div initial={false} animate="show" variants={reveal} transition={{ ...revealTransition, delay: reduceMotion ? 0 : 0.24 }} dir={isAr ? "rtl" : "ltr"} className="order-4 px-1 md:order-none md:pt-5">
+            <motion.div
+              initial={false}
+              animate="show"
+              variants={reveal}
+              transition={{ ...revealTransition, delay: reduceMotion ? 0 : 0.24 }}
+              dir={isAr ? "rtl" : "ltr"}
+              className={`order-4 pt-1 md:order-none md:mt-8 ${isAr ? "border-r-2 border-[#008ED3] pr-3" : "border-l-2 border-[#008ED3] pl-3"}`}
+            >
               <p className="text-[11px] font-medium leading-[1.65] text-white sm:text-xs md:text-[13px]">{content.hero.intro}</p>
-              <p className="mt-5 text-[11px] leading-[1.55] text-[#008ED3] sm:text-xs md:text-[13px]">{content.hero.supporting}</p>
+              <p className="mt-4 border-t border-[#008ED3]/35 pt-4 text-[11px] leading-[1.55] text-[#008ED3] sm:text-xs md:text-[13px]">{content.hero.supporting}</p>
             </motion.div>
           </div>
         </div>
