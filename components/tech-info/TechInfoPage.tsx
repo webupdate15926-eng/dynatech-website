@@ -5,6 +5,7 @@ import { ExternalLink, FileText, Play } from "lucide-react";
 import Image from "next/image";
 import type { TechInfoContent } from "@/content/schema/site";
 import type { CmsMediaMap } from "@/lib/cms/types";
+import { getPdfViewerHref } from "@/lib/cloudinary-pdf";
 import { ExpandableCollection } from "@/components/ExpandableCollection";
 
 type Props = {
@@ -173,7 +174,7 @@ export default function TechInfoPage({ content, locale, media }: Props) {
                   </p>
                   {pdf ? (
                     <a
-                      href={source}
+                      href={getPdfViewerHref(source)}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="mt-6 inline-flex items-center gap-2 border border-[#008ED3] bg-[#008ED3] px-5 py-3 text-xs font-black uppercase text-white transition hover:bg-transparent"
