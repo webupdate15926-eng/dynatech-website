@@ -68,15 +68,18 @@ export default function LandingPage({ locale, content, media }: { locale: Locale
           <p className="text-[9px] font-bold uppercase tracking-[0.5em] text-white md:text-xs">{content.partners.title}</p>
           <div className="mt-0 flex flex-row items-center justify-center gap-3 sm:gap-6">
             <div className="flex flex-col items-center gap-2">
-              <Link href={content.partners.fftHref} target="_blank" className="relative h-16 w-28 overflow-hidden rounded-xl shadow-2xl md:h-24 md:w-40">
+              <Link href={content.partners.fftHref} target="_blank" rel="noreferrer" className="relative h-16 w-28 overflow-hidden rounded-xl shadow-2xl md:h-24 md:w-40">
                 <Image src={String(media.fftLogo)} alt="FFT Logo" fill className="object-contain p-3 opacity-100 md:p-5" sizes="(min-width:768px) 160px, 112px" />
               </Link>
               <button type="button" onClick={() => setVideoOpen(true)} className="border-b border-[#008ED3]/60 pb-0.5 text-[9px] font-black uppercase tracking-[0.25em] text-[#008ED3] transition-colors hover:border-white hover:text-white md:text-[11px]">{content.partners.knowMoreLabel}</button>
             </div>
             <div className="h-14 w-px bg-white" />
-            <Link href={content.partners.cuHref} target="_blank" className="relative h-16 w-28 overflow-hidden md:h-24 md:w-40">
-              <Image src={String(media.cuLogo)} alt="CU Logo" fill className="object-contain p-3 opacity-100 md:p-5" sizes="(min-width:768px) 160px, 112px" />
-            </Link>
+            <div className="flex flex-col items-center gap-2">
+              <Link href={content.partners.cuHref} target="_blank" rel="noreferrer" className="relative h-16 w-28 overflow-hidden md:h-24 md:w-40">
+                <Image src={String(media.cuLogo)} alt="CU Logo" fill className="object-contain p-3 opacity-100 md:p-5" sizes="(min-width:768px) 160px, 112px" />
+              </Link>
+              <Link href={content.partners.cuHref} target="_blank" rel="noreferrer" className="border-b border-[#008ED3]/60 pb-0.5 text-[9px] font-black uppercase tracking-[0.25em] text-[#008ED3] transition-colors hover:border-white hover:text-white md:text-[11px]">{content.partners.knowMoreLabel}</Link>
+            </div>
           </div>
         </motion.div>
 
@@ -84,11 +87,11 @@ export default function LandingPage({ locale, content, media }: { locale: Locale
           <div className="grid grid-cols-2 gap-2 text-start max-[360px]:grid-cols-1 md:gap-3">
             <div className="rounded-lg border border-white/10 bg-white/5 p-2.5 md:p-3">
               <h2 className="text-[8px] font-bold uppercase tracking-[0.15em] text-[#008ED3] md:text-[10px]">{content.details.headOfficeTitle}</h2>
-              <p className="mt-1 text-[9px] leading-snug text-white md:text-[11px]">{content.details.headOfficeLines.map((line) => <span key={line} className="block">{line}</span>)}</p>
+              <p className="mt-1 text-[9px] leading-snug text-white md:text-[11px]">{content.details.headOfficeLines.join(" ")}</p>
             </div>
             <div className="rounded-lg border border-white/10 bg-white/5 p-2.5 md:p-3">
               <h2 className="text-[8px] font-bold uppercase tracking-[0.15em] text-[#008ED3] md:text-[10px]">{content.details.autoHubTitle}</h2>
-              <p className="mt-1 text-[9px] leading-snug text-white md:text-[11px]">{content.details.autoHubLines.map((line) => <span key={line} className="block">{line}</span>)}</p>
+              <p className="mt-1 text-[9px] leading-snug text-white md:text-[11px]">{content.details.autoHubLines.join(" ")}</p>
             </div>
           </div>
           <p className="mt-2 text-center text-[9px] text-white md:text-start md:text-[11px]">{content.details.contactLabel}{" "}<a href={`mailto:${content.details.email}`} className="border-b border-[#008ED3]/50 text-[#008ED3] transition-colors hover:border-white hover:text-white">{content.details.email}</a></p>
