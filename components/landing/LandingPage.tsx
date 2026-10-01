@@ -6,17 +6,21 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
+import type { LandingContent } from "@/content/schema/site";
 import type { Locale } from "@/i18n/config";
+import type { CmsMediaMap } from "@/lib/cms/types";
 
-const backgroundVideo = "/hero.mp4";
-const fftVideo = "https://res.cloudinary.com/dnosimawo/video/upload/v1776011180/WhatsApp_Video_2026-04-01_at_9.26.04_PM_d0kq38.mp4";
-
-export default function LandingPage({ locale }: { locale: Locale }) {
+export default function LandingPage({ locale, content, media }: { locale: Locale; content: LandingContent; media: CmsMediaMap }) {
   const isAr = locale === "ar";
   const [muted, setMuted] = useState(true);
   const [videoOpen, setVideoOpen] = useState(false);
   const desktopVideo = useRef<HTMLVideoElement>(null);
   const mobileVideo = useRef<HTMLVideoElement>(null);
+  const backgroundVideo = String(media.backgroundVideo);
+  const fftVideo = String(media.fftVideo);
+  const brandLogo = String(media.brandLogo);
+  const fftLogo = String(media.fftLogo);
+  const cuLogo = String(media.cuLogo);
 
   useEffect(() => {
     void desktopVideo.current?.play().catch(() => undefined);
@@ -35,7 +39,7 @@ export default function LandingPage({ locale }: { locale: Locale }) {
     void video.play().catch(() => undefined);
   };
 
-  return <main dir={isAr ? "rtl" : "ltr"} className="relative flex min-h-dvh w-full flex-col overflow-x-hidden bg-[#05070b] text-white md:h-dvh md:overflow-hidden">
+  return <main data-site-chrome="hidden" dir={isAr ? "rtl" : "ltr"} className="relative flex min-h-dvh w-full flex-col overflow-x-hidden bg-[#05070b] text-white md:h-dvh md:overflow-hidden">
     <button type="button" onClick={toggleSound} title={muted ? (isAr ? "تشغيل الصوت" : "Turn sound on") : (isAr ? "إيقاف الصوت" : "Mute sound")} className="fixed top-5 end-5 z-50 flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-black/50 text-white shadow-2xl backdrop-blur-xl transition hover:border-[#008ED3] hover:text-[#008ED3]">
       {muted ? <VolumeX size={19} /> : <Volume2 size={19} />}
     </button>
@@ -46,13 +50,15 @@ export default function LandingPage({ locale }: { locale: Locale }) {
     </motion.div>
 
     <div className="relative z-10 flex flex-1 flex-col items-center justify-center px-5 py-6 text-center md:px-10">
-      <motion.div initial={false} animate={{ opacity: 1, y: 0 }} className="relative h-28 w-64 md:h-36 md:w-80">
-        <Image src="/landing/real-logo.png" alt="DYNATECH Corporation" fill priority className="object-contain" sizes="(min-width: 768px) 320px, 256px" />
+      <motion.div initial={false} animate={{ opacity: 1, y: 0 }} className="relative h-40 w-[250px] md:w-[360px]">
+        <Image src={brandLogo} alt={content.hero.logoAlt} fill priority className="object-contain" sizes="(min-width: 768px) 360px, 250px" />
       </motion.div>
 
       <motion.div initial={false} animate={{ opacity: 1, y: 0 }}>
-        <h1 className="text-5xl font-black uppercase italic leading-none text-white md:text-8xl">{isAr ? "قريبًا" : <><span>Coming</span> <span className="text-[#008ED3]">Soon</span></>}</h1>
-        <p className="mx-auto mt-4 max-w-2xl text-xs font-bold uppercase leading-6 text-white md:text-base">{isAr ? "قوة دفع جديدة في صناعة السيارات في مصر" : "A New Driving Force in Egypt's Automotive Industry"}</p>
+        <h1 className="text-[2.4rem] font-black uppercase italic leading-[0.9] text-white drop-shadow-2xl md:text-[7rem]">
+          <span>{content.hero.titleLine1}</span>{content.hero.titleHighlight ? <> <span className="text-[#008ED3]">{content.hero.titleHighlight}</span></> : null}
+        </h1>
+        <p className="mx-auto mt-4 max-w-2xl text-[10px] font-medium uppercase leading-relaxed tracking-[0.2em] text-white sm:text-xs md:text-lg md:tracking-[0.3em]">{content.hero.tagline}</p>
       </motion.div>
 
       <div className="relative -mx-5 mt-6 h-[32dvh] min-h-56 w-[calc(100%+2.5rem)] overflow-hidden md:hidden">
@@ -60,26 +66,24 @@ export default function LandingPage({ locale }: { locale: Locale }) {
       </div>
 
       <motion.section initial={false} animate={{ opacity: 1, y: 0 }} className="mt-6 md:mt-10">
-        <p className="text-[10px] font-black uppercase text-white md:text-xs">{isAr ? "الشركاء الاستراتيجيون" : "Strategic Partners"}</p>
+        <p className="text-[10px] font-black uppercase tracking-[0.35em] text-white md:text-xs">{content.partners.title}</p>
         <div className="mt-3 flex items-center justify-center gap-5 md:gap-8">
           <div className="flex flex-col items-center gap-2">
-            <div className="relative h-16 w-28 md:h-20 md:w-36"><Image src="/landing/fft-logo.png" alt="FFT" fill className="object-contain" sizes="144px" /></div>
-            <button type="button" onClick={() => setVideoOpen(true)} className="flex items-center gap-1 border-b border-[#008ED3] pb-1 text-[9px] font-black uppercase text-[#008ED3] transition hover:text-white">{isAr ? "اعرف المزيد" : "Know more"}<ExternalLink size={11} /></button>
+            <div className="relative h-16 w-28 md:h-24 md:w-40"><Image src={fftLogo} alt="FFT" fill className="object-contain" sizes="160px" /></div>
+            <button type="button" onClick={() => setVideoOpen(true)} className="flex items-center gap-1 border-b border-[#008ED3] pb-1 text-[9px] font-black uppercase text-[#008ED3] transition hover:text-white">{content.partners.knowMoreLabel}<ExternalLink size={11} /></button>
           </div>
           <span className="h-14 w-px bg-white/25" />
-          <Link href="https://composites-united.com/en/about-us/" target="_blank" className="relative h-16 w-28 md:h-20 md:w-36"><Image src="/landing/cu-logo.png" alt="Composites United" fill className="object-contain" sizes="144px" /></Link>
+          <Link href={content.partners.cuHref} target="_blank" className="relative h-16 w-28 md:h-24 md:w-40"><Image src={cuLogo} alt="Composites United" fill className="object-contain" sizes="160px" /></Link>
         </div>
       </motion.section>
 
-      <motion.section initial={false} animate={{ opacity: 1 }} className="mt-7 w-full max-w-lg md:absolute md:bottom-12 md:start-8 md:mt-0">
+      <motion.section initial={false} animate={{ opacity: 1 }} className="mt-7 w-full max-w-[460px] md:absolute md:bottom-12 md:start-8 md:mt-0">
         <div className="grid grid-cols-2 gap-2 text-start">
-          <div className="rounded-md border border-white/15 bg-[#080d20]/70 p-3 backdrop-blur-md"><h2 className="text-[9px] font-black uppercase text-[#008ED3]">{isAr ? "المقر الرئيسي" : "Head Office"}</h2><p className="mt-1 text-[9px] leading-4 text-white md:text-[11px]">Cairo Festival City, The Podium,<br />P6-109, New Cairo, Egypt</p></div>
-          <div className="rounded-md border border-white/15 bg-[#080d20]/70 p-3 backdrop-blur-md"><h2 className="text-[9px] font-black uppercase text-[#008ED3]">{isAr ? "مشروع مركز السيارات" : "Auto Hub Project"}</h2><p className="mt-1 text-[9px] leading-4 text-white md:text-[11px]">Industrial Zone, New Cairo, Egypt</p></div>
+          <div className="rounded-md border border-white/15 bg-white/5 p-3 backdrop-blur-md"><h2 className="text-[9px] font-black uppercase text-[#008ED3]">{content.details.headOfficeTitle}</h2><p className="mt-1 text-[9px] leading-4 text-white md:text-[11px]">{content.details.headOfficeLines.map((line) => <span key={line} className="block">{line}</span>)}</p></div>
+          <div className="rounded-md border border-white/15 bg-white/5 p-3 backdrop-blur-md"><h2 className="text-[9px] font-black uppercase text-[#008ED3]">{content.details.autoHubTitle}</h2><p className="mt-1 text-[9px] leading-4 text-white md:text-[11px]">{content.details.autoHubLines.map((line) => <span key={line} className="block">{line}</span>)}</p></div>
         </div>
-        <p className="mt-2 text-[10px] text-white">{isAr ? "تواصل معنا:" : "Contact us:"} <a href="mailto:info@dynatecheg.com" className="text-[#008ED3] hover:text-white">info@dynatecheg.com</a></p>
+        <p className="mt-2 text-[10px] text-white">{content.details.contactLabel} <a href={`mailto:${content.details.email}`} className="text-[#008ED3] hover:text-white">{content.details.email}</a></p>
       </motion.section>
-
-      <footer className="mt-6 text-[9px] font-bold uppercase text-white md:absolute md:bottom-5 md:mt-0">© 2026 DYNATECH Automotive Egypt</footer>
     </div>
 
     <AnimatePresence>{videoOpen && <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[70] flex items-center justify-center bg-black/85 p-4 backdrop-blur-sm" role="dialog" aria-modal="true">

@@ -70,6 +70,7 @@ function valueAtPath(value: JsonValue, path: EditorPath): JsonValue | undefined 
 
 const pageHints: Record<string, [string, string]> = {
   global: ["Navigation, footer and shared contact details", "القائمة والفوتر وبيانات التواصل المشتركة"],
+  landing: ["Coming Soon page content and media", "محتوى ووسائط صفحة قريبًا"],
   home: ["Main opening page and footer details", "الواجهة الرئيسية وبيانات الفوتر"],
   "about-us": ["Company, CEO message and timeline", "الشركة ورسالة الرئيس التنفيذي والخط الزمني"],
   "technology-partners": ["Partnership overview and partner cards", "نظرة عامة وبطاقات شركاء التكنولوجيا"],

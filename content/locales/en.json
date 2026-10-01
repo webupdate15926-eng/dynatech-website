@@ -49,6 +49,32 @@
     "footerSlogan": "A New Driving Force In Egypt's Automotive Industry",
     "copyright": "ALL RIGHTS RESERVED"
   },
+  "landing": {
+    "hero": {
+      "titleLine1": "Coming",
+      "titleHighlight": "Soon",
+      "tagline": "A New Driving Force in Egypt's Automotive Industry",
+      "logoAlt": "DYNATECH Corporation"
+    },
+    "partners": {
+      "title": "Strategic Partners",
+      "knowMoreLabel": "Know More",
+      "cuHref": "https://composites-united.com/en/about-us/"
+    },
+    "details": {
+      "headOfficeTitle": "Head Office",
+      "headOfficeLines": [
+        "Cairo Festival City, The Podium, P6-109,",
+        "New Cairo, Egypt"
+      ],
+      "autoHubTitle": "Auto Hub Project",
+      "autoHubLines": [
+        "Industrial Zone, New Cairo, Egypt"
+      ],
+      "contactLabel": "Contact us:",
+      "email": "info@dynatecheg.com"
+    }
+  },
   "home": {
     "hero": {
       "logoAlt": "DYNATECH Corporation",

@@ -1,6 +1,7 @@
 import { siteRoutes } from "@/lib/routes";
 
 export const cmsPagePaths: Record<string, string> = {
+  landing: "/landing",
   home: siteRoutes.home,
   "about-us": siteRoutes.about,
   "technology-partners": siteRoutes.partners,
@@ -15,6 +16,7 @@ export const cmsPagePaths: Record<string, string> = {
 
 export const cmsPages = [
   { key: "global", label: "Global & Navigation", labelAr: "الإعدادات العامة والتنقل" },
+  { key: "landing", label: "Coming Soon", labelAr: "صفحة قريبًا" },
   { key: "home", label: "Home", labelAr: "الرئيسية" },
   { key: "about-us", label: "About Us", labelAr: "من نحن" },
   { key: "technology-partners", label: "Technology Partners", labelAr: "شركاء التكنولوجيا" },

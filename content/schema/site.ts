@@ -14,6 +14,28 @@ export type HomeHeroCopy = {
 
 export type HomeContent = { hero: HomeHeroCopy };
 
+export type LandingContent = {
+  hero: {
+    titleLine1: string;
+    titleHighlight: string;
+    tagline: string;
+    logoAlt: string;
+  };
+  partners: {
+    title: string;
+    knowMoreLabel: string;
+    cuHref: string;
+  };
+  details: {
+    headOfficeTitle: string;
+    headOfficeLines: string[];
+    autoHubTitle: string;
+    autoHubLines: string[];
+    contactLabel: string;
+    email: string;
+  };
+};
+
 export type GlobalCmsContent = {
   navigation: { label: string; path: string }[];
   contact: {

@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+.site-shell:has([data-site-chrome="hidden"]) > header,
+.site-shell:has([data-site-chrome="hidden"]) > footer {
+  display: none;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {

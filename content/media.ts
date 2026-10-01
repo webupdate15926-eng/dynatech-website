@@ -3,6 +3,13 @@ import type { CmsPageKey } from "@/lib/cms/config";
 
 export const defaultMedia = {
   global: { logo: "/logo-cropped.png" },
+  landing: {
+    backgroundVideo: "/hero.mp4",
+    brandLogo: "/landing/real-logo.png",
+    fftLogo: "/landing/fft-logo.png",
+    cuLogo: "/landing/cu-logo.png",
+    fftVideo: "https://res.cloudinary.com/dnosimawo/video/upload/v1776011180/WhatsApp_Video_2026-04-01_at_9.26.04_PM_d0kq38.mp4",
+  },
   home: {
     backgroundVideo: "/hero.mp4",
     brandLogo: "/logo-cropped.png",

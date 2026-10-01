@@ -49,6 +49,32 @@
     "footerSlogan": "قوة دفع جديدة في صناعة السيارات في مصر",
     "copyright": "جميع الحقوق محفوظة"
   },
+  "landing": {
+    "hero": {
+      "titleLine1": "قريبًا",
+      "titleHighlight": "",
+      "tagline": "قوة دفع جديدة في صناعة السيارات في مصر",
+      "logoAlt": "شعار دايناتك كوربوريشن"
+    },
+    "partners": {
+      "title": "الشركاء الاستراتيجيون",
+      "knowMoreLabel": "اعرف المزيد",
+      "cuHref": "https://composites-united.com/en/about-us/"
+    },
+    "details": {
+      "headOfficeTitle": "المقر الرئيسي",
+      "headOfficeLines": [
+        "كايرو فيستيفال سيتي، ذا بوديوم، P6-109،",
+        "القاهرة الجديدة، مصر"
+      ],
+      "autoHubTitle": "مشروع مركز السيارات",
+      "autoHubLines": [
+        "المنطقة الصناعية، القاهرة الجديدة، مصر"
+      ],
+      "contactLabel": "تواصل معنا:",
+      "email": "info@dynatecheg.com"
+    }
+  },
   "home": {
     "hero": {
       "heroImageAlt": "نظام دايناتك للتكنولوجيا الصناعية",
