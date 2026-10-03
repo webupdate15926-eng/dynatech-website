@@ -78,19 +78,17 @@ export function Footer({ locale, content, media }: FooterProps) {
             <div className="space-y-3 md:space-y-4">
               <a
                 href={contact.phone.href}
-                dir="ltr"
                 className="flex items-center gap-3 text-xs font-semibold text-white transition hover:text-[#008ED3]"
               >
                 <Phone size={16} className="text-[#008ED3]" />
-                {contact.phone.display}
+                <span dir="ltr">{contact.phone.display}</span>
               </a>
               <a
                 href={`mailto:${contact.email}`}
-                dir="ltr"
                 className="flex items-center gap-3 text-xs font-semibold text-white transition hover:text-[#008ED3]"
               >
                 <Mail size={16} className="text-[#008ED3]" />
-                {contact.email}
+                <span dir="ltr">{contact.email}</span>
               </a>
             </div>
           </div>
