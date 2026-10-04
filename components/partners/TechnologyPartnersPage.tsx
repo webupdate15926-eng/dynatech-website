@@ -97,8 +97,8 @@ export default function TechnologyPartnersPage({ content, locale, media }: Props
           </div>
 
           <div className="contents md:flex md:min-w-0 md:flex-col">
-            <motion.div initial={false} animate="show" variants={reveal} transition={{ ...revealTransition, delay: reduceMotion ? 0 : 0.12 }} className="relative order-2 aspect-[192/209] w-full overflow-hidden rounded-[10px] border border-[#008ED3] bg-[#080d20] md:order-none">
-              <Image src={String(media.fftSigningImage)} alt={isAr ? "توقيع اتفاقية الشراكة مع FFT" : "FFT partnership agreement signing"} fill priority sizes="(min-width: 1280px) 430px, (min-width: 768px) 36vw, 100vw" className="object-cover object-bottom" />
+            <motion.div initial={false} animate="show" variants={reveal} transition={{ ...revealTransition, delay: reduceMotion ? 0 : 0.12 }} className="relative order-2 aspect-[3/4] w-full overflow-hidden rounded-[10px] border border-[#008ED3] bg-[#080d20] md:order-none">
+              <Image src={String(media.fftSigningImage)} alt={isAr ? "توقيع اتفاقية الشراكة مع FFT" : "FFT partnership agreement signing"} fill priority sizes="(min-width: 1280px) 430px, (min-width: 768px) 36vw, 100vw" className="object-cover object-center" />
             </motion.div>
 
             <motion.div
