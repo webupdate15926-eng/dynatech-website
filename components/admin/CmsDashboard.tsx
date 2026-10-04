@@ -25,6 +25,7 @@ type DefaultResponse = { configured: boolean; pages: CmsPageDefinition[]; docume
 type ViewMode = "content" | "collections" | "media" | "library" | "users" | "site-mode";
 type MediaRow = { id: string; public_id: string; resource_type: "image" | "video" | "raw"; secure_url: string; format: string | null; width: number | null; height: number | null; duration: number | null; bytes: number | null; created_at: string };
 type CollectionDefinition = { id: string; label: string; labelAr: string; path: EditorPath; hint: string; hintAr: string };
+type ContentSection = { id: string; label: string; labelAr: string; path: EditorPath; value: JsonValue };
 
 const pageCollections: Record<string, CollectionDefinition[]> = {
   "about-us": [
@@ -66,6 +67,53 @@ function valueAtPath(value: JsonValue, path: EditorPath): JsonValue | undefined 
     else return undefined;
   }
   return current;
+}
+
+function globalContentSections(content: Record<string, JsonValue>): ContentSection[] {
+  const navigation = content.navigation ?? [];
+  const contact = (content.contact && typeof content.contact === "object" && !Array.isArray(content.contact) ? content.contact : {}) as Record<string, JsonValue>;
+  const labels = (content.labels && typeof content.labels === "object" && !Array.isArray(content.labels) ? content.labels : {}) as Record<string, JsonValue>;
+
+  return [
+    {
+      id: "quick-links",
+      label: "Header & Quick Links",
+      labelAr: "القائمة والروابط السريعة",
+      path: ["content"],
+      value: { navigation, labels: { contact: labels.contact ?? "", quickLinks: labels.quickLinks ?? "" } },
+    },
+    {
+      id: "location",
+      label: "Location",
+      labelAr: "المواقع",
+      path: ["content"],
+      value: {
+        contact: { locations: contact.locations ?? {} },
+        labels: {
+          location: labels.location ?? "",
+          cfcOffice: labels.cfcOffice ?? "",
+          autoHubProject: labels.autoHubProject ?? "",
+        },
+      },
+    },
+    {
+      id: "connect",
+      label: "Connect",
+      labelAr: "التواصل",
+      path: ["content"],
+      value: {
+        contact: { email: contact.email ?? "", phone: contact.phone ?? {} },
+        labels: { connect: labels.connect ?? "" },
+      },
+    },
+    {
+      id: "copyright",
+      label: "Copyright",
+      labelAr: "حقوق النشر",
+      path: ["content"],
+      value: { copyright: content.copyright ?? "" },
+    },
+  ];
 }
 
 const pageHints: Record<string, [string, string]> = {
@@ -131,9 +179,17 @@ export default function CmsDashboard({ locale }: { locale: Locale }) {
   const dirty = Boolean(document && savedSnapshot && JSON.stringify(document) !== savedSnapshot);
   const currentPage = pages.find((page) => page.key === pageKey);
   const contentObject = document?.content && typeof document.content === "object" && !Array.isArray(document.content) ? document.content : {};
-  const sections = Object.entries(contentObject).filter(([, value]) => value !== null);
-  const selectedSection = sections.find(([key]) => key === activeSection) ?? sections[0];
-  const fieldGroups = selectedSection ? groupSectionFields(selectedSection[1], locale, pageKey, ["content", selectedSection[0]]) : [];
+  const sections: ContentSection[] = pageKey === "global"
+    ? globalContentSections(contentObject as Record<string, JsonValue>)
+    : Object.entries(contentObject)
+      .filter(([, value]) => value !== null)
+      .map(([key, value]) => ({ id: key, label: fieldLabel(["content", key], "en"), labelAr: fieldLabel(["content", key], "ar"), path: ["content", key], value }));
+  const selectedSection = sections.find((section) => section.id === activeSection) ?? sections[0];
+  const fieldGroups = selectedSection
+    ? pageKey === "global"
+      ? [{ id: "content", label: isAr ? selectedSection.labelAr : selectedSection.label, value: selectedSection.value }]
+      : groupSectionFields(selectedSection.value, locale, pageKey, selectedSection.path)
+    : [];
   const selectedFieldGroup = fieldGroups.find((group) => group.id === activeFieldGroup) ?? fieldGroups[0];
   const collections = pageCollections[pageKey] ?? [];
   const selectedCollection = collections.find((collection) => collection.id === activeCollection) ?? collections[0];
@@ -344,7 +400,7 @@ export default function CmsDashboard({ locale }: { locale: Locale }) {
         {view !== "users" && view !== "site-mode" && <div className="mb-6 flex gap-1 overflow-x-auto border-b border-white/10">{pageViews.map((item) => <button key={item} onClick={() => { if (canLeave()) setView(item); }} className={`flex min-h-12 shrink-0 items-center gap-2 border-b-2 px-4 text-sm font-bold ${view === item ? "border-[#008ED3] text-white" : "border-transparent text-white/45 hover:text-white"}`}>{item === "content" ? <Type size={17} /> : item === "collections" ? <ListPlus size={17} /> : item === "media" ? <CloudUpload size={17} /> : <Images size={17} />}{ui[item]}{item === "library" && <span className="rounded-full bg-white/8 px-2 py-0.5 text-[10px]">{mediaLibrary.length}</span>}</button>)}</div>}
 
         {view === "users" ? <UserManagement session={session} locale={locale} role={accountRole} needsMigration={needsUserMigration} /> : view === "site-mode" ? <SiteModeControl token={session.access_token} locale={locale} /> : loading || !document ? <div className="flex min-h-96 items-center justify-center"><LoaderCircle className="animate-spin text-[#008ED3]" /></div> : <>
-          {view === "content" && <div className="grid gap-6 md:grid-cols-[220px_minmax(0,1fr)]"><div><p className="mb-3 text-xs font-bold text-white/40">{isAr ? "أقسام الصفحة" : "PAGE SECTIONS"}</p><div className="grid grid-cols-2 gap-2 md:grid-cols-1">{sections.map(([key]) => <button key={key} type="button" onClick={() => setActiveSection(key)} className={`min-h-11 rounded-md px-3 text-start text-sm font-bold ${selectedSection?.[0] === key ? "bg-white/10 text-[#008ED3]" : "text-white/55 hover:bg-white/5 hover:text-white"}`}>{fieldLabel(["content", key], locale)}</button>)}</div></div><div className="min-w-0 rounded-md border border-white/10 bg-[var(--admin-panel)] p-5 md:p-7">{selectedSection ? <><div className="mb-5 border-b border-white/10 pb-4"><p className="text-xs font-bold text-[#008ED3]">{isAr ? "محتوى القسم" : "SECTION CONTENT"}</p><h3 className="mt-1 text-xl font-black">{fieldLabel(["content", selectedSection[0]], locale)}</h3></div>{fieldGroups.length > 1 && <div className="mb-7"><p className="mb-3 text-xs font-bold text-white/40">{isAr ? "اختر الجزء الذي تريد تعديله" : "CHOOSE WHAT TO EDIT"}</p><div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-3">{fieldGroups.map((group) => <button key={group.id} type="button" onClick={() => setActiveFieldGroup(group.id)} className={`min-h-11 rounded-md border px-3 text-start text-sm font-bold transition ${selectedFieldGroup?.id === group.id ? "border-[#008ED3] bg-[#008ED3]/10 text-[#008ED3]" : "border-white/10 bg-[#0c1017] text-white/58 hover:border-white/25 hover:text-white"}`}>{group.label}</button>)}</div></div>}{selectedFieldGroup && <div><h4 className="mb-5 text-base font-extrabold text-white/85">{selectedFieldGroup.label}</h4><ContentEditor {...editorProps} value={selectedFieldGroup.value} path={["content", selectedSection[0]]} /></div>}</> : <p className="text-sm text-white/45">{isAr ? "لا توجد أقسام قابلة للتعديل." : "No editable sections found."}</p>}</div></div>}
+          {view === "content" && <div className="grid gap-6 md:grid-cols-[220px_minmax(0,1fr)]"><div><p className="mb-3 text-xs font-bold text-white/40">{isAr ? "أقسام الصفحة" : "PAGE SECTIONS"}</p><div className="grid grid-cols-2 gap-2 md:grid-cols-1">{sections.map((section) => <button key={section.id} type="button" onClick={() => setActiveSection(section.id)} className={`min-h-11 rounded-md px-3 text-start text-sm font-bold ${selectedSection?.id === section.id ? "bg-white/10 text-[#008ED3]" : "text-white/55 hover:bg-white/5 hover:text-white"}`}>{isAr ? section.labelAr : section.label}</button>)}</div></div><div className="min-w-0 rounded-md border border-white/10 bg-[var(--admin-panel)] p-5 md:p-7">{selectedSection ? <><div className="mb-5 border-b border-white/10 pb-4"><p className="text-xs font-bold text-[#008ED3]">{isAr ? "محتوى القسم" : "SECTION CONTENT"}</p><h3 className="mt-1 text-xl font-black">{isAr ? selectedSection.labelAr : selectedSection.label}</h3></div>{fieldGroups.length > 1 && <div className="mb-7"><p className="mb-3 text-xs font-bold text-white/40">{isAr ? "اختر الجزء الذي تريد تعديله" : "CHOOSE WHAT TO EDIT"}</p><div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-3">{fieldGroups.map((group) => <button key={group.id} type="button" onClick={() => setActiveFieldGroup(group.id)} className={`min-h-11 rounded-md border px-3 text-start text-sm font-bold transition ${selectedFieldGroup?.id === group.id ? "border-[#008ED3] bg-[#008ED3]/10 text-[#008ED3]" : "border-white/10 bg-[#0c1017] text-white/58 hover:border-white/25 hover:text-white"}`}>{group.label}</button>)}</div></div>}{selectedFieldGroup && <div><h4 className="mb-5 text-base font-extrabold text-white/85">{selectedFieldGroup.label}</h4><ContentEditor {...editorProps} value={selectedFieldGroup.value} path={selectedSection.path} /></div>}</> : <p className="text-sm text-white/45">{isAr ? "لا توجد أقسام قابلة للتعديل." : "No editable sections found."}</p>}</div></div>}
           {view === "collections" && selectedCollection && selectedCollectionValue !== undefined && <div className="grid gap-6 md:grid-cols-[240px_minmax(0,1fr)]">
             <div>
               <p className="mb-3 text-xs font-bold text-white/40">{isAr ? "المحتوى القابل للإضافة" : "ADDABLE CONTENT"}</p>
