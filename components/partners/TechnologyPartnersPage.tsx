@@ -53,6 +53,12 @@ export default function TechnologyPartnersPage({ content, locale, media }: Props
     .split(/\.\s*/)
     .filter(Boolean)
     .map((line, index, lines) => index === lines.length - 1 && titleEndsWithPeriod ? `${line}.` : line);
+  const mobileTitleLines = heroTitleLines.map((line) => {
+    const words = line.trim().split(/\s+/);
+    if (words.length < 4) return [line];
+    const splitAt = Math.ceil(words.length / 2);
+    return [words.slice(0, splitAt).join(" "), words.slice(splitAt).join(" ")];
+  });
   const reduceMotion = useReducedMotion();
   const reveal = reduceMotion
     ? { hidden: { opacity: 1, y: 0 }, show: { opacity: 1, y: 0 } }
@@ -73,9 +79,14 @@ export default function TechnologyPartnersPage({ content, locale, media }: Props
           <div className="contents md:flex md:min-w-0 md:flex-col">
             <motion.div initial={false} animate="show" variants={reveal} transition={revealTransition} dir={isAr ? "rtl" : "ltr"} className="order-1 md:order-none">
               {content.hero.kicker ? <SectionKicker>{content.hero.kicker}</SectionKicker> : null}
-              <h1 className="max-w-[650px] text-[2rem] font-black uppercase leading-[1.08] tracking-normal sm:text-[2.5rem] md:text-[clamp(2rem,3.15vw,3rem)]">
+              <h1 className="max-w-[650px] text-[1.375rem] font-black uppercase leading-[1.08] tracking-normal sm:text-[2.5rem] md:text-[clamp(2rem,3.15vw,3rem)]">
                 {heroTitleLines.map((line, index) => (
-                  <span key={line} className={`block ${index > 0 ? "mt-5 text-[#008ED3]" : "text-white"}`}>{line}</span>
+                  <span key={line} className={`block ${index > 0 ? "mt-5 text-[#008ED3]" : "text-white"}`}>
+                    <span className="md:hidden">
+                      {mobileTitleLines[index].map((mobileLine) => <span key={mobileLine} className="block whitespace-nowrap">{mobileLine}</span>)}
+                    </span>
+                    <span className="hidden md:block">{line}</span>
+                  </span>
                 ))}
               </h1>
             </motion.div>
@@ -87,7 +98,7 @@ export default function TechnologyPartnersPage({ content, locale, media }: Props
 
           <div className="contents md:flex md:min-w-0 md:flex-col">
             <motion.div initial={false} animate="show" variants={reveal} transition={{ ...revealTransition, delay: reduceMotion ? 0 : 0.12 }} className="relative order-2 aspect-[192/209] w-full overflow-hidden rounded-[10px] border border-[#008ED3] bg-[#080d20] md:order-none">
-              <Image src={String(media.fftSigningImage)} alt={isAr ? "توقيع اتفاقية الشراكة مع FFT" : "FFT partnership agreement signing"} fill priority sizes="(min-width: 1280px) 430px, (min-width: 768px) 36vw, 100vw" className="object-cover object-top" />
+              <Image src={String(media.fftSigningImage)} alt={isAr ? "توقيع اتفاقية الشراكة مع FFT" : "FFT partnership agreement signing"} fill priority sizes="(min-width: 1280px) 430px, (min-width: 768px) 36vw, 100vw" className="object-cover object-bottom" />
             </motion.div>
 
             <motion.div
