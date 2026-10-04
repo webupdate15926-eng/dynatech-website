@@ -1,62 +1,92 @@
 # DYNATECH Corporate Website
 
-The bilingual DYNATECH corporate website, built with Next.js, React, TypeScript, and Tailwind CSS.
+Production repository for the bilingual DYNATECH corporate website and its custom content management system.
 
-## Local Development
+## Production Links
+
+- Website: <https://dynatecheg.com/en>
+- Arabic website: <https://dynatecheg.com/ar>
+- CMS dashboard: <https://dynatecheg.com/en/admin>
+- Private owner control: <https://dynatecheg.com/en/super-admin>
+
+Credentials, API keys, and passwords are intentionally not stored in this repository.
+
+## Documentation
+
+- [Client handbook](docs/CLIENT-HANDBOOK.md) - project scope, ownership, services, and handover checklist.
+- [دليل العميل بالعربية](docs/CLIENT-GUIDE-AR.md) - دليل التسليم والإدارة اليومية والطوارئ.
+- [CMS user guide](docs/CMS-USER-GUIDE.md) - daily content, media, account, and publishing workflows.
+- [Technical reference](docs/TECHNICAL-REFERENCE.md) - architecture, routes, data model, APIs, and security controls.
+- [Deployment and operations](docs/DEPLOYMENT-OPERATIONS.md) - local setup, Hostinger deployment, DNS, email delivery, backup, and troubleshooting.
+
+## Technology
+
+- Next.js 16 App Router, React 19, and TypeScript
+- Tailwind CSS 4
+- Supabase Auth and PostgreSQL for CMS accounts and content
+- Cloudinary for managed images, videos, and Tech Info PDF files
+- Resend for contact-form delivery
+- Hostinger Node.js Web App hosting
+
+## Quick Start
+
+Requirements: Node.js 22.x and npm.
 
 ```bash
 npm install
+copy .env.example .env.local
 npm run dev
 ```
 
-Open [http://localhost:3000/en](http://localhost:3000/en). Arabic pages are available under `/ar`.
+Open <http://localhost:3000/en>. Arabic pages are under `/ar`.
 
 ## Commands
 
 ```bash
+npm run dev
 npm run lint
 npm run build
 npm run start
 ```
 
+The production build deliberately uses webpack: `next build --webpack`.
+
+## Content Model
+
+Checked-in JSON and media are safe fallbacks. Once a page and locale are published from the CMS, the published Supabase document overrides matching fallback values. Drafts remain private until **Publish website** is selected.
+
+- `content/locales/en.json` and `content/locales/ar.json`: fallback copy.
+- `content/media.ts`: fallback media paths.
+- `content/schema/`: TypeScript content contracts.
+- `lib/cms/`: CMS loading, normalization, authentication, and merge logic.
+- `supabase/migrations/`: database tables, policies, roles, and publish function.
+
+Published content is read at request time, so a CMS publish does not require a new application deployment.
+
 ## Main Routes
 
-- `/:locale` - Home
-- `/:locale/about-us` - About Us
-- `/:locale/technology-partners` - Technology Partners
-- `/:locale/the-auto-hub` - Auto Hub
-- `/:locale/tech-info` - Tech Info
-- `/:locale/careers` - Careers
-- `/:locale/contact` - Contact
-- `/:locale/legal-disclaimer` - Legal Disclaimer
+| Route | Purpose |
+| --- | --- |
+| `/:locale` | Home |
+| `/:locale/about-us` | About Us and timeline |
+| `/:locale/technology-partners` | Technology Partners |
+| `/:locale/technology-partners/:slug` | FFT or Composites United detail |
+| `/:locale/the-auto-hub` | Auto Hub project |
+| `/:locale/tech-info` | Images, videos, and PDF references |
+| `/:locale/careers` | Careers |
+| `/:locale/contact` | Contact details and inquiry form |
+| `/:locale/legal-disclaimer` | Legal disclaimer |
+| `/:locale/admin` | CMS dashboard |
+| `/:locale/super-admin` | Separate private owner control |
 
-Supported locales are `en` and `ar`. Legacy route names are redirected centrally in `next.config.ts`.
+Supported locales are `en` and `ar`. Requests without a locale redirect to English unless a valid locale cookie exists.
 
-## Project Structure
+## Security Rules
 
-- `content/locales/en.json` and `content/locales/ar.json` are the only checked-in sources for page content and translations.
-- `content/media.ts` contains media-path defaults only; it must not contain page copy.
-- `content/schema/` contains TypeScript shapes only; it must not contain page copy.
-- `lib/cms/` contains CMS infrastructure only: Supabase clients, authentication helpers, content merging, and page loading.
-- `app/` contains thin route files that request content through `getPageDocument()`.
-- `components/` contains presentation and interaction code without hardcoded page copy or media paths.
-- `supabase/` contains the database schema, RLS policies, and publish function.
+- Never commit `.env.local`, credentials, database secrets, or deployment archives.
+- Never put a secret/service-role key in a `NEXT_PUBLIC_` variable.
+- Rotate a key immediately if it is shared in chat, email, screenshots, or source control.
+- CMS owners should create named editor accounts instead of sharing one account.
+- Keep at least one active owner account; the database prevents removal of the last owner.
 
-To change a local fallback, edit the matching language file in `content/locales/`. Once Supabase is configured, the dashboard overrides those defaults per page and locale without changing the React components.
-
-## Content Dashboard
-
-The bilingual CMS is available at `/en/admin` and `/ar/admin`. Published page content is stored in Supabase, while images and videos are uploaded directly to Cloudinary using a server-generated signature.
-
-1. Create a Supabase project and run `supabase/migrations/20260908000000_create_cms.sql` in the SQL Editor.
-2. Run `supabase/migrations/20260922000000_cms_users.sql` for account roles and active-state enforcement.
-3. Create the first dashboard user in Supabase Authentication, then run `insert into public.cms_admins (user_id, role) values ('YOUR-AUTH-USER-UUID', 'owner');` in SQL Editor. On an existing installation, the oldest CMS user becomes owner when the new migration runs.
-4. Create a Cloudinary account/product environment.
-5. Set these variables in `.env.local`: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, and `CLOUDINARY_API_SECRET`.
-   The Supabase browser key must be a `sb_publishable_` key (or legacy `anon` key), never a secret or service-role key. Rotate any secret previously placed in a `NEXT_PUBLIC_` variable.
-6. Set server-only `SUPABASE_SECRET_KEY` to the Supabase secret/service-role key for account management. Never prefix it with `NEXT_PUBLIC_`. No redirect URL, `CMS_SITE_URL`, or SMTP setup is needed for dashboard accounts.
-7. Restart the development server and open `/en/admin`.
-
-The **Accounts** tab lets owners create editors or additional owners with a password, change any account's password or role, disable/re-enable access, and permanently delete other accounts. Editors can manage content and optionally change their own password, but cannot manage users. Share newly assigned passwords privately. No email invitation is sent, and users can sign in immediately without a forced password change. Disabled accounts fail both dashboard membership checks and CMS database policies. The last active owner cannot be disabled, demoted, or deleted. A user who forgets their password asks an owner to set a new one in Accounts.
-
-The website keeps its checked-in content and local media as fallbacks until a page and locale are published from the dashboard. Drafts are private; only rows in `cms_pages` are public.
+See the documentation folder for the complete setup and operations guide.

@@ -13,7 +13,30 @@ export const runtime = "nodejs";
 
 function isSameOrigin(request: NextRequest) {
   const origin = request.headers.get("origin");
-  return !origin || origin === request.nextUrl.origin;
+  if (!origin) return true;
+
+  const allowedOrigins = new Set([request.nextUrl.origin]);
+  const configuredSiteUrl = process.env.CMS_SITE_URL;
+
+  if (configuredSiteUrl) {
+    try {
+      const configuredOrigin = new URL(configuredSiteUrl).origin;
+      const configuredUrl = new URL(configuredOrigin);
+      allowedOrigins.add(configuredOrigin);
+      configuredUrl.hostname = configuredUrl.hostname.startsWith("www.")
+        ? configuredUrl.hostname.slice(4)
+        : `www.${configuredUrl.hostname}`;
+      allowedOrigins.add(configuredUrl.origin);
+    } catch {
+      // An invalid CMS_SITE_URL must not weaken the same-origin check.
+    }
+  }
+
+  try {
+    return allowedOrigins.has(new URL(origin).origin);
+  } catch {
+    return false;
+  }
 }
 
 export async function GET(request: NextRequest) {

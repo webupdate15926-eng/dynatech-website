@@ -19,6 +19,8 @@
 
 # production
 /build
+/dynatech-hostinger*.zip
+/.codex-preview.log
 
 # imported landing-page source (integrated into the main app)
 /public/dynatech-landing/
